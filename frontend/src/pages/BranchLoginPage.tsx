@@ -1,5 +1,6 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { api, type User } from "../api";
+import { DEV_TELEGRAM_HANDLE, DEV_TELEGRAM_URL } from "../devContact";
 
 export default function BranchLoginPage({
   onLogin,
@@ -115,6 +116,12 @@ export default function BranchLoginPage({
             {busy ? "登录中…" : "登录"}
           </button>
         </form>
+        <p className="muted" style={{ marginTop: "1rem", marginBottom: 0, fontSize: "0.85rem" }}>
+          开发员电报：{" "}
+          <a href={DEV_TELEGRAM_URL} target="_blank" rel="noreferrer">
+            {DEV_TELEGRAM_HANDLE}
+          </a>
+        </p>
       </div>
     </div>
   );

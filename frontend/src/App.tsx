@@ -11,6 +11,7 @@ import BranchWalletsPage from "./pages/BranchWalletsPage";
 import BranchUpdatePage from "./pages/BranchUpdatePage";
 import BranchHelpPage from "./pages/BranchHelpPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import { DEV_TELEGRAM_HANDLE, DEV_TELEGRAM_URL } from "./devContact";
 
 function BranchShell({
   user,
@@ -32,6 +33,9 @@ function BranchShell({
         <Link to="/branch/password">修改密码</Link>
         <a href="/" target="_blank" rel="noreferrer">
           公网页
+        </a>
+        <a href={DEV_TELEGRAM_URL} target="_blank" rel="noreferrer">
+          开发员 {DEV_TELEGRAM_HANDLE}
         </a>
         <span className="muted">{user.displayName || user.username}</span>
         <button className="btn ghost" type="button" onClick={onLogout}>

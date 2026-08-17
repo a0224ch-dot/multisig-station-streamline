@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import { HELP_DOC_VERSION, HELP_SECTIONS } from "../help/helpContent";
+import { DEV_TELEGRAM_HANDLE, DEV_TELEGRAM_URL } from "../devContact";
 
 export default function BranchHelpPage() {
   const [appVersion, setAppVersion] = useState("");
@@ -82,6 +83,12 @@ export default function BranchHelpPage() {
         <Link to="/branch/update">更新</Link>
         {" · "}
         <Link to="/branch/password">修改密码</Link>
+      </p>
+      <p className="muted" style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>
+        开发员电报：{" "}
+        <a href={DEV_TELEGRAM_URL} target="_blank" rel="noreferrer">
+          {DEV_TELEGRAM_HANDLE}
+        </a>
       </p>
     </div>
   );
