@@ -18,7 +18,7 @@ HQ_BASE_URL="${HQ_BASE_URL:-https://multisig-station.iqiyia.cyou}"
 BRANCH_NAME="${BRANCH_NAME:-精简多签}"
 PM2_NAME="${PM2_NAME:-multisig-streamline-api}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-streamline}"
-GIT_BRANCH="${GIT_BRANCH:-20260817-1929}"
+GIT_BRANCH="${GIT_BRANCH:-20260817-1952}"
 GIT_URL="${GIT_URL:-https://github.com/e12games/multisig-station-streamline.git}"
 UPDATE_RELEASES_URL="${UPDATE_RELEASES_URL:-https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json}"
 
@@ -159,7 +159,7 @@ EOF
 echo "已写入 backend/.env （PORT=$PORT）"
 
 if [[ ! -f "$INSTALL_ROOT/VERSION" ]]; then
-  echo "20260817-1" > "$INSTALL_ROOT/VERSION"
+  echo "20260817-2" > "$INSTALL_ROOT/VERSION"
 fi
 
 echo "安装后端依赖..."
