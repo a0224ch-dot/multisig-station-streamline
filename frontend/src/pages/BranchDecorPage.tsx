@@ -41,7 +41,7 @@ export default function BranchDecorPage({ user }: { user: User }) {
   }, [user.role]);
 
   const previewTitle = useMemo(
-    () => draft.title.trim() || "分公司名称 / 自定义标题",
+    () => draft.title.trim() || "精简版名称 / 自定义标题",
     [draft.title]
   );
   const previewBody = useMemo(
@@ -217,7 +217,7 @@ export default function BranchDecorPage({ user }: { user: User }) {
         </div>
 
         <label className="muted">
-          页标题（≤40字，空则用分公司名）
+          页标题（≤40字，空则用精简版名）
           <input
             className="input"
             maxLength={40}

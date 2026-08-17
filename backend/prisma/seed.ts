@@ -8,18 +8,18 @@ async function main() {
   const passwordHash = await bcrypt.hash("Branch@123456", 10);
   await prisma.user.upsert({
     where: { username: "admin" },
-    update: {},
+    update: { displayName: "精简版管理员" },
     create: {
       username: "admin",
       passwordHash,
-      displayName: "分公司管理员",
+      displayName: "精简版管理员",
       role: Role.SUPER_ADMIN,
     },
   });
 
   const low = [
-    { address: "TVxb8FbBsms48rpEXZxSKy7wc8wtYn68A7", name: "分公司财务", sortOrder: 1 },
-    { address: "TAjJb7HxxMjokeHeyf77H7zQsd1vVkKmix", name: "分公司安全", sortOrder: 2 },
+    { address: "TVxb8FbBsms48rpEXZxSKy7wc8wtYn68A7", name: "精简版财务", sortOrder: 1 },
+    { address: "TAjJb7HxxMjokeHeyf77H7zQsd1vVkKmix", name: "精简版安全", sortOrder: 2 },
   ];
 
   for (const network of [Network.shasta, Network.mainnet]) {

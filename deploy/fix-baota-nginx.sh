@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # 修复宝塔 nginx：SPA 刷新回退 + /api 反代，并清理误粘贴的裸 /api/ 行。
 # 用法：
-#   DOMAIN=multisig-station-branch.iqiyia.cyou API_PORT=8788 bash deploy/fix-baota-nginx.sh
+#   DOMAIN=multisig-station-streamline.iqiyia.cyou API_PORT=8791 bash deploy/fix-baota-nginx.sh
 
 set -euo pipefail
 
-DOMAIN="${DOMAIN:-multisig-station-branch.iqiyia.cyou}"
-API_PORT="${API_PORT:-8788}"
+DOMAIN="${DOMAIN:-multisig-station-streamline.iqiyia.cyou}"
+API_PORT="${API_PORT:-8791}"
 VHOST_DIR="${VHOST_DIR:-/www/server/panel/vhost}"
 MAIN_CONF="$VHOST_DIR/nginx/${DOMAIN}.conf"
 REWRITE_CONF="$VHOST_DIR/rewrite/${DOMAIN}.conf"
@@ -56,13 +56,15 @@ mkdir -p "$(dirname "$REWRITE_CONF")" "$PROXY_DIR"
 
 # 宝塔终端多行粘贴可能把 “location /api/” 拆成独立的 “/api/”；
 # 独立行不是合法 nginx 指令，注释掉后再由代理配置补齐。
-python3 - "$MAIN_CONF" "$REWRITE_CONF" <<'PY'
+python3 - "$MAIN_CONF" "$REWRITE_CONF" "$PROXY_DIR" "$API_CONF" <<'PY'
 from pathlib import Path
 import re
 import sys
 
 main = Path(sys.argv[1])
 rewrite = Path(sys.argv[2])
+proxy_dir = sys.argv[3]
+api_conf = sys.argv[4]
 
 text = main.read_text(encoding="utf-8", errors="replace")
 text, count = re.subn(
@@ -70,6 +72,15 @@ text, count = re.subn(
     r"\1# repaired invalid standalone /api/ line",
     text,
 )
+
+# 目录已被通配 include 时，单独 include 同一文件会让 location 出现两次
+wildcard = re.search(
+    r"(?m)^\s*include\s+%s/\*(?:\.conf)?\s*;" % re.escape(proxy_dir), text
+)
+if wildcard:
+    text = re.sub(
+        r"(?m)^[ \t]*include[ \t]+%s[ \t]*;[ \t]*\n" % re.escape(api_conf), "", text
+    )
 main.write_text(text, encoding="utf-8")
 
 current = rewrite.read_text(encoding="utf-8", errors="replace") if rewrite.exists() else ""
@@ -91,7 +102,7 @@ PY
 if ! grep -RqsE 'location[[:space:]]+(\^~[[:space:]]+)?/api/?[[:space:]]*\{' \
   "$MAIN_CONF" "$PROXY_DIR" 2>/dev/null; then
   cat > "$API_CONF" <<EOF
-# multisig station branch API proxy (generated)
+# multisig station streamline API proxy (generated)
 location ^~ /api/ {
     proxy_pass http://127.0.0.1:${API_PORT};
     proxy_http_version 1.1;
@@ -103,9 +114,8 @@ location ^~ /api/ {
 EOF
   echo "已创建 API 反代: /api/ -> 127.0.0.1:${API_PORT}"
 
-  # 非宝塔标准模板可能没有 include proxy 目录，补一个精确 include。
-  if ! grep -Fqs "$API_CONF" "$MAIN_CONF" &&
-     ! grep -Eq "include[[:space:]]+${PROXY_DIR//\//\\/}/(\\*\\.conf|\\*)" "$MAIN_CONF"; then
+  # 宝塔标准模板已 include 整个 proxy 目录；重复 include 会导致 duplicate location。
+  if ! grep -Fqs "$PROXY_DIR" "$MAIN_CONF"; then
     python3 - "$MAIN_CONF" "$API_CONF" <<'PY'
 from pathlib import Path
 import sys

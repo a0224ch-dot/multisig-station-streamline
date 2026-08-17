@@ -376,7 +376,7 @@ export default function OpenPage() {
               ))}
             </div>
             {!deepLinks.length && (
-              <p className="error">管理员尚未启用任何钱包入口，请联系分公司。</p>
+              <p className="error">管理员尚未启用任何钱包入口，请联系精简版管理员。</p>
             )}
 
             <div className="open-fallback">

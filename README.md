@@ -31,7 +31,7 @@ cd frontend && npm i && npm run dev
 ## 发版 / 在线更新
 
 ```bash
-VERSION=20260817-1 NOTES="说明" bash deploy/pack-release.sh
+VERSION=20260817-3 NOTES="修复已知 BUG / 更新功能" bash deploy/pack-release.sh
 ```
 
 更新清单发布仓：https://github.com/e12games/multisig-station-streamline-releases  

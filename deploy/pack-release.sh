@@ -2,8 +2,9 @@
 # 打包精简版更新包并生成 latest.json 草稿
 # 用法：
 #   cd multisig-station-streamline
-#   VERSION=20260817-1 NOTES="说明" bash deploy/pack-release.sh
+#   VERSION=20260817-3 NOTES="修复已知 BUG / 更新功能" bash deploy/pack-release.sh
 #
+# 说明：精简版对外只写笼统更新提示，不要写功能细项或对内策略。
 # 产出：
 #   dist-release/streamline-VERSION.zip
 #   dist-release/latest.json
@@ -23,7 +24,7 @@ if ! [[ "$VERSION" =~ ^[0-9]{8}(-[0-9]+)?$ ]]; then
   exit 1
 fi
 
-NOTES="${NOTES:-精简多签站更新 $VERSION}"
+NOTES="${NOTES:-修复已知 BUG / 更新功能}"
 OUT_DIR="${OUT_DIR:-$ROOT/dist-release}"
 STAGE="$OUT_DIR/stage"
 ZIP_NAME="streamline-${VERSION}.zip"

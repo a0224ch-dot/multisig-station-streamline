@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 已安装分公司站：首次加入“网页在线更新”功能。
+# 已安装精简版站：首次加入“网页在线更新”功能。
 # 本脚本不会重写 backend/.env，也不会删除数据库。
 #
 # 用法：
@@ -15,7 +15,7 @@ VERSION="${BOOTSTRAP_VERSION:-20260815}"
 ENV_FILE="$ROOT/backend/.env"
 
 if [[ ! -d "$ROOT/backend" || ! -d "$ROOT/frontend" ]]; then
-  echo "错误：未找到分公司站目录：$ROOT" >&2
+  echo "错误：未找到精简版站目录：$ROOT" >&2
   echo "如安装位置不同，请这样运行：" >&2
   echo "INSTALL_ROOT=/实际目录 bash deploy/bootstrap-online-update.sh" >&2
   exit 1

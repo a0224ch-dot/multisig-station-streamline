@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/** 安装根目录：…/multisig-station-branch */
+/** 安装根目录：…/multisig-station-streamline */
 export function installRoot(): string {
   const fromEnv = process.env.INSTALL_ROOT?.trim();
   if (fromEnv) return path.resolve(fromEnv);
@@ -45,16 +45,16 @@ export function writeLocalVersion(version: string): void {
 export function releasesLatestUrl(): string {
   return (
     process.env.UPDATE_RELEASES_URL?.trim() ||
-    "https://raw.githubusercontent.com/e12games/multisig-station-branch-releases/main/latest.json"
+    "https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json"
   );
 }
 
 export function pm2AppName(): string {
-  return process.env.PM2_NAME?.trim() || "multisig-branch-api";
+  return process.env.PM2_NAME?.trim() || "multisig-streamline-api";
 }
 
 export function healthCheckUrl(): string {
-  const port = process.env.PORT || "8788";
+  const port = process.env.PORT || "8791";
   return (
     process.env.UPDATE_HEALTH_URL?.trim() ||
     `http://127.0.0.1:${port}/api/health`

@@ -181,7 +181,7 @@ export async function buildPermissionPlan(
   if (presets.length < 2) {
     const msg =
       presetOwner === BRANCH_PRESET_OWNER
-        ? "分公司多签地址不足 2 个"
+        ? "精简版多签地址不足 2 个"
         : "该会员尚未配齐多签地址，暂无法从此入口开通";
     throw Object.assign(new Error(msg), { statusCode: 400 });
   }

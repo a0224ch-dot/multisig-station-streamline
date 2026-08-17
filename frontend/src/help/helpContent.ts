@@ -1,7 +1,7 @@
 /**
  * 精简版「使用说明」。HELP_DOC_VERSION 须与根目录 VERSION 一致。
  */
-export const HELP_DOC_VERSION = "20260817-2";
+export const HELP_DOC_VERSION = "20260817-3";
 
 export type HelpSection = {
   id: string;
@@ -80,6 +80,7 @@ export const HELP_SECTIONS: HelpSection[] = [
     steps: [
       "「系统更新」→ 检查更新 → 立即更新。",
       "更新会保留 .env 与数据库。",
+      "页面上的「更新内容」只提示「修复已知 BUG / 更新功能」，不展开细项。",
     ],
   },
 ];

@@ -46,12 +46,12 @@ model Scenario {
   @@index([enabled, sortOrder])
 }
 
-/// 仅低档 LOW：分公司默认或会员自有 2 址
+/// 仅低档 LOW：精简版默认或会员自有 2 址
 model PresetSigner {
   id          String   @id @default(cuid())
   network     String
   group       String   @default("LOW")
-  /// "branch" = 分公司默认；否则为会员 User.id
+  /// "branch" = 精简版默认；否则为会员 User.id
   ownerUserId String   @default("branch")
   address     String
   name        String
@@ -107,7 +107,7 @@ model OpenSession {
   /// 交易所侧业务单号/备注
   partnerRef      String?
   partnerKeyId    String?
-  /// 低档预置归属：空/"branch" 用分公司默认；会员 id 用该会员 2 址
+  /// 低档预置归属：空/"branch" 用精简版默认；会员 id 用该会员 2 址
   presetOwnerId   String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

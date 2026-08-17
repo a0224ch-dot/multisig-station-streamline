@@ -132,7 +132,7 @@ export async function buildHqProfilePayload() {
   const network = await getNetwork();
   const openCountHint = await prisma.walletRecord.count();
   return {
-    name: process.env.BRANCH_NAME || "未命名分公司",
+    name: process.env.BRANCH_NAME || "未命名精简版",
     contact: process.env.BRANCH_CONTACT || "",
     publicUrl: process.env.BRANCH_PUBLIC_URL || process.env.FRONTEND_ORIGIN || "",
     network,

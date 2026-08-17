@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 分公司多签站 - Ubuntu/宝塔 一键安装（自动选空闲端口）
+# 精简版多签站 - Ubuntu/宝塔 一键安装（自动选空闲端口）
 # 用法（在已能访问 GitHub 的 VPS 上）：
 #   cd /www/wwwroot && git clone -b 20260815-1746 https://github.com/e12games/multisig-station-branch.git
 #   bash multisig-station-branch/deploy/install-branch-baota.sh
@@ -17,7 +17,7 @@ set -uo pipefail
 
 BRANCH_DOMAIN="${BRANCH_DOMAIN:-multisig-station-branch.iqiyia.cyou}"
 HQ_BASE_URL="${HQ_BASE_URL:-https://multisig-station.iqiyia.cyou}"
-BRANCH_NAME="${BRANCH_NAME:-示例分公司}"
+BRANCH_NAME="${BRANCH_NAME:-示例精简版}"
 PM2_NAME="${PM2_NAME:-multisig-branch-api}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-branch}"
 GIT_BRANCH="${GIT_BRANCH:-20260815-1746}"
@@ -82,7 +82,7 @@ pick_port() {
 }
 
 echo "=========================================="
-echo " 分公司多签站一键安装"
+echo " 精简版多签站一键安装"
 echo " 域名: $BRANCH_DOMAIN"
 echo " 总部: $HQ_BASE_URL"
 echo "=========================================="
@@ -220,5 +220,5 @@ echo "【验收】"
 echo "  https://${BRANCH_DOMAIN}/"
 echo "  https://${BRANCH_DOMAIN}/branch/login"
 echo "  https://${BRANCH_DOMAIN}/api/health"
-echo "  总公司后台「分公司」应出现本站上报"
+echo "  上游后台应出现本站上报"
 echo "=========================================="

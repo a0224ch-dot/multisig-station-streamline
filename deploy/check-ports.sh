@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 快速看端口谁占用（分公司安装前可先跑）
+# 快速看端口谁占用（精简版安装前可先跑）
 echo "=== 关键端口 ==="
 for p in 80 443 8787 8788 8790 8791 8800; do
   if ss -tln 2>/dev/null | grep -qE ":${p}\s"; then

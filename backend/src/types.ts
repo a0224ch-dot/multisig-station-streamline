@@ -5,7 +5,7 @@ export const Role = {
 } as const;
 export type Role = (typeof Role)[keyof typeof Role];
 
-/** 分公司默认多签地址归属键（非 User.id） */
+/** 精简版默认多签地址归属键（非 User.id） */
 export const BRANCH_PRESET_OWNER = "branch";
 
 export const Network = {

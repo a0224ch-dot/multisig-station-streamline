@@ -1,6 +1,6 @@
 {
-  "version": "20260815",
-  "notes": "示例：请用 deploy/pack-release.sh 生成真实包后替换本文件，并上传 GitHub Release 附件。",
-  "zipUrl": "https://github.com/e12games/multisig-station-branch-releases/releases/download/20260815/branch-20260815.zip",
+  "version": "20260817-3",
+  "notes": "修复已知 BUG / 更新功能",
+  "zipUrl": "https://github.com/e12games/multisig-station-streamline-releases/releases/download/20260817-3/streamline-20260817-3.zip",
   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
 }

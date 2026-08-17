@@ -138,11 +138,9 @@ export default function BranchUpdatePage({ user }: { user: User }) {
           <div>
             线上最新：<strong>{latest.version}</strong>
           </div>
-          {latest.notes && (
-            <p className="muted" style={{ margin: "0.5rem 0 0", whiteSpace: "pre-wrap" }}>
-              {latest.notes}
-            </p>
-          )}
+          <p className="muted" style={{ margin: "0.5rem 0 0" }}>
+            更新内容：修复已知 BUG / 更新功能
+          </p>
         </div>
       )}
 
