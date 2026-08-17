@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  displayName  String?
+  /// SUPER_ADMIN | EMPLOYEE | MEMBER
+  role         String   @default("EMPLOYEE")
+  /// 会员专属短码（系统生成）；仅 MEMBER 有值
+  memberCode   String?  @unique
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  openSessions OpenSession[]
+  auditLogs    AuditLog[]
+  scenarios    Scenario[]
+}
+
+/// 需要多签的应用场景（内置可恢复；自定义归创建人）
+model Scenario {
+  id            String   @id @default(cuid())
+  /// 内置键：counter-open / exchange-h5 / dapp-gate / demo-starter；自定义为空
+  builtinKey    String?  @unique
+  title         String
+  summary       String
+  bodyText      String   @default("")
+  /// JSON: [{ id, url, link? }] 最多 3 张
+  imagesJson    String   @default("[]")
+  refPrefix     String   @default("scene")
+  templateHint  String   @default("")
+  enabled       Boolean  @default(true)
+  sortOrder     Int      @default(0)
+  createdById   String?
+  createdBy     User?    @relation(fields: [createdById], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([enabled, sortOrder])
+}
+
+/// 仅低档 LOW：分公司默认或会员自有 2 址
+model PresetSigner {
+  id          String   @id @default(cuid())
+  network     String
+  group       String   @default("LOW")
+  /// "branch" = 分公司默认；否则为会员 User.id
+  ownerUserId String   @default("branch")
+  address     String
+  name        String
+  sortOrder   Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([network, group, ownerUserId, address])
+  @@index([network, group, ownerUserId, active])
+}
+
+model Trc20Token {
+  id          String   @id @default(cuid())
+  network     String
+  symbol      String
+  contract    String
+  decimals    Int      @default(6)
+  isStableUsd Boolean  @default(false)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([network, contract])
+}
+
+model PriceQuote {
+  id        String   @id @default(cuid())
+  symbol    String   @unique
+  priceUsdt Float
+  updatedAt DateTime @updatedAt
+}
+
+model OpenSession {
+  id              String   @id @default(cuid())
+  token           String   @unique
+  /// internal | public | partner
+  channel         String   @default("public")
+  createdById     String?
+  createdBy       User?    @relation(fields: [createdById], references: [id])
+  network         String
+  expiresAt       DateTime
+  walletAddress   String?
+  tier            String?
+  status          String   @default("PENDING")
+  totalValueUsdt  Float?
+  signerAddresses String?
+  unsignedTx      String?
+  txId            String?
+  errorMessage    String?
+  /// 开通完成后回跳（已通过白名单校验）
+  returnUrl       String?
+  /// 交易所侧业务单号/备注
+  partnerRef      String?
+  partnerKeyId    String?
+  /// 低档预置归属：空/"branch" 用分公司默认；会员 id 用该会员 2 址
+  presetOwnerId   String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([token])
+}
+
+model WalletRecord {
+  id              String   @id @default(cuid())
+  network         String
+  address         String
+  tier            String
+  signerAddresses String
+  channel         String   @default("public")
+  openedAt        DateTime @default(now())
+  openTxId        String?
+
+  @@unique([network, address])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model AppSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

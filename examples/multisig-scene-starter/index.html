@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>多签场景示例</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>需要多签的应用场景 · 示例</h1>
+      <p class="lead">
+        这是<strong>免费开源</strong>的最小模板：只负责跳转到分公司多签入口。
+        钱包深链、开通流程由分公司多签站处理。
+      </p>
+
+      <section class="card" id="status-card" hidden>
+        <h2>回跳结果</h2>
+        <pre id="status-pre"></pre>
+        <button type="button" class="btn ghost" id="btn-clear">清除结果</button>
+      </section>
+
+      <section class="card">
+        <h2>去开通多签</h2>
+        <p class="muted" id="entry-preview">正在读取配置…</p>
+        <button type="button" class="btn" id="btn-open">去开通多签</button>
+        <p class="hint">
+          请先编辑 <code>config.js</code> 里的 <code>entryUrl</code> 为你的分公司入口。
+        </p>
+      </section>
+
+      <section class="card muted">
+        <h2>对接约定</h2>
+        <ul>
+          <li>只配置 HTTPS 入口 URL（<code>/p/…</code>），不要写死钱包深链。</li>
+          <li>可选 <code>ref</code>、<code>returnUrl</code>（回跳域名须在分公司白名单）。</li>
+          <li>收费应在分公司开通权限侧实现，不要依赖本开源包防篡改。</li>
+        </ul>
+      </section>
+    </main>
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "multisig-scene-starter",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Minimal free template: open branch multisig landing (/p/...) then return",
+  "license": "MIT"
+}

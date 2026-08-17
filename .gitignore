@@ -1,0 +1,37 @@
+# 依赖与构建
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.DS_Store
+*.log
+npm-debug.log*
+
+# 环境与密钥（切勿提交）
+.env
+.env.*
+!.env.example
+backend/.env
+frontend/.env
+
+# 本地数据库
+*.db
+*.db-journal
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+
+# 公网页装修上传图
+backend/data/uploads/
+
+# 在线更新工作区与备份、发版产物
+.update-work/
+.update-backups/
+dist-release/
+
+# IDE / 系统
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+# pack helper (local only)
+backend/tmp-pack.mjs
