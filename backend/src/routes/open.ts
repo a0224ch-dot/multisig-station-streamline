@@ -24,7 +24,7 @@ export async function registerOpenRoutes(app: FastifyInstance) {
     try {
       thresholdUsdt = (await fetchHqPolicy()).thresholdUsdt;
     } catch {
-      /* 展示用兜底；开通 prepare 仍会再拉总部 */
+      /* 展示用兜底 */
     }
     return {
       network,
@@ -200,8 +200,8 @@ export async function registerOpenRoutes(app: FastifyInstance) {
         const { thresholdUsdt: line } = await fetchHqPolicy();
         if (totalUsdt > line) {
           const message =
-            `钱包余额已变化（当前折合约 ${totalUsdt.toFixed(2)} USDT，超过阈值 ${line}），` +
-            `原方案为低档 2/3，现应走高档 3/4。请刷新开通码后重新开通。`;
+            `钱包余额已变化（当前折合约 ${totalUsdt.toFixed(2)} USDT），` +
+            `原开通方案已失效。请刷新开通码后重新开通。`;
           console.warn("[broadcast] tier stale", {
             address: session.walletAddress,
             preparedTier: session.tier,
@@ -271,7 +271,7 @@ export async function registerOpenRoutes(app: FastifyInstance) {
         }),
       ]);
 
-      // 3/4 异步回写总部台账；失败只打日志，不挡用户成功页
+      // 大额开通成功后异步上报；失败只打日志，不挡用户成功页
       if (session.tier === Tier.THREE_OF_FOUR && session.walletAddress) {
         const signers = parseJson<string[]>(signerAddressesRaw, [
           session.walletAddress,

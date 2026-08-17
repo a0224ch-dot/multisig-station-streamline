@@ -106,13 +106,13 @@ export default function BranchUpdatePage({ user }: { user: User }) {
     <div>
       <PageIntro>
         <strong>这页做什么：</strong>
-        检查并安装总部发布的新版本。失败会自动回滚；配置和数据库不会被盖掉。
+        检查并安装发布仓中的新版本。失败会自动回滚；配置和数据库不会被盖掉。
         详见 <Link to="/branch/help#help-update">使用说明 · 系统更新</Link>。
       </PageIntro>
       <div className="card" style={{ maxWidth: 640 }}>
       <h2 style={{ marginTop: 0 }}>系统更新</h2>
       <p className="muted" style={{ marginTop: 0 }}>
-        从总部发布仓拉取更新包。失败会自动回滚；配置（.env）和数据库不会被覆盖。
+        从发布仓拉取更新包。失败会自动回滚；配置（.env）和数据库不会被覆盖。
       </p>
 
       <p>

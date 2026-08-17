@@ -62,8 +62,8 @@ export async function assertTronAddress(addr: string, label: string): Promise<vo
 }
 
 /**
- * 折合 USDT = TRX×市价 + Σ(已登记 TRC20×价)。与总部同规则。
- * 有余额却无市价时拒绝静默按 0（抛 503，避免误走低档）。
+ * 折合 USDT = TRX×市价 + Σ(已登记 TRC20×价)。
+ * 有余额却无市价时拒绝静默按 0（避免误判档位）。
  */
 export async function sumTrc20ValueUsdt(network: Network, walletAddress: string) {
   if (!isValidBase58(walletAddress)) {
@@ -146,12 +146,12 @@ export async function buildPermissionPlan(
     for (const s of hq.signers) {
       if (!(await isValidTronAddress(s.address))) {
         throw Object.assign(
-          new Error(`总部预置地址无效（${s.name || s.address}），请联系总公司核对`),
+          new Error(`预置地址无效（${s.name || s.address}），请联系管理员核对`),
           { statusCode: 409 }
         );
       }
       if (s.address === ownerAddress) {
-        throw Object.assign(new Error("总部预置地址不能与本人相同"), { statusCode: 400 });
+        throw Object.assign(new Error("预置地址不能与本人相同"), { statusCode: 400 });
       }
     }
     return {

@@ -10,7 +10,6 @@ const GUIDE_LINES = [
   "多签是给原钱包加多人权限，收款地址不变。",
   "请用钱包 App 扫码或打开链接，在钱包内完成签名。",
   "开通码有时效；过期点「刷新开通码」。",
-  "大额开通可能启用平台共管多签（3/4）。",
 ];
 
 export default function PublicHomePage() {

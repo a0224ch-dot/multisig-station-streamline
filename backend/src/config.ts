@@ -49,7 +49,7 @@ export function getFullHost(network: Network): string {
   return process.env.TRON_FULL_HOST_SHASTA || "https://api.shasta.trongrid.io";
 }
 
-/** 仅总部不可达时的兜底；开通判定应优先 fetchHqPolicy */
+/** 仅上游策略不可达时的兜底 */
 export function localFallbackThresholdUsdt(): number {
   const n = Number(process.env.VALUE_THRESHOLD_USDT || 500000);
   return Number.isFinite(n) && n > 0 ? n : 500000;

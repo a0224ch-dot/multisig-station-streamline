@@ -1,6 +1,6 @@
 import { prisma } from "./db.js";
 
-/** 行情短缓存，避免开通时狂打交易所（与总部同规则） */
+/** 行情短缓存，避免开通时狂打交易所 */
 const CACHE_MS = 60_000;
 let lastRefreshAt = 0;
 let inFlight: Promise<void> | null = null;

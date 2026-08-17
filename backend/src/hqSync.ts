@@ -22,7 +22,7 @@ async function tick(kind: "register" | "heartbeat") {
   }
 }
 
-/** 启动时注册并定时心跳，把分公司资料自动上报总部 */
+/** 启动时注册并定时心跳 */
 export function startHqSync() {
   const key = process.env.BRANCH_API_KEY || "";
   const hq = process.env.HQ_BASE_URL || "";

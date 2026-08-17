@@ -34,7 +34,7 @@ export default function BranchPresetsPage({ user }: { user: User }) {
     setError("");
     try {
       await api.savePresets(rows);
-      setMsg("多签地址已保存（仅用于小额 2/3 开通）");
+      setMsg("多签地址已保存");
     } catch (err) {
       setError(err instanceof Error ? err.message : "保存失败");
     }
@@ -44,14 +44,14 @@ export default function BranchPresetsPage({ user }: { user: User }) {
     <div>
       <PageIntro>
         <strong>这页做什么：</strong>
-        配置本站低档 2/3 的共管地址（恰好 2 个，不含本人）。公网页小额开通用这套；大额超过总部阈值时走平台
-        3/4。详见 <Link to="/branch/help#help-presets">使用说明 · 多签地址</Link>。
+        配置本站开通用的共管地址（恰好 2 个，不含本人）。详见{" "}
+        <Link to="/branch/help#help-presets">使用说明 · 多签地址</Link>。
         <HelpTip text="地址填错会导致开通失败；保存前请与网络（主网/Shasta）核对。" />
       </PageIntro>
 
       <form className="card" onSubmit={(e) => void save(e)}>
         <h2 style={{ marginTop: 0 }}>多签地址</h2>
-        <p className="muted">小额开通用的 2 个预置地址（不含本人）。大额由平台共管，此处不可配置。</p>
+        <p className="muted">开通用的 2 个预置地址（不含本人）。</p>
         {rows.map((row, i) => (
           <div key={i} style={{ display: "grid", gap: "0.5rem", marginBottom: "0.75rem" }}>
             <input

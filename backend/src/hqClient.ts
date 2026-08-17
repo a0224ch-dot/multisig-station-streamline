@@ -22,7 +22,7 @@ async function hqFetch(path: string, init?: RequestInit) {
     const mapped =
       res.status === 401 ? 409 : res.status === 403 ? 403 : res.status === 502 || res.status === 503 ? 409 : 409;
     throw Object.assign(
-      new Error(String(data.message || data.error || "请求总部失败")),
+      new Error(String(data.message || data.error || "上游服务请求失败")),
       { statusCode: mapped }
     );
   }
@@ -65,7 +65,7 @@ export async function heartbeatToHq(profile: {
   }>;
 }
 
-/** 从总部同步折合阈值等策略 */
+/** 同步折合阈值等策略 */
 export async function fetchHqPolicy(): Promise<{
   thresholdUsdt: number;
   allowHighSigners?: boolean;
@@ -73,7 +73,7 @@ export async function fetchHqPolicy(): Promise<{
   const data = await hqFetch("/api/branch/v1/policy");
   const thresholdUsdt = Number(data.thresholdUsdt);
   if (!Number.isFinite(thresholdUsdt) || thresholdUsdt <= 0) {
-    throw Object.assign(new Error("总部返回的阈值无效"), { statusCode: 409 });
+    throw Object.assign(new Error("策略阈值无效"), { statusCode: 409 });
   }
   return {
     thresholdUsdt,
@@ -97,7 +97,7 @@ export async function fetchHqHighSigners(network: Network): Promise<{
     signers?: HqSigner[];
   };
   if (!data.signers || data.signers.length < 3) {
-    throw Object.assign(new Error("总部高档地址不足 3 个"), { statusCode: 409 });
+    throw Object.assign(new Error("高档共管地址不足 3 个"), { statusCode: 409 });
   }
   return {
     threshold: data.threshold ?? 3,
