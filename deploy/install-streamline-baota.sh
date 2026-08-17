@@ -2,7 +2,7 @@
 # 精简多签站 - Ubuntu/宝塔 一键安装（自动选空闲端口）
 # 用法（在已能访问 GitHub 的 VPS 上）：
 #   cd /www/wwwroot
-#   git clone -b 20260817-1929 https://github.com/e12games/multisig-station-streamline.git
+#   git clone -b 20260817-1952 https://github.com/e12games/multisig-station-streamline.git
 #   bash multisig-station-streamline/deploy/install-streamline-baota.sh
 #
 # 可选环境变量覆盖：
