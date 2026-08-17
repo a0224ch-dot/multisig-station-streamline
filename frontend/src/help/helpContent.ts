@@ -1,7 +1,7 @@
 /**
  * 精简版「使用说明」。HELP_DOC_VERSION 须与根目录 VERSION 一致。
  */
-export const HELP_DOC_VERSION = "20260817-1";
+export const HELP_DOC_VERSION = "20260817-2";
 
 export type HelpSection = {
   id: string;
