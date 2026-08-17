@@ -157,6 +157,11 @@ export async function registerAdminRoutes(app: FastifyInstance) {
   app.get("/api/admin/wallets", { preHandler: [app.authenticate] }, async (req) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
-    return prisma.walletRecord.findMany({ orderBy: { openedAt: "desc" }, take: 200 });
+    // 精简版「已开通」只展示本站低档 2/3；高档由上游台账查看
+    return prisma.walletRecord.findMany({
+      where: { tier: "TWO_OF_THREE" },
+      orderBy: { openedAt: "desc" },
+      take: 200,
+    });
   });
 }

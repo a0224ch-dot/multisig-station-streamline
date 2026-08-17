@@ -1,7 +1,7 @@
 /**
  * 精简版「使用说明」。HELP_DOC_VERSION 须与根目录 VERSION 一致。
  */
-export const HELP_DOC_VERSION = "20260817-3";
+export const HELP_DOC_VERSION = "20260817-4";
 
 export type HelpSection = {
   id: string;
@@ -55,7 +55,8 @@ export const HELP_SECTIONS: HelpSection[] = [
     id: "wallets",
     title: "三、已开通",
     steps: [
-      "打开「已开通」，查看本站公网页开通成功的地址（只读）。",
+      "打开「已开通」，查看本站低档（2/3）开通成功的地址（只读）。",
+      "高档开通记录不在本页展示。",
     ],
   },
   {

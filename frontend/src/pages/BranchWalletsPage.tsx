@@ -26,7 +26,7 @@ export default function BranchWalletsPage() {
     <div>
       <PageIntro>
         <strong>这页做什么：</strong>
-        查看本站已经开通成功的钱包地址记录（只读）。
+        查看本站低档（2/3）开通成功的钱包地址（只读）。高档开通记录不在本页展示。
       </PageIntro>
       <div className="card">
       <h2 style={{ marginTop: 0 }}>已开通</h2>

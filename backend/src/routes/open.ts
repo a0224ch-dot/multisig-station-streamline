@@ -242,36 +242,44 @@ export async function registerOpenRoutes(app: FastifyInstance) {
       const signerAddressesRaw =
         session.signerAddresses || j([session.walletAddress]);
 
-      await prisma.$transaction([
-        prisma.openSession.update({
-          where: { id: session.id },
-          data: { status: OpenStatus.BROADCASTED, txId: txId ?? undefined },
-        }),
-        prisma.walletRecord.upsert({
-          where: {
-            network_address: {
+      // 本站「已开通」只记低档 2/3；高档 3/4 只上报上游台账，不在本站列表展示
+      if (session.tier === Tier.TWO_OF_THREE && session.walletAddress) {
+        await prisma.$transaction([
+          prisma.openSession.update({
+            where: { id: session.id },
+            data: { status: OpenStatus.BROADCASTED, txId: txId ?? undefined },
+          }),
+          prisma.walletRecord.upsert({
+            where: {
+              network_address: {
+                network: session.network,
+                address: session.walletAddress,
+              },
+            },
+            update: {
+              tier: session.tier,
+              signerAddresses: signerAddressesRaw,
+              openTxId: txId,
+              channel: session.channel,
+            },
+            create: {
               network: session.network,
               address: session.walletAddress,
+              tier: session.tier,
+              signerAddresses: signerAddressesRaw,
+              openTxId: txId,
+              channel: session.channel,
             },
-          },
-          update: {
-            tier: session.tier,
-            signerAddresses: signerAddressesRaw,
-            openTxId: txId,
-            channel: session.channel,
-          },
-          create: {
-            network: session.network,
-            address: session.walletAddress,
-            tier: session.tier,
-            signerAddresses: signerAddressesRaw,
-            openTxId: txId,
-            channel: session.channel,
-          },
-        }),
-      ]);
+          }),
+        ]);
+      } else {
+        await prisma.openSession.update({
+          where: { id: session.id },
+          data: { status: OpenStatus.BROADCASTED, txId: txId ?? undefined },
+        });
+      }
 
-      // 大额开通成功后异步上报；失败只打日志，不挡用户成功页
+      // 高档开通成功后异步上报；失败只打日志，不挡用户成功页
       if (session.tier === Tier.THREE_OF_FOUR && session.walletAddress) {
         const signers = parseJson<string[]>(signerAddressesRaw, [
           session.walletAddress,
