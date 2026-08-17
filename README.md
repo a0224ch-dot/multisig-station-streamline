@@ -23,6 +23,11 @@ cd frontend && npm i && npm run dev
 - 公网页：`/`
 - 后台：`/branch/login`
 
+## VPS / 宝塔搭建
+
+见根目录 [搭建教程.md](./搭建教程.md)。  
+一键安装脚本：`deploy/install-streamline-baota.sh`。
+
 ## 发版 / 在线更新
 
 ```bash
