@@ -62,6 +62,11 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ oldPassword, newPassword }),
     }),
+  changeDisplayName: (displayName: string) =>
+    request<User>("/api/auth/display-name", {
+      method: "POST",
+      body: JSON.stringify({ displayName }),
+    }),
   listUsers: () =>
     request<
       {

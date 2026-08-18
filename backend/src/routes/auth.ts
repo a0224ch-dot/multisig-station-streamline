@@ -89,6 +89,25 @@ export async function registerAuthRoutes(app: FastifyInstance) {
     return publicUser(user);
   });
 
+  app.post("/api/auth/display-name", { preHandler: [app.authenticate] }, async (req, reply) => {
+    const u = getUser(req);
+    const body = z.object({ displayName: z.string().min(1).max(40) }).parse(req.body);
+    const user = await prisma.user.findUniqueOrThrow({ where: { id: u.sub } });
+    if (!user.active) return reply.code(401).send({ error: "账号已停用" });
+    const updated = await prisma.user.update({
+      where: { id: user.id },
+      data: { displayName: body.displayName.trim() },
+    });
+    await prisma.auditLog.create({
+      data: {
+        userId: user.id,
+        action: "DISPLAY_NAME_CHANGE",
+        detail: j({ from: user.displayName, to: updated.displayName }),
+      },
+    });
+    return publicUser(updated);
+  });
+
   app.post("/api/auth/change-password", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     const body = z

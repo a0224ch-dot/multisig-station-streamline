@@ -118,7 +118,13 @@ export default function App() {
         <Route path="help" element={<BranchHelpPage />} />
         <Route
           path="password"
-          element={<ChangePasswordPage user={user!} helpHref="/branch/help#help-password" />}
+          element={
+            <ChangePasswordPage
+              user={user!}
+              helpHref="/branch/help#help-password"
+              onUserUpdate={(u) => setUser(u)}
+            />
+          }
         />
         <Route path="update" element={<BranchUpdatePage user={user!} />} />
       </Route>

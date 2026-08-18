@@ -221,7 +221,14 @@
     "minLength": "New password must be at least 6 characters",
     "mismatch": "New passwords do not match",
     "success": "Password changed — please remember it",
-    "failed": "Change failed"
+    "failed": "Change failed",
+    "nameTitle": "Display Name",
+    "nameDesc": "Change the name shown in the top bar and logs.",
+    "namePlaceholder": "Display name (max 40 chars)",
+    "nameSave": "Save name",
+    "nameSaved": "Display name updated",
+    "nameFailed": "Failed to update name",
+    "nameRequired": "Display name is required"
   },
   "help": {
     "title": "Help",
