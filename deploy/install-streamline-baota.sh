@@ -2,7 +2,7 @@
 # 精简多签站 - Ubuntu/宝塔 一键安装（自动选空闲端口）
 # 用法（在已能访问 GitHub 的 VPS 上）：
 #   cd /www/wwwroot
-#   git clone -b 20260817-1952 https://github.com/a0224ch-dot/multisig-station-streamline.git
+#   git clone -b main https://github.com/a0224ch-dot/multisig-station-streamline.git
 #   bash multisig-station-streamline/deploy/install-streamline-baota.sh
 #
 # 可选环境变量覆盖：
@@ -18,7 +18,7 @@ HQ_BASE_URL="${HQ_BASE_URL:-https://multisig-station.iqiyia.cyou}"
 BRANCH_NAME="${BRANCH_NAME:-精简多签}"
 PM2_NAME="${PM2_NAME:-multisig-streamline-api}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-streamline}"
-GIT_BRANCH="${GIT_BRANCH:-20260817-1952}"
+GIT_BRANCH="${GIT_BRANCH:-main}"
 GIT_URL="${GIT_URL:-https://github.com/a0224ch-dot/multisig-station-streamline.git}"
 UPDATE_RELEASES_URL="${UPDATE_RELEASES_URL:-https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json}"
 

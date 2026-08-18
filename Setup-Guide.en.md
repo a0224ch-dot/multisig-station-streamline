@@ -35,7 +35,7 @@ Health check endpoint:
 ```bash
 cd /www/wwwroot
 export SITE_DOMAIN='your-domain.com'
-git clone -b 20260818-1044 https://github.com/a0224ch-dot/multisig-station-streamline.git
+git clone -b main https://github.com/a0224ch-dot/multisig-station-streamline.git
 cd multisig-station-streamline
 bash deploy/install-streamline-baota.sh
 ```
