@@ -8,7 +8,6 @@ import {
   setNetwork,
   getSetting,
   setSetting,
-  hqBaseUrl,
 } from "../config.js";
 import { j } from "../json.js";
 import {
@@ -24,25 +23,8 @@ export async function registerAdminRoutes(app: FastifyInstance) {
   app.get("/api/admin/settings/network", { preHandler: [app.authenticate] }, async (req) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
-    let hqThresholdUsdt: number | null = null;
-    let allowHighSigners: boolean | null = null;
-    try {
-      const { fetchHqPolicy } = await import("../hqClient.js");
-      const policy = await fetchHqPolicy();
-      hqThresholdUsdt = policy.thresholdUsdt;
-      allowHighSigners =
-        typeof policy.allowHighSigners === "boolean"
-          ? policy.allowHighSigners
-          : null;
-    } catch {
-      hqThresholdUsdt = null;
-      allowHighSigners = null;
-    }
     return {
       network: await getNetwork(),
-      hqBaseUrl: hqBaseUrl(),
-      hqThresholdUsdt,
-      allowHighSigners,
       options: [
         { value: Network.shasta, label: "Shasta 测试网" },
         { value: Network.mainnet, label: "TRON 主网" },

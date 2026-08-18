@@ -5,6 +5,7 @@ import PublicHomePage from "./pages/PublicHomePage";
 import OpenPage from "./pages/OpenPage";
 import BranchLoginPage from "./pages/BranchLoginPage";
 import BranchPresetsPage from "./pages/BranchPresetsPage";
+import BranchNetworkPage from "./pages/BranchNetworkPage";
 import BranchDecorPage from "./pages/BranchDecorPage";
 import BranchOpenWalletsPage from "./pages/BranchOpenWalletsPage";
 import BranchWalletsPage from "./pages/BranchWalletsPage";
@@ -25,6 +26,7 @@ function BranchShell({
       <nav className="nav">
         <div className="brand">精简多签</div>
         <Link to="/branch/presets">多签地址</Link>
+        {user.role === "SUPER_ADMIN" && <Link to="/branch/network">网络设置</Link>}
         <Link to="/branch/wallets">已开通</Link>
         <Link to="/branch/decor">公网页装修</Link>
         <Link to="/branch/open-wallets">开通钱包</Link>
@@ -103,6 +105,7 @@ export default function App() {
       >
         <Route index element={<Navigate to="/branch/presets" replace />} />
         <Route path="presets" element={<BranchPresetsPage user={user!} />} />
+        <Route path="network" element={<BranchNetworkPage user={user!} />} />
         <Route path="wallets" element={<BranchWalletsPage />} />
         <Route path="decor" element={<BranchDecorPage user={user!} />} />
         <Route path="open-wallets" element={<BranchOpenWalletsPage user={user!} />} />

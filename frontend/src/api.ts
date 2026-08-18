@@ -274,9 +274,7 @@ export const api = {
   getNetworkSetting: () =>
     request<{
       network: "mainnet" | "shasta";
-      hqBaseUrl: string;
-      hqThresholdUsdt: number | null;
-      allowHighSigners: boolean | null;
+      options?: { value: string; label: string }[];
     }>("/api/admin/settings/network"),
   setNetworkSetting: (network: "mainnet" | "shasta") =>
     request<{ network: string }>("/api/admin/settings/network", {

@@ -74,6 +74,8 @@ export default function BranchHelpPage() {
         快捷入口：
         <Link to="/branch/presets">多签地址</Link>
         {" · "}
+        <Link to="/branch/network">网络设置</Link>
+        {" · "}
         <Link to="/branch/wallets">已开通</Link>
         {" · "}
         <Link to="/branch/decor">装修</Link>

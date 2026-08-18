@@ -1,7 +1,7 @@
 /**
  * 精简版「使用说明」。HELP_DOC_VERSION 须与根目录 VERSION 一致。
  */
-export const HELP_DOC_VERSION = "20260817-4";
+export const HELP_DOC_VERSION = "20260818-1";
 
 export type HelpSection = {
   id: string;
@@ -44,16 +44,26 @@ export const HELP_SECTIONS: HelpSection[] = [
     ],
   },
   {
-    id: "presets",
-    title: "二、多签地址",
+    id: "network",
+    title: "二、网络设置",
     steps: [
-      "打开「多签地址」，为本站配置共管地址（恰好 2 个）。",
-      "保存前请核对地址与网络（主网 / Shasta）。",
+      "超级管理员打开「网络设置」，选择 Shasta 测试网或 TRON 主网并保存。",
+      "切换后立即生效；公网页二维码与新开通会话都走新网络。",
+      "主网与 Shasta 各有一套「多签地址」，切换后请到「多签地址」核对对应网络下的 2 个地址。",
+    ],
+    tips: ["正式对外请用主网；测试请用 Shasta。"],
+  },
+  {
+    id: "presets",
+    title: "三、多签地址",
+    steps: [
+      "打开「多签地址」，为当前网络配置共管地址（恰好 2 个）。",
+      "先看「网络设置」确认当前是主网还是 Shasta，再保存对应网络的地址。",
     ],
   },
   {
     id: "wallets",
-    title: "三、已开通",
+    title: "四、已开通",
     steps: [
       "打开「已开通」，查看本站低档（2/3）开通成功的地址（只读）。",
       "高档开通记录不在本页展示。",
@@ -61,7 +71,7 @@ export const HELP_SECTIONS: HelpSection[] = [
   },
   {
     id: "decor",
-    title: "四、公网页装修",
+    title: "五、公网页装修",
     steps: [
       "改标题、正文、底部文案与图片，保存后公网页立即生效。",
       "可复制长期入口链接给客户使用。",
@@ -69,7 +79,7 @@ export const HELP_SECTIONS: HelpSection[] = [
   },
   {
     id: "open-wallets",
-    title: "五、开通钱包",
+    title: "六、开通钱包",
     steps: [
       "启用客户开通时可用的钱包入口（如 TronLink、OKX 等）。",
       "未启用任何入口时，客户只能在已注入钱包的环境里完成签名。",
@@ -77,7 +87,7 @@ export const HELP_SECTIONS: HelpSection[] = [
   },
   {
     id: "update",
-    title: "六、系统更新",
+    title: "七、系统更新",
     steps: [
       "「系统更新」→ 检查更新 → 立即更新。",
       "更新会保留 .env 与数据库。",

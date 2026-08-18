@@ -44,9 +44,10 @@ export default function BranchPresetsPage({ user }: { user: User }) {
     <div>
       <PageIntro>
         <strong>这页做什么：</strong>
-        配置本站开通用的共管地址（恰好 2 个，不含本人）。详见{" "}
+        配置本站开通用的共管地址（恰好 2 个，不含本人）。地址按当前网络分别保存，切换网络请到{" "}
+        <Link to="/branch/network">网络设置</Link>。详见{" "}
         <Link to="/branch/help#help-presets">使用说明 · 多签地址</Link>。
-        <HelpTip text="地址填错会导致开通失败；保存前请与网络（主网/Shasta）核对。" />
+        <HelpTip text="地址填错会导致开通失败；保存前请与当前网络（主网/Shasta）核对。" />
       </PageIntro>
 
       <form className="card" onSubmit={(e) => void save(e)}>
