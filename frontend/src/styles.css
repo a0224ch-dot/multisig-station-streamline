@@ -58,6 +58,28 @@ button, input, select, textarea { font: inherit; }
   flex-wrap: wrap;
 }
 .nav .brand { font-weight: 700; margin-right: auto; }
+.lang-switch {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lang-switch-btn {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.lang-switch-btn.active {
+  background: var(--accent);
+  color: #041018;
+}
+.lang-switch-btn:not(.active):hover {
+  color: var(--text);
+}
 .table { width: 100%; border-collapse: collapse; }
 .table th, .table td {
   border-bottom: 1px solid var(--line);

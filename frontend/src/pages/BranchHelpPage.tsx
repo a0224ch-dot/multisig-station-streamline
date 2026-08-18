@@ -1,10 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api } from "../api";
-import { HELP_DOC_VERSION, HELP_SECTIONS } from "../help/helpContent";
 import { DEV_TELEGRAM_HANDLE, DEV_TELEGRAM_URL } from "../devContact";
+import { HELP_DOC_VERSION, HELP_SECTION_META } from "../help/helpContent";
+
+type HelpSectionView = {
+  id: string;
+  title: string;
+  advanced?: boolean;
+  steps: string[];
+  tips?: string[];
+};
 
 export default function BranchHelpPage() {
+  const { t } = useTranslation();
   const [appVersion, setAppVersion] = useState("");
 
   useEffect(() => {
@@ -14,46 +24,66 @@ export default function BranchHelpPage() {
       .catch(() => setAppVersion(""));
   }, []);
 
+  const sections = useMemo<HelpSectionView[]>(
+    () =>
+      HELP_SECTION_META.map((meta) => {
+        const base = `help.sections.${meta.id}`;
+        const tips = t(`${base}.tips`, { returnObjects: true, defaultValue: [] }) as string[];
+        return {
+          id: meta.id,
+          title: t(`${base}.title`),
+          advanced: meta.advanced,
+          steps: t(`${base}.steps`, { returnObjects: true }) as string[],
+          tips: tips.length ? tips : undefined,
+        };
+      }),
+    [t]
+  );
+
   const mismatch =
     appVersion && HELP_DOC_VERSION && appVersion !== HELP_DOC_VERSION;
 
   return (
     <div className="card help-doc" style={{ maxWidth: 720 }}>
-      <h2 style={{ marginTop: 0 }}>使用说明</h2>
+      <h2 style={{ marginTop: 0 }}>{t("help.title")}</h2>
       <p className="muted" style={{ marginTop: 0 }}>
-        精简版操作手册：公网页开通 + 本站配置。
+        {t("help.subtitle")}
       </p>
       <p style={{ fontSize: "0.9rem" }}>
-        本说明对应版本：
+        {t("help.docVersion")}
         <span className="badge">{HELP_DOC_VERSION}</span>
         {appVersion && (
           <>
             {" "}
-            · 当前运行：
+            · {t("help.runningVersion")}
             <span className="badge">{appVersion}</span>
           </>
         )}
       </p>
       {mismatch && (
         <p className="error" style={{ fontSize: "0.9rem" }}>
-          说明版本与运行版本不一致。请到「系统更新」升到最新，或联系技术支持。
+          {t("help.versionMismatch")}
         </p>
       )}
 
       <nav className="help-toc">
-        {HELP_SECTIONS.map((s) => (
+        {sections.map((s) => (
           <a key={s.id} href={`#help-${s.id}`}>
             {s.title}
-            {s.advanced ? " · 进阶" : ""}
+            {s.advanced ? ` · ${t("common.advanced")}` : ""}
           </a>
         ))}
       </nav>
 
-      {HELP_SECTIONS.map((s) => (
+      {sections.map((s) => (
         <section key={s.id} id={`help-${s.id}`} className="help-section">
           <h3>
             {s.title}
-            {s.advanced && <span className="badge" style={{ marginLeft: 8 }}>进阶</span>}
+            {s.advanced && (
+              <span className="badge" style={{ marginLeft: 8 }}>
+                {t("common.advanced")}
+              </span>
+            )}
           </h3>
           <ol>
             {s.steps.map((line, i) => (
@@ -62,8 +92,8 @@ export default function BranchHelpPage() {
           </ol>
           {s.tips && s.tips.length > 0 && (
             <ul className="help-tips">
-              {s.tips.map((t, i) => (
-                <li key={i}>{t}</li>
+              {s.tips.map((tip, i) => (
+                <li key={i}>{tip}</li>
               ))}
             </ul>
           )}
@@ -71,23 +101,23 @@ export default function BranchHelpPage() {
       ))}
 
       <p className="muted" style={{ marginTop: "1.5rem", fontSize: "0.85rem" }}>
-        快捷入口：
-        <Link to="/branch/presets">多签地址</Link>
+        {t("help.quickLinks")}
+        <Link to="/branch/presets">{t("nav.presets")}</Link>
         {" · "}
-        <Link to="/branch/network">网络设置</Link>
+        <Link to="/branch/network">{t("nav.network")}</Link>
         {" · "}
-        <Link to="/branch/wallets">已开通</Link>
+        <Link to="/branch/wallets">{t("nav.wallets")}</Link>
         {" · "}
-        <Link to="/branch/decor">装修</Link>
+        <Link to="/branch/decor">{t("nav.decor")}</Link>
         {" · "}
-        <Link to="/branch/open-wallets">开通钱包</Link>
+        <Link to="/branch/open-wallets">{t("nav.openWallets")}</Link>
         {" · "}
-        <Link to="/branch/update">更新</Link>
+        <Link to="/branch/update">{t("nav.update")}</Link>
         {" · "}
-        <Link to="/branch/password">修改密码</Link>
+        <Link to="/branch/password">{t("nav.password")}</Link>
       </p>
       <p className="muted" style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>
-        开发员电报：{" "}
+        {t("common.developerTelegram")}{" "}
         <a href={DEV_TELEGRAM_URL} target="_blank" rel="noreferrer">
           {DEV_TELEGRAM_HANDLE}
         </a>

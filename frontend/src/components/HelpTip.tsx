@@ -1,18 +1,14 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 type HelpTipProps = {
-  /** 1～2 句白话说明 */
   text: string;
-  /** 可选：包在按钮旁时的额外样式 */
   className?: string;
   children?: ReactNode;
 };
 
-/**
- * 悬停显示说明；再点一下可固定（方便触屏）。
- * 点空白处或再点一次取消固定。
- */
 export default function HelpTip({ text, className = "", children }: HelpTipProps) {
+  const { t } = useTranslation();
   const id = useId();
   const rootRef = useRef<HTMLSpanElement>(null);
   const [open, setOpen] = useState(false);
@@ -45,7 +41,7 @@ export default function HelpTip({ text, className = "", children }: HelpTipProps
       <button
         type="button"
         className={`help-tip-btn${pinned ? " pinned" : ""}`}
-        aria-label="说明"
+        aria-label={t("common.helpLabel")}
         aria-expanded={show}
         aria-describedby={show ? id : undefined}
         onClick={(e) => {
@@ -63,7 +59,7 @@ export default function HelpTip({ text, className = "", children }: HelpTipProps
       {show && (
         <span className="help-tip-bubble" id={id} role="tooltip">
           {text}
-          {pinned && <span className="help-tip-pin-hint">（已固定，再点 ? 或点空白关闭）</span>}
+          {pinned && <span className="help-tip-pin-hint">{t("common.helpPinHint")}</span>}
         </span>
       )}
     </span>

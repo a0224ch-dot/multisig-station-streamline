@@ -1,0 +1,318 @@
+{
+  "brand": "精简多签",
+  "nav": {
+    "presets": "多签地址",
+    "network": "网络设置",
+    "wallets": "已开通",
+    "decor": "公网页装修",
+    "openWallets": "开通钱包",
+    "update": "系统更新",
+    "help": "使用说明",
+    "password": "修改密码",
+    "publicPage": "公网页",
+    "developer": "开发员 {{handle}}",
+    "logout": "退出"
+  },
+  "common": {
+    "loading": "加载中…",
+    "save": "保存",
+    "saving": "保存中…",
+    "loadFailed": "加载失败",
+    "saveFailed": "保存失败",
+    "noPermission": "无权限",
+    "whatThisPage": "这页做什么：",
+    "advanced": "进阶",
+    "none": "暂无",
+    "developerTelegram": "开发员电报：",
+    "helpLabel": "说明",
+    "helpPinHint": "（已固定，再点 ? 或点空白关闭）"
+  },
+  "public": {
+    "adminLogin": "管理登录",
+    "defaultTitle": "钱包地址多签",
+    "defaultBody": "此码用于钱包地址多签。扫码后将为本钱包开启多签权限，地址不变。",
+    "guideTitle": "多签钱包 · 怎么用",
+    "guideLines": [
+      "多签是给原钱包加多人权限，收款地址不变。",
+      "TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用「发现 / 浏览器」打开链接。",
+      "开通码有时效；过期点「刷新开通码」。"
+    ],
+    "networkLabel": "当前网络：",
+    "expiresLabel": "有效至：",
+    "refreshCode": "刷新开通码",
+    "generating": "生成中…",
+    "sessionError": "无法生成开通码"
+  },
+  "open": {
+    "connecting": "正在连接钱包并准备多签开通…",
+    "success": "开通成功",
+    "fail": "开通失败",
+    "retry": "重试",
+    "returnExchange": "返回交易所",
+    "returnSoon": "即将返回交易所…",
+    "returnNow": "立即返回",
+    "chooseTitle": "请用钱包打开",
+    "chooseDesc": "当前不在钱包内置浏览器中。请选择钱包唤起 App，打开本页完成多签开通。",
+    "networkLabel": "网络：",
+    "noWalletsEnabled": "管理员尚未启用任何钱包入口，请联系精简版管理员。",
+    "fallbackHint": "若按钮唤起后钱包提示「外部请求错误」，请复制本页链接，在钱包 App 的「发现 / 浏览器」里粘贴打开。",
+    "copyLink": "复制本页链接",
+    "copiedLink": "已复制链接",
+    "copyPrompt": "请手动复制本页链接",
+    "retryInWallet": "若已在钱包 App 内打开本页，可点下方重试连接。",
+    "retryConnect": "我已在钱包内，重试连接",
+    "noWalletDetected": "仍未检测到钱包，请点下方按钮用 App 打开。",
+    "addressMissing": "已检测到钱包扩展，但未拿到地址。请授权后重试，或改用下方钱包打开。",
+    "signUnsupported": "当前钱包不支持签名",
+    "signFailed": "钱包签名未完成：{{detail}}",
+    "walletErrorCode": "钱包返回错误码 {{code}}",
+    "openFailedRetry": "开通失败，请重试"
+  },
+  "login": {
+    "title": "精简多签 · 管理登录",
+    "subtitle": "管理员后台。需图形验证码。",
+    "username": "账号",
+    "password": "密码",
+    "captcha": "验证码",
+    "captchaRefreshTitle": "看不清？点击刷新",
+    "captchaRefreshAria": "刷新验证码",
+    "captchaLoading": "加载中…",
+    "captchaFetch": "点击获取",
+    "captchaRequired": "请填写验证码",
+    "captchaLoadFailed": "验证码加载失败",
+    "submit": "登录",
+    "submitting": "登录中…",
+    "failed": "登录失败"
+  },
+  "presets": {
+    "title": "多签地址",
+    "subtitle": "开通用的 2 个预置地址（不含本人）。",
+    "namePlaceholder": "姓名",
+    "addressPlaceholder": "TRON 地址",
+    "saved": "多签地址已保存",
+    "intro": "<strong>这页做什么：</strong>配置本站开通用的共管地址（恰好 2 个，不含本人）。地址按当前网络分别保存，切换网络请到 <linkNetwork>网络设置</linkNetwork>。详见 <linkHelp>使用说明 · 多签地址</linkHelp>。",
+    "tip": "地址填错会导致开通失败；保存前请与当前网络（主网/Shasta）核对。"
+  },
+  "network": {
+    "title": "网络设置",
+    "shasta": "Shasta 测试网",
+    "mainnet": "TRON 主网",
+    "current": "当前生效：",
+    "note": "主网与 Shasta 各有一套「多签地址」，互不影响。切换网络后请到 <linkPresets>多签地址</linkPresets> 核对对应网络的 2 个共管地址。",
+    "readonly": "仅超级管理员可修改网络；当前为只读查看。",
+    "save": "保存网络",
+    "saved": "网络已保存",
+    "intro": "<strong>这页做什么：</strong>选择当前用测试网还是主网。切换后，公网页二维码、开通会话与「多签地址」读写都走新网络。正式对外请用主网。详见 <linkHelp>使用说明 · 网络设置</linkHelp>。",
+    "tip": "保存后立即生效。切到主网前请确认该网络下的多签地址已配好。"
+  },
+  "wallets": {
+    "title": "已开通",
+    "intro": "<strong>这页做什么：</strong>查看本站低档（2/3）开通成功的钱包地址（只读）。高档开通记录不在本页展示。",
+    "channel": "渠道",
+    "network": "网络",
+    "address": "地址",
+    "tier": "档位",
+    "time": "时间",
+    "tx": "Tx",
+    "channelInternal": "A内部",
+    "channelPublic": "B公网",
+    "tier23": "2/3",
+    "tier34": "3/4",
+    "tier35Legacy": "3/5(旧)"
+  },
+  "decor": {
+    "title": "公网页装修",
+    "subtitle": "只改公网扫码页与交易所落地页。二维码由系统生成；可写标题/文案，上传最多 3 张图（可带跳转链接）。",
+    "intro": "<strong>这页做什么：</strong>改公网页/落地页的标题、文案和贴图；复制给交易所用的长期入口链接。详见 <linkHelp>使用说明 · 装修</linkHelp>。",
+    "entryTitle": "交易所入口链接（长期有效，给 H5 / 活动页用）",
+    "pathLabel": "路径",
+    "pathPlaceholder": "exchange",
+    "pathTitle": "小写字母、数字、连字符，2～32 位",
+    "copyEntry": "复制入口链接",
+    "copied": "已复制",
+    "preview": "打开预览",
+    "entryTip": "复制长期落地页地址给交易所 H5。用户打开后再点「开始开通」才会生成短时会话。",
+    "entryNote": "用户打开此链接后点「开始开通」，才会生成短时开通会话。改路径后请点下方保存。若交易所要开通完回跳，可在链接后加 <code>?returnUrl=https://交易所域名/done</code>，并到「对接」页配置白名单。",
+    "pageTitle": "页标题（≤40字，空则用精简版名）",
+    "bodyText": "码旁文案（≤500字）",
+    "images": "贴图（最多 3 张，单张 ≤2MB，jpg/png/webp）",
+    "imageLinkPlaceholder": "点击跳转链接（可选）",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "remove": "删除",
+    "bottomText": "底部短文案（≤120字，可选）",
+    "buttonText": "按钮文字（可选）",
+    "buttonTextPlaceholder": "例如：进入交易所",
+    "buttonUrl": "按钮链接（可选）",
+    "buttonUrlPlaceholder": "https://",
+    "previewTitle": "预览（手机宽）",
+    "previewEntryNote": "入口预览码（非开通会话）",
+    "previewDefaultTitle": "精简版名称 / 自定义标题",
+    "saved": "已保存，公网页与入口链接立即生效",
+    "reset": "恢复默认",
+    "resetConfirm": "恢复默认？将清空标题、文案、贴图和按钮（入口路径保留）。",
+    "resetDone": "已恢复默认",
+    "resetFailed": "恢复失败",
+    "copyFailed": "复制失败，请手动选中链接复制",
+    "maxImages": "最多 3 张贴图",
+    "uploadFailed": "上传失败",
+    "saveTip": "保存文案、贴图和入口路径。保存后公网页与落地页立即生效。",
+    "resetTip": "清空标题、文案、贴图和按钮；入口路径保留不动。"
+  },
+  "openWallets": {
+    "title": "开通钱包入口",
+    "subtitle": "公网页二维码始终是普通 HTTPS，不会改成某一家深链。TokenPocket / OKX / Bitget 用钱包首页扫码较容易直接授权；TronLink 请让客户用「发现 / 浏览器」粘贴链接，不要用首页扫一扫。系统相机扫码进入普通浏览器时，会看到下列按钮（深链内置，不可手填）。",
+    "intro": "<strong>这页做什么：</strong>勾选开通页上要显示哪些手机钱包按钮。列表已按「较容易扫码直进」排在前面，便于按客户常用钱包勾选。",
+    "minOne": "至少勾选一个钱包",
+    "saved": "已保存。开通页将按勾选显示钱包入口。",
+    "tip": "至少勾选一个钱包。保存后，开通页的钱包按钮列表立即更新。"
+  },
+  "update": {
+    "title": "系统更新",
+    "subtitle": "从发布仓拉取更新包。失败会自动回滚；配置（.env）和数据库不会被覆盖。",
+    "intro": "<strong>这页做什么：</strong>检查并安装发布仓中的新版本。失败会自动回滚；配置和数据库不会被盖掉。详见 <linkHelp>使用说明 · 系统更新</linkHelp>。",
+    "readonly": "仅超级管理员可进行系统更新。",
+    "currentVersion": "当前版本：",
+    "status": "状态：",
+    "inProgress": "（进行中，请勿关闭）",
+    "latest": "线上最新：",
+    "notes": "更新内容：修复已知 BUG / 更新功能",
+    "check": "检查更新",
+    "apply": "立即更新",
+    "refresh": "刷新状态",
+    "checkTip": "只查询有没有新版本，不会改动网站。",
+    "applyTip": "下载并安装新版本。更新中请勿关页；失败会自动回滚。",
+    "confirmApply": "确定更新？更新期间网站可能短暂不可用；失败将自动回滚。",
+    "statusReadFailed": "读取状态失败",
+    "checkFailed": "检查失败",
+    "applyFailed": "启动更新失败",
+    "foundVersion": "发现新版本 {{version}}",
+    "alreadyLatest": "当前已是最新版本",
+    "phases": {
+      "idle": "空闲",
+      "checking": "检查中",
+      "queued": "排队中",
+      "downloading": "下载中",
+      "verifying": "校验中",
+      "backing_up": "备份中",
+      "extracting": "解压覆盖",
+      "installing": "装依赖",
+      "migrating": "数据库迁移",
+      "restarting": "重启服务",
+      "healthcheck": "健康检查",
+      "success": "成功",
+      "rolling_back": "回滚中",
+      "rolled_back": "已回滚",
+      "failed": "失败"
+    }
+  },
+  "password": {
+    "title": "修改密码",
+    "intro": "账号 {{name}}（{{role}}）修改登录密码，需验证当前密码。",
+    "helpLink": "使用说明 · 密码",
+    "seeHelp": "详见",
+    "helpPunct": "。",
+    "tip": "修改成功后请牢记新密码；不会强制重新登录。",
+    "current": "当前密码",
+    "new": "新密码（至少 6 位）",
+    "confirm": "确认新密码",
+    "submit": "保存新密码",
+    "submitting": "提交中…",
+    "minLength": "新密码至少 6 位",
+    "mismatch": "两次输入的新密码不一致",
+    "success": "密码已修改，请牢记新密码",
+    "failed": "修改失败"
+  },
+  "help": {
+    "title": "使用说明",
+    "subtitle": "精简版操作手册：公网页开通 + 本站配置。",
+    "docVersion": "本说明对应版本：",
+    "runningVersion": "当前运行：",
+    "versionMismatch": "说明版本与运行版本不一致。请到「系统更新」升到最新，或联系技术支持。",
+    "quickLinks": "快捷入口：",
+    "sections": {
+      "login": {
+        "title": "〇、登录",
+        "steps": [
+          "管理后台入口：/branch/login（需账号、密码与图形验证码）。",
+          "公网页 / 供客户扫码开通，无需登录后台。",
+          "同一账号或同一来源 IP 连续失败约 5 次后，会暂时限制登录约 15 分钟。"
+        ],
+        "tips": ["上线后请立即修改默认管理员密码。"]
+      },
+      "password": {
+        "title": "〇·二、修改密码",
+        "steps": ["登录后台后点「修改密码」，验证当前密码后设新密码。"]
+      },
+      "open": {
+        "title": "一、公网页开通多签",
+        "steps": [
+          "客户打开本站公网页（首页），用钱包 App 扫码或打开开通链接。",
+          "在钱包内完成签名后即开通；地址不变，权限变为多人共管。",
+          "开通码有时效；过期让客户刷新公网页重新取码。"
+        ],
+        "tips": [
+          "请先在「多签地址」配好共管地址，并在「开通钱包」启用常用钱包入口。",
+          "公网页二维码是普通网址。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。"
+        ]
+      },
+      "network": {
+        "title": "二、网络设置",
+        "steps": [
+          "超级管理员打开「网络设置」，选择 Shasta 测试网或 TRON 主网并保存。",
+          "切换后立即生效；公网页二维码与新开通会话都走新网络。",
+          "主网与 Shasta 各有一套「多签地址」，切换后请到「多签地址」核对对应网络下的 2 个地址。"
+        ],
+        "tips": ["正式对外请用主网；测试请用 Shasta。"]
+      },
+      "presets": {
+        "title": "三、多签地址",
+        "steps": [
+          "打开「多签地址」，为当前网络配置共管地址（恰好 2 个）。",
+          "先看「网络设置」确认当前是主网还是 Shasta，再保存对应网络的地址。"
+        ]
+      },
+      "wallets": {
+        "title": "四、已开通",
+        "steps": [
+          "打开「已开通」，查看本站低档（2/3）开通成功的地址（只读）。",
+          "高档开通记录不在本页展示。"
+        ]
+      },
+      "decor": {
+        "title": "五、公网页装修",
+        "steps": [
+          "改标题、正文、底部文案与图片，保存后公网页立即生效。",
+          "可复制长期入口链接给客户使用。"
+        ]
+      },
+      "open-wallets": {
+        "title": "六、开通钱包",
+        "steps": [
+          "启用客户开通时可用的钱包入口。列表前面是较容易首页扫码直进的钱包。",
+          "二维码始终是 HTTPS，勾选不会改成某一家深链。",
+          "未启用任何入口时，客户只能在已注入钱包的环境里完成签名。"
+        ]
+      },
+      "update": {
+        "title": "七、系统更新",
+        "steps": [
+          "「系统更新」→ 检查更新 → 立即更新。",
+          "更新会保留 .env 与数据库。",
+          "页面上的「更新内容」只提示「修复已知 BUG / 更新功能」，不展开细项。"
+        ]
+      }
+    }
+  },
+  "walletHints": {
+    "tokenpocket": "首页扫码较易直进授权",
+    "okx": "首页扫码较易直进授权",
+    "bitget": "首页扫码较易直进授权",
+    "foxwallet": "可试首页扫码；不行请用发现/浏览器",
+    "safepal": "可试首页扫码；不行请用发现/浏览器",
+    "tronlink": "勿用首页扫一扫，请用发现/浏览器粘贴链接",
+    "imtoken": "建议发现/浏览器打开；开通页已尽量识别注入",
+    "trust": "建议发现/浏览器打开链接",
+    "bybit": "建议发现/浏览器打开链接"
+  }
+}

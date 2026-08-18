@@ -1,5 +1,6 @@
 import { Link, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api, getToken, setToken, type User } from "./api";
 import PublicHomePage from "./pages/PublicHomePage";
 import OpenPage from "./pages/OpenPage";
@@ -12,6 +13,7 @@ import BranchWalletsPage from "./pages/BranchWalletsPage";
 import BranchUpdatePage from "./pages/BranchUpdatePage";
 import BranchHelpPage from "./pages/BranchHelpPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import { DEV_TELEGRAM_HANDLE, DEV_TELEGRAM_URL } from "./devContact";
 
 function BranchShell({
@@ -21,27 +23,30 @@ function BranchShell({
   user: User;
   onLogout: () => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <div className="layout">
       <nav className="nav">
-        <div className="brand">精简多签</div>
-        <Link to="/branch/presets">多签地址</Link>
-        {user.role === "SUPER_ADMIN" && <Link to="/branch/network">网络设置</Link>}
-        <Link to="/branch/wallets">已开通</Link>
-        <Link to="/branch/decor">公网页装修</Link>
-        <Link to="/branch/open-wallets">开通钱包</Link>
-        <Link to="/branch/update">系统更新</Link>
-        <Link to="/branch/help">使用说明</Link>
-        <Link to="/branch/password">修改密码</Link>
+        <div className="brand">{t("brand")}</div>
+        <Link to="/branch/presets">{t("nav.presets")}</Link>
+        {user.role === "SUPER_ADMIN" && <Link to="/branch/network">{t("nav.network")}</Link>}
+        <Link to="/branch/wallets">{t("nav.wallets")}</Link>
+        <Link to="/branch/decor">{t("nav.decor")}</Link>
+        <Link to="/branch/open-wallets">{t("nav.openWallets")}</Link>
+        <Link to="/branch/update">{t("nav.update")}</Link>
+        <Link to="/branch/help">{t("nav.help")}</Link>
+        <Link to="/branch/password">{t("nav.password")}</Link>
         <a href="/" target="_blank" rel="noreferrer">
-          公网页
+          {t("nav.publicPage")}
         </a>
         <a href={DEV_TELEGRAM_URL} target="_blank" rel="noreferrer">
-          开发员 {DEV_TELEGRAM_HANDLE}
+          {t("nav.developer", { handle: DEV_TELEGRAM_HANDLE })}
         </a>
+        <LanguageSwitcher />
         <span className="muted">{user.displayName || user.username}</span>
         <button className="btn ghost" type="button" onClick={onLogout}>
-          退出
+          {t("nav.logout")}
         </button>
       </nav>
       <Outlet />
@@ -50,6 +55,7 @@ function BranchShell({
 }
 
 export default function App() {
+  const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(!!getToken());
 
@@ -65,7 +71,7 @@ export default function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="layout muted">加载中…</div>;
+  if (loading) return <div className="layout muted">{t("common.loading")}</div>;
 
   function handleLogin(token: string, u: User) {
     setToken(token);

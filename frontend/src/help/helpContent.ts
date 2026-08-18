@@ -1,99 +1,19 @@
-/**
- * 精简版「使用说明」。HELP_DOC_VERSION 须与根目录 VERSION 一致。
- */
-export const HELP_DOC_VERSION = "20260818-2";
+/** 使用说明版本，须与根目录 VERSION 一致 */
+export const HELP_DOC_VERSION = "20260818-4";
 
-export type HelpSection = {
+export type HelpSectionMeta = {
   id: string;
-  title: string;
   advanced?: boolean;
-  steps: string[];
-  tips?: string[];
 };
 
-export const HELP_SECTIONS: HelpSection[] = [
-  {
-    id: "login",
-    title: "〇、登录",
-    steps: [
-      "管理后台入口：/branch/login（需账号、密码与图形验证码）。",
-      "公网页 / 供客户扫码开通，无需登录后台。",
-      "同一账号或同一来源 IP 连续失败约 5 次后，会暂时限制登录约 15 分钟。",
-    ],
-    tips: [
-      "上线后请立即修改默认管理员密码。",
-    ],
-  },
-  {
-    id: "password",
-    title: "〇·二、修改密码",
-    steps: [
-      "登录后台后点「修改密码」，验证当前密码后设新密码。",
-    ],
-  },
-  {
-    id: "open",
-    title: "一、公网页开通多签",
-    steps: [
-      "客户打开本站公网页（首页），用钱包 App 扫码或打开开通链接。",
-      "在钱包内完成签名后即开通；地址不变，权限变为多人共管。",
-      "开通码有时效；过期让客户刷新公网页重新取码。",
-    ],
-    tips: [
-      "请先在「多签地址」配好共管地址，并在「开通钱包」启用常用钱包入口。",
-      "公网页二维码是普通网址。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。",
-    ],
-  },
-  {
-    id: "network",
-    title: "二、网络设置",
-    steps: [
-      "超级管理员打开「网络设置」，选择 Shasta 测试网或 TRON 主网并保存。",
-      "切换后立即生效；公网页二维码与新开通会话都走新网络。",
-      "主网与 Shasta 各有一套「多签地址」，切换后请到「多签地址」核对对应网络下的 2 个地址。",
-    ],
-    tips: ["正式对外请用主网；测试请用 Shasta。"],
-  },
-  {
-    id: "presets",
-    title: "三、多签地址",
-    steps: [
-      "打开「多签地址」，为当前网络配置共管地址（恰好 2 个）。",
-      "先看「网络设置」确认当前是主网还是 Shasta，再保存对应网络的地址。",
-    ],
-  },
-  {
-    id: "wallets",
-    title: "四、已开通",
-    steps: [
-      "打开「已开通」，查看本站低档（2/3）开通成功的地址（只读）。",
-      "高档开通记录不在本页展示。",
-    ],
-  },
-  {
-    id: "decor",
-    title: "五、公网页装修",
-    steps: [
-      "改标题、正文、底部文案与图片，保存后公网页立即生效。",
-      "可复制长期入口链接给客户使用。",
-    ],
-  },
-  {
-    id: "open-wallets",
-    title: "六、开通钱包",
-    steps: [
-      "启用客户开通时可用的钱包入口。列表前面是较容易首页扫码直进的钱包。",
-      "二维码始终是 HTTPS，勾选不会改成某一家深链。",
-      "未启用任何入口时，客户只能在已注入钱包的环境里完成签名。",
-    ],
-  },
-  {
-    id: "update",
-    title: "七、系统更新",
-    steps: [
-      "「系统更新」→ 检查更新 → 立即更新。",
-      "更新会保留 .env 与数据库。",
-      "页面上的「更新内容」只提示「修复已知 BUG / 更新功能」，不展开细项。",
-    ],
-  },
+export const HELP_SECTION_META: HelpSectionMeta[] = [
+  { id: "login" },
+  { id: "password" },
+  { id: "open" },
+  { id: "network" },
+  { id: "presets" },
+  { id: "wallets" },
+  { id: "decor" },
+  { id: "open-wallets" },
+  { id: "update" },
 ];

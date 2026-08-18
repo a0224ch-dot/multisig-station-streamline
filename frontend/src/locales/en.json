@@ -1,0 +1,318 @@
+{
+  "brand": "Streamline Multisig",
+  "nav": {
+    "presets": "Multisig Addresses",
+    "network": "Network",
+    "wallets": "Opened",
+    "decor": "Public Page",
+    "openWallets": "Wallet Entries",
+    "update": "Updates",
+    "help": "Help",
+    "password": "Password",
+    "publicPage": "Public Site",
+    "developer": "Dev {{handle}}",
+    "logout": "Logout"
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "saving": "Saving…",
+    "loadFailed": "Failed to load",
+    "saveFailed": "Failed to save",
+    "noPermission": "No permission",
+    "whatThisPage": "What this page does:",
+    "advanced": "Advanced",
+    "none": "None",
+    "developerTelegram": "Developer Telegram:",
+    "helpLabel": "Help",
+    "helpPinHint": "(Pinned — click ? again or click outside to close)"
+  },
+  "public": {
+    "adminLogin": "Admin Login",
+    "defaultTitle": "Wallet Multisig",
+    "defaultBody": "Scan to enable multisig on this wallet. Your address stays the same; control becomes shared.",
+    "guideTitle": "Multisig wallet · How to use",
+    "guideLines": [
+      "Multisig adds shared control to your existing wallet. The receive address does not change.",
+      "TokenPocket / OKX / Bitget: scan from the wallet home screen. TronLink: open the link in Discover / Browser.",
+      "The open code expires. Tap “Refresh code” when it does."
+    ],
+    "networkLabel": "Network:",
+    "expiresLabel": "Valid until:",
+    "refreshCode": "Refresh code",
+    "generating": "Generating…",
+    "sessionError": "Could not create open session"
+  },
+  "open": {
+    "connecting": "Connecting wallet and preparing multisig…",
+    "success": "Multisig enabled",
+    "fail": "Failed to enable",
+    "retry": "Retry",
+    "returnExchange": "Back to exchange",
+    "returnSoon": "Returning to exchange…",
+    "returnNow": "Return now",
+    "chooseTitle": "Open with a wallet",
+    "chooseDesc": "You are not in a wallet in-app browser. Pick a wallet below to open this page and finish setup.",
+    "networkLabel": "Network:",
+    "noWalletsEnabled": "No wallet entries are enabled. Contact your site admin.",
+    "fallbackHint": "If the wallet shows an external-request error, copy this page link and paste it in the wallet’s Discover / Browser.",
+    "copyLink": "Copy page link",
+    "copiedLink": "Link copied",
+    "copyPrompt": "Copy this page link manually",
+    "retryInWallet": "Already inside a wallet app? Tap below to reconnect.",
+    "retryConnect": "I’m in the wallet — retry",
+    "noWalletDetected": "No wallet detected. Use a button below to open in the app.",
+    "addressMissing": "Wallet detected but no address. Grant access and retry, or pick a wallet below.",
+    "signUnsupported": "This wallet cannot sign transactions",
+    "signFailed": "Signing failed: {{detail}}",
+    "walletErrorCode": "Wallet error code {{code}}",
+    "openFailedRetry": "Failed. Please try again"
+  },
+  "login": {
+    "title": "Streamline Multisig · Admin Login",
+    "subtitle": "Admin panel. Captcha required.",
+    "username": "Username",
+    "password": "Password",
+    "captcha": "Captcha",
+    "captchaRefreshTitle": "Hard to read? Click to refresh",
+    "captchaRefreshAria": "Refresh captcha",
+    "captchaLoading": "Loading…",
+    "captchaFetch": "Get captcha",
+    "captchaRequired": "Enter the captcha",
+    "captchaLoadFailed": "Failed to load captcha",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "failed": "Login failed"
+  },
+  "presets": {
+    "title": "Multisig Addresses",
+    "subtitle": "Two preset co-signer addresses (excluding the user).",
+    "namePlaceholder": "Label",
+    "addressPlaceholder": "TRON address",
+    "saved": "Multisig addresses saved",
+    "intro": "<strong>What this page does:</strong> Configure two co-signer addresses for opens on this site (excluding the user). Addresses are stored per network — switch network under <linkNetwork>Network</linkNetwork>. See <linkHelp>Help · Multisig Addresses</linkHelp>.",
+    "tip": "Wrong addresses cause failed opens. Confirm mainnet vs Shasta before saving."
+  },
+  "network": {
+    "title": "Network",
+    "shasta": "Shasta testnet",
+    "mainnet": "TRON mainnet",
+    "current": "Active:",
+    "note": "Mainnet and Shasta each have their own multisig addresses. After switching, check the two addresses under <linkPresets>Multisig Addresses</linkPresets>.",
+    "readonly": "Only super admin can change the network. Read-only view.",
+    "save": "Save network",
+    "saved": "Network saved",
+    "intro": "<strong>What this page does:</strong> Choose testnet or mainnet. Public QR codes, open sessions, and multisig addresses use the selected network. Use mainnet in production. See <linkHelp>Help · Network</linkHelp>.",
+    "tip": "Takes effect immediately. Confirm multisig addresses for the target network before switching to mainnet."
+  },
+  "wallets": {
+    "title": "Opened",
+    "intro": "<strong>What this page does:</strong> View successfully opened 2/3-tier wallets (read-only). Higher-tier opens are not listed here.",
+    "channel": "Channel",
+    "network": "Network",
+    "address": "Address",
+    "tier": "Tier",
+    "time": "Time",
+    "tx": "Tx",
+    "channelInternal": "Internal",
+    "channelPublic": "Public",
+    "tier23": "2/3",
+    "tier34": "3/4",
+    "tier35Legacy": "3/5 (legacy)"
+  },
+  "decor": {
+    "title": "Public Page Design",
+    "subtitle": "Customize the public scan page and exchange landing page. QR codes are generated by the system. Add title/copy and up to 3 images (optional links).",
+    "intro": "<strong>What this page does:</strong> Edit title, copy, and images; copy the long-lived entry link for exchanges. See <linkHelp>Help · Public Page</linkHelp>.",
+    "entryTitle": "Exchange entry link (long-lived, for H5 / campaigns)",
+    "pathLabel": "Path",
+    "pathPlaceholder": "exchange",
+    "pathTitle": "Lowercase letters, digits, hyphens; 2–32 chars",
+    "copyEntry": "Copy entry link",
+    "copied": "Copied",
+    "preview": "Open preview",
+    "entryTip": "Long-lived landing URL for exchange H5. A short open session is created only after the user taps start.",
+    "entryNote": "Users must tap start on this link to create a short open session. Save after changing the path. For post-open redirect, append <code>?returnUrl=https://exchange.example/done</code> and whitelist the domain.",
+    "pageTitle": "Page title (≤40 chars; site name if empty)",
+    "bodyText": "Text beside QR (≤500 chars)",
+    "images": "Images (max 3, ≤2MB each, jpg/png/webp)",
+    "imageLinkPlaceholder": "Click-through URL (optional)",
+    "moveUp": "Up",
+    "moveDown": "Down",
+    "remove": "Remove",
+    "bottomText": "Footer text (≤120 chars, optional)",
+    "buttonText": "Button label (optional)",
+    "buttonTextPlaceholder": "e.g. Go to exchange",
+    "buttonUrl": "Button URL (optional)",
+    "buttonUrlPlaceholder": "https://",
+    "previewTitle": "Preview (mobile width)",
+    "previewEntryNote": "Entry preview QR (not an open session)",
+    "previewDefaultTitle": "Site name / custom title",
+    "saved": "Saved. Public page and entry link updated.",
+    "reset": "Reset defaults",
+    "resetConfirm": "Reset defaults? Clears title, copy, images, and button (entry path kept).",
+    "resetDone": "Defaults restored",
+    "resetFailed": "Reset failed",
+    "copyFailed": "Copy failed — select the link manually",
+    "maxImages": "Maximum 3 images",
+    "uploadFailed": "Upload failed",
+    "saveTip": "Saves copy, images, and entry path. Public pages update immediately.",
+    "resetTip": "Clears title, copy, images, and button. Entry path is kept."
+  },
+  "openWallets": {
+    "title": "Wallet Entries",
+    "subtitle": "Public QR codes are always plain HTTPS — not wallet-specific deep links. TokenPocket / OKX / Bitget scan well from the home screen; TronLink users should paste the link in Discover / Browser, not home scan. When opened in a normal browser, users see the buttons below (built-in deep links).",
+    "intro": "<strong>What this page does:</strong> Choose which wallet buttons appear on the open page. Wallets that scan more reliably are listed first.",
+    "minOne": "Select at least one wallet",
+    "saved": "Saved. Open page wallet list updated.",
+    "tip": "Select at least one wallet. The open page updates immediately after save."
+  },
+  "update": {
+    "title": "System Updates",
+    "subtitle": "Pull update packages from the release repo. Failed updates roll back automatically; .env and database are preserved.",
+    "intro": "<strong>What this page does:</strong> Check and install new releases. Failed updates roll back; config and database are kept. See <linkHelp>Help · Updates</linkHelp>.",
+    "readonly": "Only super admin can run system updates.",
+    "currentVersion": "Current version:",
+    "status": "Status:",
+    "inProgress": "(in progress — do not close)",
+    "latest": "Latest release:",
+    "notes": "Release notes: bug fixes and feature updates",
+    "check": "Check for updates",
+    "apply": "Update now",
+    "refresh": "Refresh status",
+    "checkTip": "Checks for a new version only; does not change the site.",
+    "applyTip": "Downloads and installs. Do not close the page; failures roll back automatically.",
+    "confirmApply": "Update now? The site may be briefly unavailable. Failed updates roll back automatically.",
+    "statusReadFailed": "Failed to read status",
+    "checkFailed": "Check failed",
+    "applyFailed": "Failed to start update",
+    "foundVersion": "New version {{version}} available",
+    "alreadyLatest": "Already on the latest version",
+    "phases": {
+      "idle": "Idle",
+      "checking": "Checking",
+      "queued": "Queued",
+      "downloading": "Downloading",
+      "verifying": "Verifying",
+      "backing_up": "Backing up",
+      "extracting": "Extracting",
+      "installing": "Installing deps",
+      "migrating": "Migrating DB",
+      "restarting": "Restarting",
+      "healthcheck": "Health check",
+      "success": "Success",
+      "rolling_back": "Rolling back",
+      "rolled_back": "Rolled back",
+      "failed": "Failed"
+    }
+  },
+  "password": {
+    "title": "Change Password",
+    "intro": "Account {{name}} ({{role}}) — enter your current password to set a new one.",
+    "helpLink": "Help · Password",
+    "seeHelp": "See",
+    "helpPunct": ".",
+    "tip": "Remember your new password. You will not be signed out automatically.",
+    "current": "Current password",
+    "new": "New password (min. 6 chars)",
+    "confirm": "Confirm new password",
+    "submit": "Save new password",
+    "submitting": "Saving…",
+    "minLength": "New password must be at least 6 characters",
+    "mismatch": "New passwords do not match",
+    "success": "Password changed — please remember it",
+    "failed": "Change failed"
+  },
+  "help": {
+    "title": "Help",
+    "subtitle": "Streamline guide: public opens + site setup.",
+    "docVersion": "Doc version:",
+    "runningVersion": "Running:",
+    "versionMismatch": "Help version does not match the running app. Update under System Updates or contact support.",
+    "quickLinks": "Quick links:",
+    "sections": {
+      "login": {
+        "title": "0. Sign in",
+        "steps": [
+          "Admin entry: /branch/login (username, password, captcha).",
+          "Public site / — customers scan to open; no admin login needed.",
+          "About 5 failed attempts from the same account or IP locks login for ~15 minutes."
+        ],
+        "tips": ["Change the default admin password immediately after go-live."]
+      },
+      "password": {
+        "title": "0.2 Change password",
+        "steps": ["After sign-in, open Password, verify the current password, then set a new one."]
+      },
+      "open": {
+        "title": "1. Public multisig open",
+        "steps": [
+          "Customers open the public site and scan or open the open link in a wallet app.",
+          "After signing in the wallet, multisig is enabled; the address stays the same.",
+          "Open codes expire — refresh the public page for a new one."
+        ],
+        "tips": [
+          "Configure multisig addresses and enable wallet entries first.",
+          "Public QR codes are plain URLs. TokenPocket / OKX / Bitget: home scan works; TronLink: use Discover/Browser, not home scan."
+        ]
+      },
+      "network": {
+        "title": "2. Network",
+        "steps": [
+          "Super admin opens Network, picks Shasta or TRON mainnet, and saves.",
+          "Takes effect immediately; public QR and new sessions use the new network.",
+          "Mainnet and Shasta have separate multisig addresses — verify both after switching."
+        ],
+        "tips": ["Use mainnet in production; Shasta for testing."]
+      },
+      "presets": {
+        "title": "3. Multisig addresses",
+        "steps": [
+          "Open Multisig Addresses and configure exactly two co-signers for the current network.",
+          "Check Network first, then save addresses for that network."
+        ]
+      },
+      "wallets": {
+        "title": "4. Opened",
+        "steps": [
+          "View successfully opened 2/3-tier addresses (read-only).",
+          "Higher-tier opens are not shown here."
+        ]
+      },
+      "decor": {
+        "title": "5. Public page design",
+        "steps": [
+          "Edit title, body, footer, and images; saves apply to the public site immediately.",
+          "Copy the long-lived entry link for customers."
+        ]
+      },
+      "open-wallets": {
+        "title": "6. Wallet entries",
+        "steps": [
+          "Enable wallet buttons customers can use. Wallets that scan more reliably are listed first.",
+          "QR codes stay HTTPS; enabling a wallet does not change the QR to a deep link.",
+          "If none are enabled, signing works only when a wallet is already injected."
+        ]
+      },
+      "update": {
+        "title": "7. System updates",
+        "steps": [
+          "Updates → Check for updates → Update now.",
+          "Updates preserve .env and the database.",
+          "Release notes show a short summary only (bug fixes / feature updates)."
+        ]
+      }
+    }
+  },
+  "walletHints": {
+    "tokenpocket": "Home scan usually opens directly",
+    "okx": "Home scan usually opens directly",
+    "bitget": "Home scan usually opens directly",
+    "foxwallet": "Try home scan; otherwise use Discover/Browser",
+    "safepal": "Try home scan; otherwise use Discover/Browser",
+    "tronlink": "Do not use home scan — paste link in Discover/Browser",
+    "imtoken": "Prefer Discover/Browser; injection is detected when possible",
+    "trust": "Open link in Discover/Browser",
+    "bybit": "Open link in Discover/Browser"
+  }
+}

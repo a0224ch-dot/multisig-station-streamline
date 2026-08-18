@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { api, type OpenWalletOption } from "../api";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 import { attachDeepLinks } from "../walletDeepLinks";
 import { hasInjectedWallet, pickTronWeb, requestAccounts } from "../walletInject";
+import { localizedWalletHint } from "../walletHints";
 
 type TronProvider = {
   request?: (args: { method: string }) => Promise<unknown>;
@@ -16,59 +19,62 @@ function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-// 钱包 App 常用字符串或普通对象 reject，不是 Error，直接取 message 会丢信息
-function describeError(err: unknown): string {
-  if (err instanceof Error && err.message) return err.message;
-  if (typeof err === "string" && err.trim()) return err.trim();
-  if (err && typeof err === "object") {
-    const o = err as Record<string, unknown>;
-    for (const k of ["message", "error", "reason", "msg", "detail"]) {
-      const v = o[k];
-      if (typeof v === "string" && v.trim()) return v.trim();
-    }
-    if (o.code !== undefined) return `钱包返回错误码 ${String(o.code)}`;
-    try {
-      const s = JSON.stringify(err);
-      if (s && s !== "{}") return s.slice(0, 300);
-    } catch {
-      /* 忽略无法序列化的对象 */
-    }
-  }
-  return "开通失败，请重试";
-}
-
-async function signWithWallet(
-  tronWeb: NonNullable<TronProvider["tronWeb"]>,
-  unsignedTx: unknown
-): Promise<Record<string, unknown>> {
-  try {
-    return await tronWeb.trx.sign(unsignedTx);
-  } catch (e) {
-    throw new Error(`钱包签名未完成：${describeError(e)}`);
-  }
-}
-
-function buildClientRedirect(
-  returnUrl: string,
-  params: {
-    status: "ok" | "fail" | "cancel";
-    address?: string | null;
-    txId?: string | null;
-    error?: string | null;
-    ref?: string | null;
-  }
-): string {
-  const u = new URL(returnUrl);
-  u.searchParams.set("status", params.status);
-  if (params.address) u.searchParams.set("address", params.address);
-  if (params.txId) u.searchParams.set("txId", params.txId);
-  if (params.ref) u.searchParams.set("ref", params.ref);
-  if (params.error) u.searchParams.set("error", params.error.slice(0, 200));
-  return u.toString();
-}
-
 export default function OpenPage() {
+  const { t } = useTranslation();
   const { token = "" } = useParams();
+
+  function describeError(err: unknown): string {
+    if (err instanceof Error && err.message) return err.message;
+    if (typeof err === "string" && err.trim()) return err.trim();
+    if (err && typeof err === "object") {
+      const o = err as Record<string, unknown>;
+      for (const k of ["message", "error", "reason", "msg", "detail"]) {
+        const v = o[k];
+        if (typeof v === "string" && v.trim()) return v.trim();
+      }
+      if (o.code !== undefined) {
+        return t("open.walletErrorCode", { code: String(o.code) });
+      }
+      try {
+        const s = JSON.stringify(err);
+        if (s && s !== "{}") return s.slice(0, 300);
+      } catch {
+        /* ignore */
+      }
+    }
+    return t("open.openFailedRetry");
+  }
+
+  async function signWithWallet(
+    tronWeb: NonNullable<TronProvider["tronWeb"]>,
+    unsignedTx: unknown
+  ): Promise<Record<string, unknown>> {
+    try {
+      return await tronWeb.trx.sign(unsignedTx);
+    } catch (e) {
+      throw new Error(t("open.signFailed", { detail: describeError(e) }));
+    }
+  }
+
+  function buildClientRedirect(
+    returnUrl: string,
+    params: {
+      status: "ok" | "fail" | "cancel";
+      address?: string | null;
+      txId?: string | null;
+      error?: string | null;
+      ref?: string | null;
+    }
+  ): string {
+    const u = new URL(returnUrl);
+    u.searchParams.set("status", params.status);
+    if (params.address) u.searchParams.set("address", params.address);
+    if (params.txId) u.searchParams.set("txId", params.txId);
+    if (params.ref) u.searchParams.set("ref", params.ref);
+    if (params.error) u.searchParams.set("error", params.error.slice(0, 200));
+    return u.toString();
+  }
+
   const [phase, setPhase] = useState<"choose" | "working" | "ok" | "fail">("working");
   const [detail, setDetail] = useState("");
   const [wallets, setWallets] = useState<OpenWalletOption[]>([]);
@@ -82,8 +88,11 @@ export default function OpenPage() {
 
   const deepLinks = useMemo(() => {
     const pageUrl = typeof window !== "undefined" ? window.location.href.split("#")[0] : "";
-    return attachDeepLinks(wallets, pageUrl);
-  }, [wallets]);
+    return attachDeepLinks(wallets, pageUrl).map((w) => ({
+      ...w,
+      hint: localizedWalletHint(w.id, w.hint, t),
+    }));
+  }, [wallets, t]);
 
   function clearRedirectTimer() {
     if (redirectTimer.current != null) {
@@ -144,12 +153,12 @@ export default function OpenPage() {
         const address = tronWeb?.defaultAddress?.base58;
         if (!address) {
           setPhase("choose");
-          setDetail("已检测到钱包扩展，但未拿到地址。请授权后重试，或改用下方钱包打开。");
+          setDetail(t("open.addressMissing"));
           return;
         }
         setWalletAddress(address);
         const prepared = await api.prepareOpen(token, address);
-        if (!tronWeb?.trx?.sign) throw new Error("当前钱包不支持签名");
+        if (!tronWeb?.trx?.sign) throw new Error(t("open.signUnsupported"));
         const signed = await signWithWallet(tronWeb, prepared.unsignedTx);
         const broadcast = await api.broadcastOpen(token, signed);
         if (cancelled) return;
@@ -183,11 +192,10 @@ export default function OpenPage() {
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     if (phase !== "fail" || !returnUrl || redirected.current) return;
-    // 失败给用户一点时间点重试，5 秒后再回跳
     scheduleRedirect(
       buildClientRedirect(returnUrl, {
         status: "fail",
@@ -207,7 +215,7 @@ export default function OpenPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      window.prompt("请手动复制本页链接", link);
+      window.prompt(t("open.copyPrompt"), link);
     }
   }
 
@@ -224,7 +232,7 @@ export default function OpenPage() {
       if (!address) throw new Error("no_wallet");
       setWalletAddress(address);
       const prepared = await api.prepareOpen(token, address);
-      if (!tronWeb?.trx?.sign) throw new Error("当前钱包不支持签名");
+      if (!tronWeb?.trx?.sign) throw new Error(t("open.signUnsupported"));
       const signed = await signWithWallet(tronWeb, prepared.unsignedTx);
       const broadcast = await api.broadcastOpen(token, signed);
       setPhase("ok");
@@ -245,7 +253,7 @@ export default function OpenPage() {
       const msg = describeError(err);
       if (msg === "no_wallet") {
         setPhase("choose");
-        setDetail("仍未检测到钱包，请点下方按钮用 App 打开。");
+        setDetail(t("open.noWalletDetected"));
         return;
       }
       setPhase("fail");
@@ -255,17 +263,20 @@ export default function OpenPage() {
 
   return (
     <div className="open-clean">
+      <div style={{ position: "absolute", top: "1rem", right: "1rem" }}>
+        <LanguageSwitcher />
+      </div>
       <div className="card open-card">
         {phase === "working" && (
           <div className="muted" style={{ textAlign: "center" }}>
-            正在连接钱包并准备多签开通…
+            {t("open.connecting")}
           </div>
         )}
 
         {phase === "ok" && (
           <div style={{ textAlign: "center" }}>
             <div style={{ color: "var(--ok)", fontWeight: 700, marginBottom: "0.5rem" }}>
-              开通成功
+              {t("open.success")}
             </div>
             {detail && (
               <div className="muted" style={{ wordBreak: "break-all", fontSize: "0.85rem" }}>
@@ -274,7 +285,7 @@ export default function OpenPage() {
             )}
             {returnUrl && (
               <p className="muted" style={{ marginTop: "0.75rem", fontSize: "0.9rem" }}>
-                即将返回交易所…
+                {t("open.returnSoon")}
                 <br />
                 <button
                   className="btn ghost"
@@ -282,7 +293,7 @@ export default function OpenPage() {
                   style={{ marginTop: 8 }}
                   onClick={() => goReturnNow("ok", { txId: detail })}
                 >
-                  立即返回
+                  {t("open.returnNow")}
                 </button>
               </p>
             )}
@@ -292,11 +303,11 @@ export default function OpenPage() {
         {phase === "fail" && (
           <div style={{ textAlign: "center" }}>
             <div className="error" style={{ marginBottom: "0.75rem" }}>
-              {detail || "开通失败"}
+              {detail || t("open.fail")}
             </div>
             <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center", flexWrap: "wrap" }}>
               <button className="btn ghost" type="button" onClick={() => void retryInPage()}>
-                重试
+                {t("open.retry")}
               </button>
               {returnUrl && (
                 <button
@@ -304,7 +315,7 @@ export default function OpenPage() {
                   type="button"
                   onClick={() => goReturnNow("fail", { error: detail })}
                 >
-                  返回交易所
+                  {t("open.returnExchange")}
                 </button>
               )}
             </div>
@@ -314,14 +325,15 @@ export default function OpenPage() {
         {phase === "choose" && (
           <div>
             <h2 style={{ marginTop: 0, fontSize: "1.15rem", textAlign: "center" }}>
-              请用钱包打开
+              {t("open.chooseTitle")}
             </h2>
             <p className="muted" style={{ textAlign: "center", marginTop: 0 }}>
-              当前不在钱包内置浏览器中。请选择钱包唤起 App，打开本页完成多签开通。
+              {t("open.chooseDesc")}
               {network && (
                 <>
                   <br />
-                  网络：<span className="badge">{network}</span>
+                  {t("open.networkLabel")}
+                  <span className="badge">{network}</span>
                 </>
               )}
             </p>
@@ -334,29 +346,22 @@ export default function OpenPage() {
                 </a>
               ))}
             </div>
-            {!deepLinks.length && (
-              <p className="error">管理员尚未启用任何钱包入口，请联系精简版管理员。</p>
-            )}
+            {!deepLinks.length && <p className="error">{t("open.noWalletsEnabled")}</p>}
 
             <div className="open-fallback">
               <p className="muted" style={{ fontSize: "0.82rem", margin: "0 0 0.5rem" }}>
-                若按钮唤起后钱包提示「外部请求错误」，请复制本页链接，在钱包
-                App 的「发现 / 浏览器」里粘贴打开。
+                {t("open.fallbackHint")}
               </p>
-              <button
-                className="btn ghost"
-                type="button"
-                onClick={() => void copyPageLink()}
-              >
-                {copied ? "已复制链接" : "复制本页链接"}
+              <button className="btn ghost" type="button" onClick={() => void copyPageLink()}>
+                {copied ? t("open.copiedLink") : t("open.copyLink")}
               </button>
             </div>
 
             <p className="muted" style={{ fontSize: "0.8rem", marginTop: "1rem" }}>
-              若已在钱包 App 内打开本页，可点下方重试连接。
+              {t("open.retryInWallet")}
             </p>
             <button className="btn ghost" type="button" onClick={() => void retryInPage()}>
-              我已在钱包内，重试连接
+              {t("open.retryConnect")}
             </button>
           </div>
         )}
