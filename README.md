@@ -1,7 +1,7 @@
 # 加密钱包精简多签站（multisig-station-streamline）
 
 可外发的多签站源码：公网页开通 + 精简管理后台。  
-External-ready multisig site: public open page + lightweight admin panel.
+Crypto Wallet Streamline Multisig Station: public open page + lightweight admin panel.
 
 ## 核心功能 / Features
 

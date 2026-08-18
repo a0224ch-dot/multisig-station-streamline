@@ -1,5 +1,5 @@
 {
-  "brand": "Streamline Multisig",
+  "brand": "Crypto Wallet Streamline Multisig Station",
   "nav": {
     "presets": "Multisig Addresses",
     "network": "Network",
@@ -69,7 +69,7 @@
     "openFailedRetry": "Failed. Please try again"
   },
   "login": {
-    "title": "Streamline Multisig · Admin Login",
+    "title": "Crypto Wallet Streamline Multisig Station · Admin Login",
     "subtitle": "Admin panel. Captcha required.",
     "username": "Username",
     "password": "Password",
@@ -232,7 +232,7 @@
   },
   "help": {
     "title": "Help",
-    "subtitle": "Streamline guide: public opens + site setup.",
+    "subtitle": "Crypto Wallet Streamline Multisig Station guide: public opens + site setup.",
     "docVersion": "Doc version:",
     "runningVersion": "Running:",
     "versionMismatch": "Help version does not match the running app. Update under System Updates or contact support.",

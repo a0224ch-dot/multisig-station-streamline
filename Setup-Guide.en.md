@@ -1,4 +1,4 @@
-# Streamline Multisig - Setup Guide (English)
+# Crypto Wallet Streamline Multisig Station - Setup Guide (English)
 
 This is the short English setup guide.  
 For full Chinese instructions, see [`搭建教程.zh-CN.md`](./搭建教程.zh-CN.md).
