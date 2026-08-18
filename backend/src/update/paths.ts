@@ -45,7 +45,7 @@ export function writeLocalVersion(version: string): void {
 export function releasesLatestUrl(): string {
   return (
     process.env.UPDATE_RELEASES_URL?.trim() ||
-    "https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json"
+    "https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json"
   );
 }
 

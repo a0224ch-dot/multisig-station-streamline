@@ -29,7 +29,7 @@ OUT_DIR="${OUT_DIR:-$ROOT/dist-release}"
 STAGE="$OUT_DIR/stage"
 ZIP_NAME="streamline-${VERSION}.zip"
 ZIP_PATH="$OUT_DIR/$ZIP_NAME"
-RELEASES_REPO="${RELEASES_REPO:-e12games/multisig-station-streamline-releases}"
+RELEASES_REPO="${RELEASES_REPO:-a0224ch-dot/multisig-station-streamline-releases}"
 
 echo "=========================================="
 echo " 打包精简版更新包"
