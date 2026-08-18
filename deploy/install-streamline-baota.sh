@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 精简多签站 - Ubuntu/宝塔 一键安装（自动选空闲端口）
+# 加密钱包精简多签站 - Ubuntu/宝塔 一键安装（自动选空闲端口）
 # 用法（在已能访问 GitHub 的 VPS 上）：
 #   cd /www/wwwroot
 #   git clone -b main https://github.com/a0224ch-dot/multisig-station-streamline.git
@@ -15,7 +15,7 @@ set -uo pipefail
 
 SITE_DOMAIN="${SITE_DOMAIN:-multisig-streamline.example.com}"
 HQ_BASE_URL="${HQ_BASE_URL:-https://multisig-station.iqiyia.cyou}"
-BRANCH_NAME="${BRANCH_NAME:-精简多签}"
+BRANCH_NAME="${BRANCH_NAME:-加密钱包精简多签站}"
 PM2_NAME="${PM2_NAME:-multisig-streamline-api}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-streamline}"
 GIT_BRANCH="${GIT_BRANCH:-main}"
@@ -79,7 +79,7 @@ pick_port() {
 }
 
 echo "=========================================="
-echo " 精简多签站一键安装"
+echo " 加密钱包精简多签站一键安装"
 echo " 域名: $SITE_DOMAIN"
 echo "=========================================="
 

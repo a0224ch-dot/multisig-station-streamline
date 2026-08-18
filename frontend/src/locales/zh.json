@@ -1,5 +1,5 @@
 {
-  "brand": "精简多签",
+  "brand": "加密钱包精简多签站",
   "nav": {
     "presets": "多签地址",
     "network": "网络设置",
@@ -69,7 +69,7 @@
     "openFailedRetry": "开通失败，请重试"
   },
   "login": {
-    "title": "精简多签 · 管理登录",
+    "title": "加密钱包精简多签站 · 管理登录",
     "subtitle": "管理员后台。需图形验证码。",
     "username": "账号",
     "password": "密码",
@@ -232,7 +232,7 @@
   },
   "help": {
     "title": "使用说明",
-    "subtitle": "精简版操作手册：公网页开通 + 本站配置。",
+    "subtitle": "加密钱包精简多签站操作手册：公网页开通 + 本站配置。",
     "docVersion": "本说明对应版本：",
     "runningVersion": "当前运行：",
     "versionMismatch": "说明版本与运行版本不一致。请到「系统更新」升到最新，或联系技术支持。",

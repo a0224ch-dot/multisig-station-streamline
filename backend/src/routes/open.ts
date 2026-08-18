@@ -29,7 +29,7 @@ export async function registerOpenRoutes(app: FastifyInstance) {
     return {
       network,
       thresholdUsdt,
-      branchName: process.env.BRANCH_NAME || "精简多签",
+      branchName: process.env.BRANCH_NAME || "加密钱包精简多签站",
       pageDecor: await getPageDecor(),
       openWallets: await listEnabledOpenWallets(),
       ads: {
