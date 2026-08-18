@@ -2,6 +2,15 @@
 
 ---
 
+## 20260818-2
+
+### Changed
+- 开通钱包入口按扫码直进可用性排序（TP / OKX / Bitget 靠前，TronLink 保留但不排第一），并补充使用提示
+- 开通页补识别 imToken / FoxWallet / SafePal / Trust / Bybit 等注入，便于钱包内打开后直接授权
+- 公网页引导改为按钱包说明扫码方式；二维码仍为 HTTPS 一码通用
+
+---
+
 ## 20260818-1
 
 ### Added

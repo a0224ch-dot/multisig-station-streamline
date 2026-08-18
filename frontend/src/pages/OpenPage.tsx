@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api, type OpenWalletOption } from "../api";
 import { attachDeepLinks } from "../walletDeepLinks";
+import { hasInjectedWallet, pickTronWeb, requestAccounts } from "../walletInject";
 
 type TronProvider = {
   request?: (args: { method: string }) => Promise<unknown>;
@@ -11,50 +12,8 @@ type TronProvider = {
   };
 };
 
-declare global {
-  interface Window {
-    tronLink?: TronProvider;
-    tronWeb?: TronProvider["tronWeb"];
-    okxwallet?: { tronLink?: TronProvider; tron?: TronProvider };
-    bitkeep?: { tronLink?: TronProvider };
-    tokenpocket?: { tron?: TronProvider };
-  }
-}
-
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
-}
-
-function hasInjectedWallet(): boolean {
-  return !!(
-    window.tronLink ||
-    window.tronWeb ||
-    window.okxwallet?.tronLink ||
-    window.okxwallet?.tron ||
-    window.bitkeep?.tronLink ||
-    window.tokenpocket
-  );
-}
-
-function pickTronWeb(): TronProvider["tronWeb"] | undefined {
-  return (
-    window.tronWeb ||
-    window.tronLink?.tronWeb ||
-    window.okxwallet?.tronLink?.tronWeb ||
-    window.okxwallet?.tron?.tronWeb ||
-    window.bitkeep?.tronLink?.tronWeb
-  );
-}
-
-async function requestAccounts(): Promise<void> {
-  if (window.tronLink?.request) {
-    await window.tronLink.request({ method: "tron_requestAccounts" });
-    return;
-  }
-  const okx = window.okxwallet?.tronLink || window.okxwallet?.tron;
-  if (okx?.request) {
-    await okx.request({ method: "tron_requestAccounts" });
-  }
 }
 
 // 钱包 App 常用字符串或普通对象 reject，不是 Error，直接取 message 会丢信息

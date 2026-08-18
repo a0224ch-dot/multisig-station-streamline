@@ -1,7 +1,7 @@
 /**
  * 精简版「使用说明」。HELP_DOC_VERSION 须与根目录 VERSION 一致。
  */
-export const HELP_DOC_VERSION = "20260818-1";
+export const HELP_DOC_VERSION = "20260818-2";
 
 export type HelpSection = {
   id: string;
@@ -41,6 +41,7 @@ export const HELP_SECTIONS: HelpSection[] = [
     ],
     tips: [
       "请先在「多签地址」配好共管地址，并在「开通钱包」启用常用钱包入口。",
+      "公网页二维码是普通网址。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。",
     ],
   },
   {
@@ -81,7 +82,8 @@ export const HELP_SECTIONS: HelpSection[] = [
     id: "open-wallets",
     title: "六、开通钱包",
     steps: [
-      "启用客户开通时可用的钱包入口（如 TronLink、OKX 等）。",
+      "启用客户开通时可用的钱包入口。列表前面是较容易首页扫码直进的钱包。",
+      "二维码始终是 HTTPS，勾选不会改成某一家深链。",
       "未启用任何入口时，客户只能在已注入钱包的环境里完成签名。",
     ],
   },

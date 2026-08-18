@@ -55,13 +55,14 @@ export default function BranchOpenWalletsPage({ user }: { user: User }) {
     <div>
       <PageIntro>
         <strong>这页做什么：</strong>
-        勾选开通页上要显示哪些手机钱包按钮。用户不在钱包浏览器里时，可点按钮唤起 App。
+        勾选开通页上要显示哪些手机钱包按钮。列表已按「较容易扫码直进」排在前面，便于按客户常用钱包勾选。
       </PageIntro>
-      <form className="card" onSubmit={(e) => void save(e)} style={{ maxWidth: 560, display: "grid", gap: "0.75rem" }}>
+      <form className="card" onSubmit={(e) => void save(e)} style={{ maxWidth: 640, display: "grid", gap: "0.75rem" }}>
       <h2 style={{ marginTop: 0 }}>开通钱包入口</h2>
       <p className="muted" style={{ marginTop: 0 }}>
-        二维码仍是普通网址。用户若用系统相机扫码进入普通浏览器，会看到下列钱包按钮，一键用深链唤起 App
-        打开同一开通页。深链由系统内置，不可手填。
+        公网页二维码始终是普通 HTTPS，不会改成某一家深链。TokenPocket / OKX / Bitget
+        用钱包首页扫码较容易直接授权；TronLink 请让客户用「发现 / 浏览器」粘贴链接，不要用首页扫一扫。
+        系统相机扫码进入普通浏览器时，会看到下列按钮（深链内置，不可手填）。
       </p>
       <div className="wallet-check-list">
         {catalog.map((w) => (
