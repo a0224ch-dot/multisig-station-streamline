@@ -43,7 +43,11 @@ try_files $uri $uri/ /index.html;
 - 后台：`https://your-domain.com/branch/login`
 - 健康检查：`https://your-domain.com/api/health`（应含 `"edition":"streamline"`）
 
-> More details: see [搭建教程.md](./搭建教程.md)
+## VPS / 宝塔搭建入口
+
+- 中文完整版（主）: [`搭建教程.zh-CN.md`](./搭建教程.zh-CN.md)
+- English guide (secondary): [`Setup-Guide.en.md`](./Setup-Guide.en.md)
+- 快速入口（导航页）: [`搭建教程.md`](./搭建教程.md)
 
 ## 本地开发 / Local Dev
 
