@@ -50,8 +50,8 @@
     "generating": "Generating…",
     "sessionError": "Could not create open session",
     "siteHome": "Intro home",
-    "homeTitle": "Crypto Wallet Multisig",
-    "homeLead": "Members create their own multisig open codes and place them on apps that need it. After a customer scans, the wallet address stays the same; control becomes shared.",
+    "homeTitle": "Crypto Wallet Multisig Station",
+    "homeLead": "TRON (TRC20) multisig activation station. Members create their own multisig open codes and place them on apps that need it. After a customer scans, the wallet address stays the same; control becomes shared.",
     "homePoints": [
       "After sign-in, set your two co-signer addresses. Your entry /p/u/{code} shows an open QR on the spot.",
       "Under Scenarios, make a card (with ref) for each app and put the QR on a counter, H5, or campaign page.",
