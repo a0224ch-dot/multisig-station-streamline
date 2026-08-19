@@ -253,12 +253,25 @@ async function waitHealthy(timeoutMs = 60_000): Promise<boolean> {
 
 async function restartPm2(): Promise<void> {
   const name = pm2AppName();
+  const backendDir = path.join(installRoot(), "backend");
   appendLog(`重启服务 ${name}…`);
   try {
-    await runCmd("pm2", ["restart", name, "--update-env"], installRoot(), 60_000);
+    // pm2 restart --update-env 不会重新加载 .env（只读 shell 环境），
+    // 必须 delete + start 才能让 dotenv 在新进程里重新解析 .env。
+    try {
+      await runCmd("pm2", ["delete", name], installRoot(), 30_000);
+    } catch {
+      appendLog(`pm2 delete ${name} 跳过（可能不存在）`);
+    }
+    await runCmd(
+      "pm2",
+      ["start", "npx tsx src/index.ts", "--name", name, "--cwd", backendDir],
+      backendDir,
+      60_000,
+    );
+    await runCmd("pm2", ["save"], installRoot(), 15_000);
   } catch {
-    // 若未用 pm2，尝试提示；开发环境可能没有 pm2
-    appendLog("pm2 restart 失败，尝试直接结束进程由守护拉起…");
+    appendLog("pm2 start 失败，尝试直接结束进程由守护拉起…");
     throw new Error(`无法重启 PM2 进程「${name}」，请确认服务器已用 pm2 启动`);
   }
 }
