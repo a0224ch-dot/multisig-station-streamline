@@ -58,7 +58,14 @@
       "Customers scan the scenario or entry QR; the wallet opens /o/{session} to sign.",
       "The site default door is /open (staff addresses), separate from member entries. The intro home has no QR."
     ],
-    "goOpen": "Site open page"
+    "goOpen": "Site open page",
+    "showcase": [
+      { "icon": "1️⃣", "title": "Sign in & set addresses", "desc": "Admin or member signs in and configures 2 co-signer addresses." },
+      { "icon": "2️⃣", "title": "Generate open code", "desc": "Your entry /p/u/{code} creates a QR on the spot, or batch-create scenario cards." },
+      { "icon": "3️⃣", "title": "Customer scans & signs", "desc": "Customer scans the QR with their wallet, completes multisig authorization. Address unchanged, control shared." },
+      { "icon": "4️⃣", "title": "Admin dashboard", "desc": "View opened wallets, manage members, customize landing page, create scenario cards — all in one place." }
+    ],
+    "showcaseTitle": "How it works"
   },
   "open": {
     "connecting": "Connecting wallet and preparing multisig…",
