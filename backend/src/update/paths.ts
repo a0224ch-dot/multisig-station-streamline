@@ -28,6 +28,11 @@ export function updateStatusFile(): string {
   return path.join(updateWorkDir(), "status.json");
 }
 
+/** nginx 可直接读，API 停掉时更新页仍能轮询 */
+export function publicUpdateStatusFile(): string {
+  return path.join(installRoot(), "frontend", "dist", "update-status.json");
+}
+
 export function readLocalVersion(): string {
   try {
     const raw = fs.readFileSync(versionFile(), "utf8").trim();

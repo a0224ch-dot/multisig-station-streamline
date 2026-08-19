@@ -482,6 +482,13 @@ export const api = {
     return data as PageDecorImage;
   },
   updateStatus: () => request<UpdateStatus>("/api/admin/update/status"),
+  updateStatusPublic: async () => {
+    const res = await fetch(`/update-status.json?_=${Date.now()}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("unavailable");
+    return (await res.json()) as UpdateStatus;
+  },
   updateCheck: () =>
     request<{
       currentVersion: string;

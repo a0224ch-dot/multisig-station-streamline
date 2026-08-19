@@ -1,5 +1,6 @@
 import fs from "fs";
-import { updateStatusFile, updateWorkDir, readLocalVersion } from "./paths.js";
+import path from "path";
+import { updateStatusFile, updateWorkDir, readLocalVersion, publicUpdateStatusFile } from "./paths.js";
 
 export type UpdatePhase =
   | "idle"
@@ -8,6 +9,7 @@ export type UpdatePhase =
   | "downloading"
   | "verifying"
   | "backing_up"
+  | "stopping"
   | "extracting"
   | "installing"
   | "migrating"
@@ -45,6 +47,7 @@ const BUSY: UpdatePhase[] = [
   "downloading",
   "verifying",
   "backing_up",
+  "stopping",
   "extracting",
   "installing",
   "migrating",
@@ -111,6 +114,13 @@ export function writeUpdateStatus(patch: Partial<UpdateStatus> & { phase?: Updat
   };
   if (next.logs.length > 80) next.logs = next.logs.slice(-80);
   fs.writeFileSync(updateStatusFile(), JSON.stringify(next, null, 2), "utf8");
+  try {
+    const pub = publicUpdateStatusFile();
+    fs.mkdirSync(path.dirname(pub), { recursive: true });
+    fs.writeFileSync(pub, JSON.stringify(next, null, 2), "utf8");
+  } catch {
+    /* dist 可能尚未建好 */
+  }
   return next;
 }
 

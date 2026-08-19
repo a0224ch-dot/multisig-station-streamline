@@ -37,6 +37,7 @@ function isProtectedRel(rel: string): boolean {
   if (PROTECTED_NAME.has(base)) return true;
   // 宝塔防跨站：.user.ini 常带 chattr +i，绝不能删
   if (base === ".user.ini") return true;
+  if (base === "update-status.json") return true;
   if (norm.includes("/data/") || norm.startsWith("data/") || norm.includes("data/uploads")) {
     return true;
   }
@@ -251,19 +252,26 @@ async function waitHealthy(timeoutMs = 60_000): Promise<boolean> {
   return false;
 }
 
-async function restartPm2(): Promise<void> {
+async function stopPm2(): Promise<void> {
+  const name = pm2AppName();
+  appendLog(`停止服务 ${name}…`);
+  try {
+    await runCmd("pm2", ["delete", name], installRoot(), 30_000);
+  } catch {
+    appendLog(`pm2 delete ${name} 跳过（可能未在运行）`);
+  }
+}
+
+async function startPm2(): Promise<void> {
   const name = pm2AppName();
   const backendDir = path.join(installRoot(), "backend");
-  appendLog(`重启服务 ${name}…`);
+  appendLog(`启动服务 ${name}…`);
   try {
-    // pm2 restart --update-env 不会重新加载 .env（只读 shell 环境），
-    // 必须 delete + start 才能让 dotenv 在新进程里重新解析 .env。
     try {
-      await runCmd("pm2", ["delete", name], installRoot(), 30_000);
+      await runCmd("pm2", ["delete", name], installRoot(), 15_000);
     } catch {
-      appendLog(`pm2 delete ${name} 跳过（可能不存在）`);
+      /* 已停过 */
     }
-    // Linux 上 execFile 不走 shell，必须把 npx / tsx 拆成独立参数（与现网手动启动一致）
     await runCmd(
       "pm2",
       ["start", "npx", "--name", name, "--cwd", backendDir, "--", "tsx", "src/index.ts"],
@@ -272,8 +280,7 @@ async function restartPm2(): Promise<void> {
     );
     await runCmd("pm2", ["save"], installRoot(), 15_000);
   } catch {
-    appendLog("pm2 start 失败，尝试直接结束进程由守护拉起…");
-    throw new Error(`无法重启 PM2 进程「${name}」，请确认服务器已用 pm2 启动`);
+    throw new Error(`无法启动 PM2 进程「${name}」，请确认服务器已用 pm2 启动`);
   }
 }
 
@@ -366,6 +373,12 @@ export async function runUpdateJob(): Promise<void> {
     backupPath = createBackup(`pre-${manifest.version}-${stamp}`);
     appendLog(`备份完成: ${backupPath}`);
 
+    writeUpdateStatus({
+      phase: "stopping",
+      message: "正在停止服务以便安全覆盖文件…",
+    });
+    await stopPm2();
+
     writeUpdateStatus({ phase: "extracting", message: "解压并覆盖程序文件…" });
     rmrf(extractDir);
     fs.mkdirSync(extractDir, { recursive: true });
@@ -388,16 +401,14 @@ export async function runUpdateJob(): Promise<void> {
     await runCmd("npx", ["prisma", "generate"], backendDir);
     await runCmd("npx", ["prisma", "migrate", "deploy"], backendDir);
 
-    writeUpdateStatus({ phase: "restarting", message: "正在重启服务…" });
-    await restartPm2();
+    writeUpdateStatus({ phase: "restarting", message: "正在启动服务…" });
+    await startPm2();
 
     writeUpdateStatus({ phase: "healthcheck", message: "等待服务恢复…" });
     appendLog("健康检查中…");
-    // 当前进程即将被 pm2 杀掉；健康检查仍尽量在本进程完成，
-    // 若本进程被杀，由 status 文件保留 restarting，下次读取时用户可再点检查。
     await new Promise((r) => setTimeout(r, 2500));
     const ok = await waitHealthy(55_000);
-    if (!ok) throw new Error("重启后健康检查失败");
+    if (!ok) throw new Error("启动后健康检查失败");
 
     pruneBackups(2);
     writeUpdateStatus({
@@ -429,7 +440,7 @@ export async function runUpdateJob(): Promise<void> {
           );
         }
         try {
-          await restartPm2();
+          await startPm2();
           await new Promise((r) => setTimeout(r, 2500));
           await waitHealthy(45_000);
         } catch (re) {

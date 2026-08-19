@@ -384,8 +384,9 @@
     "refresh": "Refresh status",
     "checkTip": "Checks for a new version only; does not change the site.",
     "applyTip": "Downloads and installs. Do not close the page; failures roll back automatically.",
-    "confirmApply": "Update now? The site may be briefly unavailable. Failed updates roll back automatically.",
+    "confirmApply": "Update now? The API will stop briefly so files can be replaced safely. Failed updates roll back and the service is started again.",
     "statusReadFailed": "Failed to read status",
+    "serviceRestarting": "The service is updating or restarting. This page will retry automatically. Do not close it, and do not keep clicking Update now.",
     "checkFailed": "Check failed",
     "applyFailed": "Failed to start update",
     "foundVersion": "New version {{version}} available",
@@ -397,6 +398,7 @@
       "downloading": "Downloading",
       "verifying": "Verifying",
       "backing_up": "Backing up",
+      "stopping": "Stopping service",
       "extracting": "Extracting",
       "installing": "Installing deps",
       "migrating": "Migrating DB",
@@ -557,7 +559,8 @@
         "title": "7. System updates",
         "steps": [
           "Updates → Check for updates → Update now.",
-          "Updates preserve .env and the database.",
+          "The updater stops the API, replaces files, migrates the database, then starts the process with a fixed command. .env and the database are kept.",
+          "If you briefly see a failed request or the login page, wait a minute and open admin again. Do not click Update now repeatedly.",
           "Release notes show a short summary only (bug fixes / feature updates)."
         ]
       }

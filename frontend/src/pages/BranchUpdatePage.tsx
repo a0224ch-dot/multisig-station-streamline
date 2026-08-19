@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { api, type User, type UpdateStatus } from "../api";
@@ -12,13 +12,37 @@ export default function BranchUpdatePage({ user }: { user: User }) {
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
+  const updatingRef = useRef(false);
 
   const refresh = useCallback(async () => {
     try {
       const s = await api.updateStatus();
       setStatus(s);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("update.statusReadFailed"));
+      setError("");
+      if (s.busy) updatingRef.current = true;
+      if (["success", "failed", "rolled_back", "idle"].includes(s.phase)) {
+        updatingRef.current = false;
+      }
+    } catch {
+      try {
+        const s = await api.updateStatusPublic();
+        setStatus(s);
+        setError("");
+        if (s.busy || updatingRef.current) {
+          setMsg(t("update.serviceRestarting"));
+        }
+        if (s.busy) updatingRef.current = true;
+        if (["success", "failed", "rolled_back", "idle"].includes(s.phase)) {
+          updatingRef.current = false;
+        }
+      } catch {
+        if (updatingRef.current) {
+          setError("");
+          setMsg(t("update.serviceRestarting"));
+        } else {
+          setError(t("update.statusReadFailed"));
+        }
+      }
     }
   }, [t]);
 
@@ -28,10 +52,10 @@ export default function BranchUpdatePage({ user }: { user: User }) {
   }, [canEdit, refresh]);
 
   useEffect(() => {
-    if (!canEdit || !status?.busy) return;
+    if (!canEdit) return;
     const timer = setInterval(() => void refresh(), 2000);
     return () => clearInterval(timer);
-  }, [canEdit, status?.busy, refresh]);
+  }, [canEdit, refresh]);
 
   async function onCheck() {
     setError("");
@@ -62,6 +86,7 @@ export default function BranchUpdatePage({ user }: { user: User }) {
     try {
       const res = await api.updateApply();
       setMsg(res.message);
+      updatingRef.current = true;
       await refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : t("update.applyFailed"));

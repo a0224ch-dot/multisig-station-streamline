@@ -2,8 +2,10 @@
 
 **Crypto Wallet Streamline Multisig Station**
 
-可外发的多签站源码：会员自建开通码并贴到自己的场景 + 精简管理后台。  
-Open-source multisig station: members create their own open codes for their scenarios + lightweight admin panel.
+可外发的多签站源码：基于 TRON (TRC20) 公链，会员自建开通码并贴到自己的场景 + 精简管理后台。  
+Open-source TRON (TRC20) multisig station: members create their own open codes for their scenarios + lightweight admin panel.
+
+**演示站 / Demo：** https://multisig-station-streamline.iqiyia.cyou/
 
 ---
 
@@ -53,8 +55,8 @@ cd /www/wwwroot && git clone -b main https://github.com/a0224ch-dot/multisig-sta
 
 ## 在线更新 / OTA Update
 
-后台 → **系统更新** → 检查更新 → 立即更新。配置和数据库不会被覆盖。  
-Admin → **System Update** → Check → Update Now. Config (.env) and database are preserved.
+后台 → **系统更新** → 检查更新 → 立即更新。配置和数据库不会被覆盖。更新时 API 会短暂停止再拉起。  
+Admin → **System Update** → Check → Update Now. Config (.env) and database are preserved. The API stops briefly, then starts again.
 
 ---
 
