@@ -35,3 +35,6 @@ dist-release/
 Thumbs.db
 # pack helper (local only)
 backend/tmp-pack.mjs
+
+# 内部备忘（不外发）
+docs/

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { QRCodeSVG } from "qrcode.react";
 import { api, type MemberPayOrder } from "../api";
 
 export default function MemberPayPanel({
@@ -120,6 +121,11 @@ export default function MemberPayPanel({
                   >
                     {t("license.copyAddress")}
                   </button>
+                  {orderPending && (
+                    <div style={{ marginTop: "0.5rem" }}>
+                      <QRCodeSVG value={order.payToAddress} size={140} level="M" includeMargin />
+                    </div>
+                  )}
                 </td>
               </tr>
               <tr>

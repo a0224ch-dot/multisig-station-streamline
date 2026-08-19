@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { QRCodeSVG } from "qrcode.react";
 import { api, type LicenseOrder, type User } from "../api";
 
 export default function BranchSubscriptionPage({ user: _user }: { user: User }) {
@@ -210,6 +211,11 @@ export default function BranchSubscriptionPage({ user: _user }: { user: User }) 
                         >
                           {t("license.copyAddress")}
                         </button>
+                        {order.status === "PENDING" && (
+                          <div style={{ marginTop: "0.5rem" }}>
+                            <QRCodeSVG value={order.payToAddress} size={140} level="M" includeMargin />
+                          </div>
+                        )}
                       </td>
                     </tr>
                     <tr>
