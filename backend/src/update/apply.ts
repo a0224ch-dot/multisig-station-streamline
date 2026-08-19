@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
-import { spawn, execFile, execFileSync } from "child_process";
+import { spawn, spawnSync, execFile, execFileSync } from "child_process";
 import { promisify } from "util";
 import { fileURLToPath } from "url";
 import AdmZip from "adm-zip";
@@ -9,6 +9,7 @@ import {
   healthCheckUrl,
   installRoot,
   pm2AppName,
+  pm2UpdaterName,
   updateBackupsDir,
   updateWorkDir,
   writeLocalVersion,
@@ -473,35 +474,94 @@ export async function runUpdateJob(): Promise<void> {
   }
 }
 
-/** 由 API 拉起：独立进程执行更新，避免请求线程卡死 */
+function pm2Bin(): string {
+  return process.platform === "win32" ? "pm2.cmd" : "pm2";
+}
+
+function pm2Sync(
+  args: string[],
+  timeoutMs = 30_000,
+  extraEnv?: NodeJS.ProcessEnv
+): { status: number | null; out: string } {
+  const r = spawnSync(pm2Bin(), args, {
+    cwd: path.join(installRoot(), "backend"),
+    timeout: timeoutMs,
+    encoding: "utf8",
+    shell: process.platform === "win32",
+    env: extraEnv ? { ...process.env, ...extraEnv } : process.env,
+  });
+  const out = `${r.stdout || ""}${r.stderr || ""}${r.error ? String(r.error.message) : ""}`;
+  return { status: r.status, out };
+}
+
+/** 由 API 拉起：更新跑在独立 PM2 进程里，随后停 API 也不会把更新杀掉 */
 export function spawnUpdateRunner(): void {
-  const runnerPath = fileURLToPath(new URL("./runner.ts", import.meta.url));
+  const updater = pm2UpdaterName();
   const backendDir = path.join(installRoot(), "backend");
+  const env = {
+    ...process.env,
+    UPDATE_RUNNER: "1",
+    INSTALL_ROOT: installRoot(),
+  };
+
+  pm2Sync(["delete", updater], 15_000);
+
+  const started = pm2Sync(
+    [
+      "start",
+      "npx",
+      "--name",
+      updater,
+      "--cwd",
+      backendDir,
+      "--no-autorestart",
+      "--",
+      "tsx",
+      "src/update/runner.ts",
+    ],
+    45_000,
+    { UPDATE_RUNNER: "1", INSTALL_ROOT: installRoot() }
+  );
+
+  if (started.status === 0) {
+    writeUpdateStatus({
+      message: "更新已交给独立进程，停止 API 不会中断更新",
+    });
+    return;
+  }
+
+  const runnerPath = fileURLToPath(new URL("./runner.ts", import.meta.url));
   const tsxCli = path.join(backendDir, "node_modules", "tsx", "dist", "cli.mjs");
   const args = fs.existsSync(tsxCli)
     ? [tsxCli, runnerPath]
-    : []; // fallback below
-
+    : [];
   const child = args.length
     ? spawn(process.execPath, args, {
         cwd: backendDir,
         detached: true,
         stdio: "ignore",
-        env: { ...process.env, UPDATE_RUNNER: "1" },
+        env,
         windowsHide: true,
       })
-    : spawn(
-        process.platform === "win32" ? "npx.cmd" : "npx",
-        ["tsx", runnerPath],
-        {
-          cwd: backendDir,
-          detached: true,
-          stdio: "ignore",
-          env: { ...process.env, UPDATE_RUNNER: "1" },
-          windowsHide: true,
-        }
-      );
+    : spawn(process.platform === "win32" ? "npx.cmd" : "npx", ["tsx", runnerPath], {
+        cwd: backendDir,
+        detached: true,
+        stdio: "ignore",
+        env,
+        windowsHide: true,
+      });
   child.unref();
+  writeUpdateStatus({
+    message: `独立 PM2 更新进程启动失败，已降级为后台进程（${started.out.slice(0, 180)}）`,
+  });
+}
+
+export function deleteUpdaterProcess(): void {
+  try {
+    pm2Sync(["delete", pm2UpdaterName()], 15_000);
+  } catch {
+    /* ignore */
+  }
 }
 
 export async function checkForUpdate(): Promise<{

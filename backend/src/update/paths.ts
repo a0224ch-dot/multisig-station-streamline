@@ -58,6 +58,11 @@ export function pm2AppName(): string {
   return process.env.PM2_NAME?.trim() || "multisig-streamline-api";
 }
 
+/** 更新任务单独占一个 PM2 进程，停 API 时不会被一起杀掉 */
+export function pm2UpdaterName(): string {
+  return process.env.PM2_UPDATER_NAME?.trim() || "multisig-streamline-updater";
+}
+
 export function healthCheckUrl(): string {
   const port = process.env.PORT || "8791";
   return (

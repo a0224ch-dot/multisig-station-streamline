@@ -559,8 +559,8 @@
         "title": "7. System updates",
         "steps": [
           "Updates → Check for updates → Update now.",
-          "The updater stops the API, replaces files, migrates the database, then starts the process with a fixed command. .env and the database are kept.",
-          "If you briefly see a failed request or the login page, wait a minute and open admin again. Do not click Update now repeatedly.",
+          "The updater runs as its own process: it stops the API, replaces files, migrates the database, then starts the API. .env and the database are kept.",
+          "The page may be briefly unavailable and will retry status automatically. Do not click Update now repeatedly.",
           "Release notes show a short summary only (bug fixes / feature updates)."
         ]
       }
