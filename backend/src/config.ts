@@ -5,16 +5,17 @@ const SETTING_KEY = "active_network";
 let cached: Network | null = null;
 
 function parseNetwork(raw: string | null | undefined): Network {
-  return (raw || "").toLowerCase() === "mainnet" ? Network.mainnet : Network.shasta;
+  const v = (raw || "").toLowerCase();
+  return v === "shasta" ? Network.shasta : Network.mainnet;
 }
 
 export async function getNetwork(): Promise<Network> {
   if (cached) return cached;
   try {
     const row = await prisma.appSetting.findUnique({ where: { key: SETTING_KEY } });
-    cached = row ? parseNetwork(row.value) : Network.shasta;
+    cached = row ? parseNetwork(row.value) : Network.mainnet;
   } catch {
-    cached = Network.shasta;
+    cached = Network.mainnet;
   }
   return cached;
 }
