@@ -9,7 +9,11 @@ export function isValidLandingSlug(slug: string): boolean {
 }
 
 export function publicOrigin(): string {
-  return (process.env.FRONTEND_ORIGIN || "http://localhost:5174").replace(/\/$/, "");
+  return (
+    process.env.BRANCH_PUBLIC_URL ||
+    process.env.FRONTEND_ORIGIN ||
+    "http://localhost:5175"
+  ).replace(/\/$/, "");
 }
 
 export async function getLandingSlug(): Promise<string> {
@@ -28,6 +32,14 @@ export async function setLandingSlug(input: string): Promise<string> {
   }
   await setSetting(SLUG_KEY, slug);
   return slug;
+}
+
+export function publicOpenPath(): string {
+  return "/open";
+}
+
+export function publicOpenUrl(): string {
+  return `${publicOrigin()}${publicOpenPath()}`;
 }
 
 export function landingPath(slug: string): string {
@@ -50,7 +62,15 @@ export async function getLandingInfo(): Promise<{
   slug: string;
   path: string;
   url: string;
+  openPath: string;
+  openUrl: string;
 }> {
   const slug = await getLandingSlug();
-  return { slug, path: landingPath(slug), url: landingUrl(slug) };
+  return {
+    slug,
+    path: landingPath(slug),
+    url: landingUrl(slug),
+    openPath: publicOpenPath(),
+    openUrl: publicOpenUrl(),
+  };
 }

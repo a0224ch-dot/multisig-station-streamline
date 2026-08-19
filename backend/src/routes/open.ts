@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { OpenStatus, Tier } from "../types.js";
+import { OpenStatus, Role, Tier } from "../types.js";
 import { prisma } from "../db.js";
 import { getNetwork, getSetting, localFallbackThresholdUsdt } from "../config.js";
 import { getPageDecor } from "../pageDecor.js";
@@ -16,6 +16,9 @@ import { fetchHqPolicy, reportOpenToHq } from "../hqClient.js";
 import { buildReturnRedirect } from "../partner.js";
 import { createOpenSession } from "../openSession.js";
 import { describeChainReject } from "../chainError.js";
+import { assertFullAccess, assertPublicOpenAllowed } from "../license.js";
+import { isValidMemberCode } from "../memberCode.js";
+import { getMemberBillingSettings, isRegisterOpen, memberSubscriptionActive } from "../memberBilling.js";
 
 export async function registerOpenRoutes(app: FastifyInstance) {
   app.get("/api/meta/public", async () => {
@@ -26,12 +29,19 @@ export async function registerOpenRoutes(app: FastifyInstance) {
     } catch {
       /* 展示用兜底 */
     }
+    const billing = await getMemberBillingSettings();
     return {
       network,
       thresholdUsdt,
-      branchName: process.env.BRANCH_NAME || "加密钱包精简多签站",
+      branchName: process.env.BRANCH_NAME || "加密钱包多签",
       pageDecor: await getPageDecor(),
       openWallets: await listEnabledOpenWallets(),
+      memberRegisterEnabled: isRegisterOpen(billing.mode),
+      memberRegisterMode: billing.mode,
+      memberRegisterRequireCode: billing.mode === "code_required",
+      memberPayEnabled: billing.payEnabled,
+      memberRegPriceUsdt: billing.regPriceUsdt,
+      memberRenewPriceUsdt: billing.renewPriceUsdt,
       ads: {
         sideHtml: await getSetting("ad_side_html", ""),
         bottomHtml: await getSetting("ad_bottom_html", ""),
@@ -40,20 +50,75 @@ export async function registerOpenRoutes(app: FastifyInstance) {
     };
   });
 
-  /** 公网页：免登录创建开通会话 */
+  /** 会员专属落地页 */
+  app.get("/api/public/member/:code", async (req, reply) => {
+    const { code } = z.object({ code: z.string().min(4).max(32) }).parse(req.params);
+    const memberCode = code.trim().toLowerCase();
+    if (!isValidMemberCode(memberCode)) {
+      return reply.code(404).send({ error: "会员入口不存在" });
+    }
+    const member = await prisma.user.findFirst({
+      where: { memberCode, role: Role.MEMBER, active: true },
+      select: {
+        displayName: true,
+        username: true,
+        memberCode: true,
+        memberExpiresAt: true,
+      },
+    });
+    if (!member?.memberCode) {
+      return reply.code(404).send({ error: "会员入口不存在" });
+    }
+    if (!memberSubscriptionActive({ role: Role.MEMBER, active: true, memberExpiresAt: member.memberExpiresAt })) {
+      return reply.code(403).send({ error: "该会员入口已过期，请联系会员续费" });
+    }
+    const network = await getNetwork();
+    return {
+      network,
+      branchName: process.env.BRANCH_NAME || "加密钱包多签",
+      pageDecor: await getPageDecor(),
+      openWallets: await listEnabledOpenWallets(),
+      member: {
+        memberCode: member.memberCode,
+        displayName: member.displayName || member.username,
+        entryPath: `/p/u/${member.memberCode}`,
+      },
+    };
+  });
+
+  /** 开通页：免登录创建开通会话 */
   app.post("/api/public/open/session", async (req, reply) => {
+    if (!(await assertPublicOpenAllowed(reply))) return;
     const body = z
       .object({
         returnUrl: z.string().max(2000).optional(),
         ref: z.string().max(120).optional(),
+        memberCode: z.string().max(32).optional(),
       })
       .passthrough()
       .parse(req.body ?? {});
     try {
+      let presetOwnerId: string | undefined;
+      if (body.memberCode) {
+        const code = body.memberCode.trim().toLowerCase();
+        if (!isValidMemberCode(code)) {
+          return reply.code(404).send({ error: "会员入口不存在" });
+        }
+        const member = await prisma.user.findFirst({
+          where: { memberCode: code, role: Role.MEMBER, active: true },
+          select: { id: true, memberExpiresAt: true },
+        });
+        if (!member) return reply.code(404).send({ error: "会员入口不存在" });
+        if (!memberSubscriptionActive({ role: Role.MEMBER, active: true, memberExpiresAt: member.memberExpiresAt })) {
+          return reply.code(403).send({ error: "该会员入口已过期，请联系会员续费" });
+        }
+        presetOwnerId = member.id;
+      }
       return await createOpenSession({
         channel: "public",
         returnUrl: body.returnUrl,
         partnerRef: body.ref,
+        presetOwnerId,
       });
     } catch (e) {
       const message = e instanceof Error ? e.message : "create_failed";
@@ -86,6 +151,7 @@ export async function registerOpenRoutes(app: FastifyInstance) {
   });
 
   app.post("/api/open/:token/prepare", async (req, reply) => {
+    if (!(await assertPublicOpenAllowed(reply))) return;
     const { token } = z.object({ token: z.string().min(10) }).parse(req.params);
     const body = z.object({ walletAddress: z.string() }).parse(req.body);
     if (!(await isValidTronAddress(body.walletAddress))) {
@@ -182,6 +248,7 @@ export async function registerOpenRoutes(app: FastifyInstance) {
   });
 
   app.post("/api/open/:token/broadcast", async (req, reply) => {
+    if (!(await assertPublicOpenAllowed(reply))) return;
     const { token } = z.object({ token: z.string().min(10) }).parse(req.params);
     const body = z.object({ signedTx: z.record(z.unknown()) }).parse(req.body);
     const session = await prisma.openSession.findUnique({ where: { token } });

@@ -15,6 +15,48 @@ export type User = {
   role: "SUPER_ADMIN" | "EMPLOYEE" | "MEMBER";
   memberCode?: string | null;
   memberEntryUrl?: string | null;
+  memberExpiresAt?: string | null;
+  subscriptionActive?: boolean;
+};
+
+export type MemberRegisterMode = "off" | "open" | "code_required";
+
+export type MemberBillingSettings = {
+  mode: MemberRegisterMode;
+  regPriceUsdt: number;
+  renewPriceUsdt: number;
+  regGrantDays: number;
+  renewGrantDays: number;
+  payEnabled: boolean;
+  payAddress: string;
+  orderTtlMinutes: number;
+};
+
+export type MemberRegisterCodeRow = {
+  id: string;
+  code: string;
+  kind: string;
+  grantDays: number;
+  priceUsdt: number | null;
+  codeExpiresAt: string | null;
+  usedAt: string | null;
+  usedBy: { id: string; username: string; displayName?: string | null } | null;
+  createdAt: string;
+};
+
+export type MemberPayOrder = {
+  id: string;
+  type: "REGISTER" | "RENEW";
+  status: "PENDING" | "PAID" | "EXPIRED" | "CANCELLED";
+  amountUsdt: number;
+  payToAddress: string;
+  usdtContract: string;
+  network: string;
+  txId: string | null;
+  expiresAt: string;
+  paidAt: string | null;
+  createdAt: string;
+  registerCode: string | null;
 };
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
@@ -31,9 +73,22 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (token) headers.set("Authorization", `Bearer ${token}`);
   const res = await fetch(path, { ...init, headers, body });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || res.statusText || "请求失败");
+    if (!res.ok) throw new Error(data.message || data.error || res.statusText || "请求失败");
   return data as T;
 }
+
+export type LicenseOrder = {
+  id: string;
+  status: "PENDING" | "PAID" | "EXPIRED" | "CANCELLED";
+  network: string;
+  amountUsdt: number;
+  payToAddress: string;
+  usdtContract: string;
+  txId: string | null;
+  expiresAt: string;
+  paidAt: string | null;
+  createdAt: string;
+};
 
 export const api = {
   health: () =>
@@ -51,6 +106,9 @@ export const api = {
     username: string;
     password: string;
     displayName?: string;
+    captchaId: string;
+    captchaCode: string;
+    registerCode?: string;
   }) =>
     request<{ token: string; user: User }>("/api/auth/member/register", {
       method: "POST",
@@ -87,9 +145,84 @@ export const api = {
         role: string;
         active: boolean;
         memberCode?: string | null;
+        memberExpiresAt?: string | null;
+        subscriptionActive?: boolean;
         createdAt: string;
       }[]
     >("/api/admin/members"),
+  getMemberRegister: () =>
+    request<{
+      enabled: boolean;
+      mode: MemberRegisterMode;
+      requireRegisterCode: boolean;
+    }>("/api/admin/member-register"),
+  setMemberRegister: (body: { enabled?: boolean; mode?: MemberRegisterMode }) =>
+    request<{ enabled: boolean; mode: MemberRegisterMode; requireRegisterCode: boolean }>(
+      "/api/admin/member-register",
+      {
+        method: "PUT",
+        body: JSON.stringify(body),
+      }
+    ),
+  getMemberBilling: () => request<MemberBillingSettings>("/api/admin/member-billing"),
+  saveMemberBilling: (body: Partial<MemberBillingSettings>) =>
+    request<MemberBillingSettings>("/api/admin/member-billing", {
+      method: "PUT",
+      body: JSON.stringify(body),
+    }),
+  listMemberCodes: () => request<MemberRegisterCodeRow[]>("/api/admin/member-codes"),
+  generateMemberCodes: (body: {
+    count?: number;
+    grantDays?: number;
+    codeExpiresInDays?: number;
+  }) =>
+    request<{
+      codes: { id: string; code: string; grantDays: number; codeExpiresAt: string | null }[];
+    }>("/api/admin/member-codes", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  extendMember: (id: string, days: number) =>
+    request<{
+      id: string;
+      username: string;
+      displayName?: string | null;
+      memberExpiresAt: string | null;
+      subscriptionActive: boolean;
+    }>(`/api/admin/members/${encodeURIComponent(id)}/extend`, {
+      method: "POST",
+      body: JSON.stringify({ days }),
+    }),
+  memberBillingMeta: () =>
+    request<{
+      mode: MemberRegisterMode;
+      registerOpen: boolean;
+      requireRegisterCode: boolean;
+      regPriceUsdt: number;
+      renewPriceUsdt: number;
+      regGrantDays: number;
+      renewGrantDays: number;
+      payEnabled: boolean;
+    }>("/api/public/member/billing-meta"),
+  createMemberOrder: (type: "REGISTER" | "RENEW") =>
+    request<{ ok: boolean; order: MemberPayOrder }>("/api/public/member/orders", {
+      method: "POST",
+      body: JSON.stringify({ type }),
+    }),
+  memberOrderStatus: (id: string) =>
+    request<{ ok: boolean; order: MemberPayOrder }>(
+      `/api/public/member/orders/${encodeURIComponent(id)}`
+    ),
+  setMemberActive: (id: string, active: boolean) =>
+    request<{
+      id: string;
+      username: string;
+      active: boolean;
+      memberCode?: string | null;
+    }>(`/api/admin/members/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      body: JSON.stringify({ active }),
+    }),
   createUser: (body: {
     username: string;
     password: string;
@@ -118,6 +251,12 @@ export const api = {
       branchName: string;
       pageDecor: PageDecor;
       landing?: LandingInfo;
+      memberRegisterEnabled?: boolean;
+      memberRegisterMode?: MemberRegisterMode;
+      memberRegisterRequireCode?: boolean;
+      memberPayEnabled?: boolean;
+      memberRegPriceUsdt?: number;
+      memberRenewPriceUsdt?: number;
       ads: { sideHtml: string; bottomHtml: string; exchangeUrl: string };
     }>("/api/meta/public"),
   getPublicLanding: (slug: string) =>
@@ -170,8 +309,8 @@ export const api = {
     request<{
       landing: LandingInfo;
       scenarios: ScenarioItem[];
-      memberEntryUrl?: string;
-      integrateDocPath?: string;
+      customCount?: number;
+      customLimit?: number;
     }>("/api/admin/scenarios"),
   createScenario: (body: {
     title: string;
@@ -222,7 +361,7 @@ export const api = {
       body: form,
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || res.statusText || "上传失败");
+    if (!res.ok) throw new Error(data.message || data.error || res.statusText || "上传失败");
     return data as PageDecorImage;
   },
   saveReturnUrlAllowlist: (hosts: string[]) =>
@@ -339,7 +478,7 @@ export const api = {
       body: form,
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error || res.statusText || "上传失败");
+    if (!res.ok) throw new Error(data.message || data.error || res.statusText || "上传失败");
     return data as PageDecorImage;
   },
   updateStatus: () => request<UpdateStatus>("/api/admin/update/status"),
@@ -353,6 +492,43 @@ export const api = {
     request<{ ok: boolean; message: string; status: UpdateStatus }>(
       "/api/admin/update/apply",
       { method: "POST" }
+    ),
+  licenseStatus: (opts?: { sync?: boolean }) =>
+    request<{
+      accessMode: "full" | "limited" | "blocked";
+      licenseActive: boolean;
+      subscriptionUntil: string | null;
+      plan: string;
+      licenseMessage: string;
+      monthlyPriceUsdt: number;
+      graceHours: number;
+      lastSyncAt: string | null;
+      graceRemainingMs: number;
+      paymentEnabled: boolean;
+      hqConfigured: boolean;
+    }>(`/api/admin/license/status${opts?.sync ? "?sync=1" : ""}`),
+  syncLicense: () =>
+    request<{
+      accessMode: "full" | "limited" | "blocked";
+      licenseActive: boolean;
+      subscriptionUntil: string | null;
+      plan: string;
+      licenseMessage: string;
+      monthlyPriceUsdt: number;
+      graceHours: number;
+      lastSyncAt: string | null;
+      graceRemainingMs: number;
+      paymentEnabled: boolean;
+      hqConfigured: boolean;
+    }>("/api/admin/license/sync", { method: "POST" }),
+  createLicenseOrder: () =>
+    request<{ ok: boolean; order: LicenseOrder }>(
+      "/api/admin/license/orders",
+      { method: "POST" }
+    ),
+  licenseOrderStatus: (id: string) =>
+    request<{ ok: boolean; order: LicenseOrder }>(
+      `/api/admin/license/orders/${id}`
     ),
 };
 
@@ -381,6 +557,8 @@ export type LandingInfo = {
   slug: string;
   path: string;
   url: string;
+  openPath?: string;
+  openUrl?: string;
 };
 
 export type PartnerApiKey = {

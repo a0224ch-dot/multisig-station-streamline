@@ -17,11 +17,54 @@ model User {
   /// 会员专属短码（系统生成）；仅 MEMBER 有值
   memberCode   String?  @unique
   active       Boolean  @default(true)
+  /// 会员权限到期；空表示不限期（旧账号或开放注册未设限时）
+  memberExpiresAt DateTime?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   openSessions OpenSession[]
   auditLogs    AuditLog[]
   scenarios    Scenario[]
+  memberRegisterCodesUsed MemberRegisterCode[] @relation("MemberRegisterCodeUsedBy")
+  memberPayOrders         MemberPayOrder[]
+}
+
+model MemberRegisterCode {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  /// register | renew（renew 码预留；当前续费走订单）
+  kind          String
+  grantDays     Int
+  priceUsdt     Float    @default(0)
+  codeExpiresAt DateTime?
+  usedAt        DateTime?
+  usedById      String?
+  usedBy        User?    @relation("MemberRegisterCodeUsedBy", fields: [usedById], references: [id])
+  createdById   String?
+  orderId       String?  @unique
+  order         MemberPayOrder? @relation(fields: [orderId], references: [id])
+  createdAt     DateTime @default(now())
+
+  @@index([kind, usedAt])
+}
+
+model MemberPayOrder {
+  id            String   @id @default(cuid())
+  /// REGISTER | RENEW
+  type          String
+  status        String   @default("PENDING")
+  amountUsdt    Float
+  payToAddress  String
+  usdtContract  String
+  network       String
+  txId          String?  @unique
+  expiresAt     DateTime
+  paidAt        DateTime?
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  registerCode  MemberRegisterCode?
+  createdAt     DateTime @default(now())
+
+  @@index([status, expiresAt])
 }
 
 /// 需要多签的应用场景（内置可恢复；自定义归创建人）

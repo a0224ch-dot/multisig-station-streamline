@@ -255,12 +255,29 @@ async function restartPm2(): Promise<void> {
   const name = pm2AppName();
   appendLog(`重启服务 ${name}…`);
   try {
-    await runCmd("pm2", ["restart", name], installRoot(), 60_000);
+    await runCmd("pm2", ["restart", name, "--update-env"], installRoot(), 60_000);
   } catch {
     // 若未用 pm2，尝试提示；开发环境可能没有 pm2
     appendLog("pm2 restart 失败，尝试直接结束进程由守护拉起…");
     throw new Error(`无法重启 PM2 进程「${name}」，请确认服务器已用 pm2 启动`);
   }
+}
+
+const OLD_RELEASES_LATEST =
+  "https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json";
+const NEW_RELEASES_LATEST =
+  "https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json";
+
+/** 旧仓 OTA 跳转后，把 .env 里的清单地址改到新发布仓（不改其它配置） */
+function migrateUpdateReleasesUrl(): void {
+  const envFile = path.join(installRoot(), "backend", ".env");
+  if (!fs.existsSync(envFile)) return;
+  const raw = fs.readFileSync(envFile, "utf8");
+  if (!raw.includes("e12games/multisig-station-streamline-releases")) return;
+  const next = raw.split(OLD_RELEASES_LATEST).join(NEW_RELEASES_LATEST);
+  if (next === raw) return;
+  fs.writeFileSync(envFile, next, "utf8");
+  appendLog("已将 UPDATE_RELEASES_URL 迁至新发布仓");
 }
 
 function overlayFromPackage(pkgRoot: string): void {
@@ -343,6 +360,7 @@ export async function runUpdateJob(): Promise<void> {
     const pkgRoot = findPackageRoot(extractDir);
     overlayFromPackage(pkgRoot);
     writeLocalVersion(manifest.version);
+    migrateUpdateReleasesUrl();
     appendLog("文件已覆盖（已跳过 .env 与数据库）");
 
     const backendDir = path.join(installRoot(), "backend");

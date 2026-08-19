@@ -1,12 +1,16 @@
 # 加密钱包精简多签站（multisig-station-streamline）
 
-可外发的多签站源码：公网页开通 + 精简管理后台。  
-Crypto Wallet Streamline Multisig Station: public open page + lightweight admin panel.
+可外发的多签站源码：会员自建开通码并贴到场景 + 精简管理后台。  
+Crypto Wallet Streamline Multisig Station: members make open codes for their own scenarios + lightweight admin.
 
 ## 核心功能 / Features
 
-- 公网页扫码或链接开通多签（地址不变）
-- 后台含：多签地址、网络设置、已开通、公网页装修、开通钱包、系统更新、使用说明、修改密码
+- **主功用**：会员配自己的 2 址，专属入口 `/p/u/{码}` 出开通码；在「场景」生成二维码贴到自己的应用
+- 客户扫码后钱包打开 `/o/{会话}` 签名（地址不变）
+- 站点默认开通门 `/open`（与 `/p/路径` 同一页，走站长地址）
+- 介绍首页 `/`：登录 / 条件注册，不出开通码
+- 后台含：多签地址、网络设置、已开通、公网页装修（开通页外观）、场景（贴码卡片）、会员（注册与向本站收费）、开通钱包、站点月卡（向总部）、系统更新、使用说明、修改密码
+- 会员后台另有「会员月卡」（向本站续权限，与站点月卡不是同一笔）
 - `/api/health` 返回 `"edition":"streamline"`
 
 ## 快速搭建（中文主）/ Quick Setup (EN)
@@ -39,8 +43,12 @@ try_files $uri $uri/ /index.html;
 
 ### 4) 验证访问 / Verify
 
-- 公网页：`https://your-domain.com/`
-- 后台：`https://your-domain.com/branch/login`
+- 介绍首页：`https://your-domain.com/`
+- 会员专属出码：`https://your-domain.com/p/u/{码}`
+- 钱包签名：`https://your-domain.com/o/{会话}`
+- 站点开通页：`https://your-domain.com/open`（与 `/p/路径` 同一页）
+- 后台登录：`https://your-domain.com/login`（管理员与会员同一入口；`/branch/login` 仍可用）
+- 会员注册：超管在「会员」页选注册档并点保存；须注册码时可链上购码（先填本站 USDT 收款地址）
 - 健康检查：`https://your-domain.com/api/health`（应含 `"edition":"streamline"`）
 
 ## VPS / 宝塔搭建入口
@@ -62,7 +70,7 @@ Default API port: `8791`
 ## 发版与在线更新 / Release & OTA Update
 
 ```bash
-VERSION=20260818-6 NOTES="修复已知 BUG / 更新功能" bash deploy/pack-release.sh
+VERSION=20260818-9 NOTES="修复已知 BUG / 更新功能" bash deploy/pack-release.sh
 ```
 
 - 更新发布仓 / Release repo: https://github.com/a0224ch-dot/multisig-station-streamline-releases

@@ -1,15 +1,18 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { api, type User } from "../api";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { DEV_TELEGRAM_HANDLE, DEV_TELEGRAM_URL } from "../devContact";
 
-export default function BranchLoginPage({
+/** 管理员与会员同一入口，登录后按角色进对应后台 */
+export default function LoginPage({
   onLogin,
 }: {
   onLogin: (token: string, user: User) => void;
 }) {
   const { t } = useTranslation();
+  const [registerOpen, setRegisterOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [captchaCode, setCaptchaCode] = useState("");
@@ -37,6 +40,10 @@ export default function BranchLoginPage({
 
   useEffect(() => {
     void refreshCaptcha();
+    void api
+      .publicMeta()
+      .then((m) => setRegisterOpen(Boolean(m.memberRegisterEnabled)))
+      .catch(() => {});
   }, [refreshCaptcha]);
 
   async function submit(e: FormEvent) {
@@ -124,7 +131,16 @@ export default function BranchLoginPage({
             {busy ? t("login.submitting") : t("login.submit")}
           </button>
         </form>
-        <p className="muted" style={{ marginTop: "1rem", marginBottom: 0, fontSize: "0.85rem" }}>
+        <p className="muted" style={{ marginTop: "1rem", marginBottom: 0 }}>
+          {registerOpen && (
+            <>
+              <Link to="/member/register">{t("member.registerLink")}</Link>
+              {" · "}
+            </>
+          )}
+          <Link to="/">{t("member.backHome")}</Link>
+        </p>
+        <p className="muted" style={{ marginTop: "0.75rem", marginBottom: 0, fontSize: "0.85rem" }}>
           {t("common.developerTelegram")}{" "}
           <a href={DEV_TELEGRAM_URL} target="_blank" rel="noreferrer">
             {DEV_TELEGRAM_HANDLE}

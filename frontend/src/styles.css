@@ -96,6 +96,11 @@ button, input, select, textarea { font: inherit; }
   justify-content: center;
   min-height: 50vh;
 }
+.qr-box {
+  background: #fff;
+  border-radius: 12px;
+  display: inline-block;
+}
 .home-qr .qr-box {
   background: #fff;
   padding: 1rem;

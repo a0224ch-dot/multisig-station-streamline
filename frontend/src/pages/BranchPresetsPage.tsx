@@ -20,7 +20,9 @@ export default function BranchPresetsPage({ user }: { user: User }) {
   const [rows, setRows] = useState<Row[]>(() => fixedRows([], PRESET_COUNT));
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
-  const canEdit = user.role === "SUPER_ADMIN" || user.role === "EMPLOYEE";
+  const canEdit =
+    user.role === "SUPER_ADMIN" || user.role === "EMPLOYEE" || user.role === "MEMBER";
+  const isMember = user.role === "MEMBER";
 
   useEffect(() => {
     void api
@@ -46,11 +48,15 @@ export default function BranchPresetsPage({ user }: { user: User }) {
     <div>
       <PageIntro>
         <Trans
-          i18nKey="presets.intro"
+          i18nKey={isMember ? "presets.memberIntro" : "presets.intro"}
           components={{
             strong: <strong />,
             linkNetwork: <Link to="/branch/network" />,
-            linkHelp: <Link to="/branch/help#help-presets" />,
+            linkHelp: (
+              <Link
+                to={isMember ? "/member/help#help-presets" : "/branch/help#help-presets"}
+              />
+            ),
           }}
         />
         <HelpTip text={t("presets.tip")} />
@@ -58,7 +64,12 @@ export default function BranchPresetsPage({ user }: { user: User }) {
 
       <form className="card" onSubmit={(e) => void save(e)}>
         <h2 style={{ marginTop: 0 }}>{t("presets.title")}</h2>
-        <p className="muted">{t("presets.subtitle")}</p>
+        {isMember && user.memberEntryUrl && (
+          <p className="muted">
+            {t("presets.memberEntry")}{" "}
+            <code>{user.memberEntryUrl}</code>
+          </p>
+        )}
         {rows.map((row, i) => (
           <div key={i} style={{ display: "grid", gap: "0.5rem", marginBottom: "0.75rem" }}>
             <input

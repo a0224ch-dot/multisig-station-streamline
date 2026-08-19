@@ -9,6 +9,7 @@ import {
 } from "../update/status.js";
 import { checkForUpdate, spawnUpdateRunner } from "../update/apply.js";
 import { isNewer } from "../update/version.js";
+import { assertFullAccess } from "../license.js";
 
 export async function registerUpdateRoutes(app: FastifyInstance) {
   app.get("/api/admin/update/status", { preHandler: [app.authenticate] }, async (req) => {
@@ -21,9 +22,10 @@ export async function registerUpdateRoutes(app: FastifyInstance) {
     };
   });
 
-  app.post("/api/admin/update/check", { preHandler: [app.authenticate] }, async (req) => {
+  app.post("/api/admin/update/check", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
+    if (!(await assertFullAccess(reply))) return;
     const cur = readUpdateStatus();
     if (isBusyPhase(cur.phase)) {
       return { ...cur, error: "更新进行中，请稍候" };
@@ -34,6 +36,7 @@ export async function registerUpdateRoutes(app: FastifyInstance) {
   app.post("/api/admin/update/apply", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
+    if (!(await assertFullAccess(reply))) return;
     const cur = readUpdateStatus();
     if (isBusyPhase(cur.phase)) {
       return reply.code(409).send({ error: "已有更新任务在进行中" });

@@ -12,8 +12,16 @@ const manifestSchema = z.object({
 export async function fetchLatestManifest(
   url = releasesLatestUrl()
 ): Promise<ReleaseManifest> {
-  const res = await fetch(url, {
-    headers: { Accept: "application/json", "User-Agent": "multisig-station-branch-updater" },
+  const fetchUrl = url.includes("?")
+    ? `${url}&_=${Date.now()}`
+    : `${url}?_=${Date.now()}`;
+  const res = await fetch(fetchUrl, {
+    cache: "no-store",
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "multisig-station-streamline-updater",
+      "Cache-Control": "no-cache",
+    },
   });
   if (!res.ok) {
     throw new Error(`拉取版本清单失败 HTTP ${res.status}（${url}）`);

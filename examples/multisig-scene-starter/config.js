@@ -3,8 +3,8 @@
  * Only configure entryUrl (streamline public home). Do NOT hardcode wallet deep links.
  */
 window.SCENE_CONFIG = {
-  /** 必填：精简版公网页，例如 https://your-streamline.example/ */
-  entryUrl: "https://multisig-station-streamline.iqiyia.cyou/",
+  /** 必填：精简版开通页，例如 https://your-streamline.example/open */
+  entryUrl: "https://multisig-station-streamline.iqiyia.cyou/open",
 
   /**
    * 可选：开通完成后跳回本页（若站点开启回跳校验，须在白名单中）。

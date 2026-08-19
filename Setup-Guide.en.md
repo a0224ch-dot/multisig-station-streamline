@@ -9,8 +9,10 @@ Support: [@usdtsoft306](https://t.me/usdtsoft306)
 
 ## What this project provides
 
-- Public page: users scan QR / open link and sign in wallet to enable multisig.
-- Admin page: configure multisig addresses, network, wallet entries, public page style, and updates.
+- Intro home `/`: product intro + sign-in (no open QR).
+- Open page `/open` (same as `/p/path`): scan QR, sign in wallet, enable multisig.
+- Members: set 2 addresses, put scenario QRs in their apps; customers open `/p/u/{code}`.
+- Admin: `https://your-domain.com/login` (staff and members use the same form).
 
 Health check endpoint:
 
@@ -83,8 +85,11 @@ DOMAIN='your-domain.com' API_PORT=8791 \
 
 ## 4) Verify
 
-- Public page: `https://your-domain.com/`
-- Admin login: `https://your-domain.com/branch/login`
+- Intro home: `https://your-domain.com/`
+- Member open QR: `https://your-domain.com/p/u/{code}`
+- Wallet sign: `https://your-domain.com/o/{session}`
+- Site open page: `https://your-domain.com/open` (same page as `/p/path`)
+- Admin login: `https://your-domain.com/login` (`/branch/login` still works)
 - Health: `https://your-domain.com/api/health` (must contain `"edition":"streamline"`)
 
 Then in admin panel:

@@ -1,5 +1,5 @@
 /** 使用说明版本，须与根目录 VERSION 一致 */
-export const HELP_DOC_VERSION = "20260818-6";
+export const HELP_DOC_VERSION = "20260818-19";
 
 export type HelpSectionMeta = {
   id: string;
@@ -14,6 +14,10 @@ export const HELP_SECTION_META: HelpSectionMeta[] = [
   { id: "presets" },
   { id: "wallets" },
   { id: "decor" },
+  { id: "scenarios" },
+  { id: "members" },
+  { id: "member-plan" },
+  { id: "license" },
   { id: "open-wallets" },
   { id: "update" },
 ];

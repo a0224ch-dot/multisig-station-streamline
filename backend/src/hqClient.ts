@@ -2,6 +2,8 @@ import type { Network } from "./types.js";
 import { branchApiKey, hqBaseUrl } from "./config.js";
 import { getNetwork } from "./config.js";
 import { prisma } from "./db.js";
+import type { HqLicensePayload } from "./license.js";
+import { saveLicenseFromHq } from "./license.js";
 
 export type HqSigner = { address: string; name: string; weight: number };
 
@@ -29,22 +31,58 @@ async function hqFetch(path: string, init?: RequestInit) {
   return data;
 }
 
+function parseLicensePayload(data: Record<string, unknown>): HqLicensePayload | null {
+  if (typeof data.licenseActive !== "boolean") return null;
+  const accessMode = data.accessMode;
+  if (
+    accessMode !== "full" &&
+    accessMode !== "limited" &&
+    accessMode !== "blocked"
+  ) {
+    return null;
+  }
+  return {
+    licenseActive: data.licenseActive,
+    subscriptionUntil:
+      typeof data.subscriptionUntil === "string" ? data.subscriptionUntil : null,
+    plan: typeof data.plan === "string" ? data.plan : "none",
+    edition: typeof data.edition === "string" ? data.edition : undefined,
+    licenseMessage:
+      typeof data.licenseMessage === "string" ? data.licenseMessage : "",
+    accessMode,
+    monthlyPriceUsdt: Number(data.monthlyPriceUsdt) || 50,
+    trialDays: typeof data.trialDays === "number" ? data.trialDays : undefined,
+    renewDays: typeof data.renewDays === "number" ? data.renewDays : undefined,
+    graceHours: typeof data.graceHours === "number" ? data.graceHours : undefined,
+    paymentEnabled:
+      typeof data.paymentEnabled === "boolean" ? data.paymentEnabled : undefined,
+  };
+}
+
+async function cacheLicenseFromResponse(data: Record<string, unknown>) {
+  const license = parseLicensePayload(data);
+  if (license) await saveLicenseFromHq(license);
+}
+
 export async function registerToHq(profile: {
   name: string;
   contact?: string;
   publicUrl?: string;
   network?: Network;
   openCountHint?: number;
+  edition?: "streamline" | "branch";
 }) {
-  return hqFetch("/api/branch/v1/register", {
+  const data = await hqFetch("/api/branch/v1/register", {
     method: "POST",
     body: JSON.stringify(profile),
-  }) as Promise<{
+  });
+  await cacheLicenseFromResponse(data);
+  return data as {
     ok: boolean;
     branchId: string;
     allowHighSigners: boolean;
     created: boolean;
-  }>;
+  };
 }
 
 export async function heartbeatToHq(profile: {
@@ -53,16 +91,19 @@ export async function heartbeatToHq(profile: {
   publicUrl?: string;
   network?: Network;
   openCountHint?: number;
+  edition?: "streamline" | "branch";
 }) {
-  return hqFetch("/api/branch/v1/heartbeat", {
+  const data = await hqFetch("/api/branch/v1/heartbeat", {
     method: "POST",
     body: JSON.stringify(profile),
-  }) as Promise<{
+  });
+  await cacheLicenseFromResponse(data);
+  return data as {
     ok: boolean;
     branchId: string;
     allowHighSigners: boolean;
     thresholdUsdt: number;
-  }>;
+  };
 }
 
 /** 同步折合阈值等策略 */
@@ -71,6 +112,7 @@ export async function fetchHqPolicy(): Promise<{
   allowHighSigners?: boolean;
 }> {
   const data = await hqFetch("/api/branch/v1/policy");
+  await cacheLicenseFromResponse(data);
   const thresholdUsdt = Number(data.thresholdUsdt);
   if (!Number.isFinite(thresholdUsdt) || thresholdUsdt <= 0) {
     throw Object.assign(new Error("策略阈值无效"), { statusCode: 409 });
@@ -137,5 +179,43 @@ export async function buildHqProfilePayload() {
     publicUrl: process.env.BRANCH_PUBLIC_URL || process.env.FRONTEND_ORIGIN || "",
     network,
     openCountHint,
+    edition: "streamline" as const,
   };
+}
+
+export type SubscriptionOrderView = {
+  id: string;
+  status: "PENDING" | "PAID" | "EXPIRED" | "CANCELLED";
+  network: string;
+  amountUsdt: number;
+  payToAddress: string;
+  usdtContract: string;
+  txId: string | null;
+  expiresAt: string;
+  paidAt: string | null;
+  createdAt: string;
+};
+
+export async function createSubscriptionOrderAtHq(): Promise<SubscriptionOrderView> {
+  const data = (await hqFetch("/api/branch/v1/subscription/orders", {
+    method: "POST",
+    body: JSON.stringify({}),
+  })) as { ok?: boolean; order?: SubscriptionOrderView };
+  if (!data.order) {
+    throw Object.assign(new Error("创建订单失败"), { statusCode: 409 });
+  }
+  return data.order;
+}
+
+export async function fetchSubscriptionOrderAtHq(
+  orderId: string
+): Promise<SubscriptionOrderView> {
+  const data = (await hqFetch(`/api/branch/v1/subscription/orders/${orderId}`)) as {
+    ok?: boolean;
+    order?: SubscriptionOrderView;
+  };
+  if (!data.order) {
+    throw Object.assign(new Error("订单不存在"), { statusCode: 404 });
+  }
+  return data.order;
 }

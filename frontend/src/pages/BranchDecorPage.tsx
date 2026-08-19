@@ -48,20 +48,22 @@ export default function BranchDecorPage({ user }: { user: User }) {
     [draft.bodyText, t]
   );
 
-  const entryUrl = useMemo(() => {
+  const openUrl = useMemo(() => {
+    if (landing?.openUrl) return landing.openUrl;
     if (landing?.url) {
       try {
-        const u = new URL(landing.url);
-        return `${u.origin}/`;
+        return `${new URL(landing.url).origin}/open`;
       } catch {
         /* fall through */
       }
     }
     if (typeof window !== "undefined") {
-      return `${window.location.origin}/`;
+      return `${window.location.origin}/open`;
     }
-    return "/";
+    return "/open";
   }, [landing]);
+
+  const slugUrl = landing?.url || "";
 
   if (user.role !== "SUPER_ADMIN" && user.role !== "EMPLOYEE") {
     return <div className="error">{t("common.noPermission")}</div>;
@@ -106,7 +108,7 @@ export default function BranchDecorPage({ user }: { user: User }) {
 
   async function copyEntry() {
     try {
-      await navigator.clipboard.writeText(entryUrl);
+      await navigator.clipboard.writeText(openUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -190,6 +192,19 @@ export default function BranchDecorPage({ user }: { user: User }) {
                 title={t("decor.pathTitle")}
               />
             </label>
+            {slugUrl && (
+              <div
+                className="muted"
+                style={{
+                  marginTop: "0.45rem",
+                  wordBreak: "break-all",
+                  fontFamily: "ui-monospace, monospace",
+                  fontSize: "0.85rem",
+                }}
+              >
+                {t("decor.slugUrlLabel")} {slugUrl}
+              </div>
+            )}
             <div
               style={{
                 marginTop: "0.5rem",
@@ -198,7 +213,7 @@ export default function BranchDecorPage({ user }: { user: User }) {
                 fontSize: "0.9rem",
               }}
             >
-              {entryUrl}
+              {t("decor.openEntryLabel")} {openUrl}
             </div>
             <div
               style={{
@@ -215,7 +230,7 @@ export default function BranchDecorPage({ user }: { user: User }) {
                 </button>
                 <HelpTip text={t("decor.entryTip")} />
               </span>
-              <a className="btn ghost" href={entryUrl} target="_blank" rel="noreferrer">
+              <a className="btn ghost" href={openUrl} target="_blank" rel="noreferrer">
                 {t("decor.preview")}
               </a>
             </div>
@@ -349,7 +364,7 @@ export default function BranchDecorPage({ user }: { user: User }) {
             <div className="home-qr" style={{ minHeight: "auto" }}>
               <div className="qr-box">
                 <QRCodeSVG
-                  value={entryUrl || "https://example.com/preview"}
+                  value={openUrl || "https://example.com/open"}
                   size={160}
                   level="M"
                   includeMargin

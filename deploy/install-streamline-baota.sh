@@ -15,7 +15,7 @@ set -uo pipefail
 
 SITE_DOMAIN="${SITE_DOMAIN:-multisig-streamline.example.com}"
 HQ_BASE_URL="${HQ_BASE_URL:-https://multisig-station.iqiyia.cyou}"
-BRANCH_NAME="${BRANCH_NAME:-加密钱包精简多签站}"
+BRANCH_NAME="${BRANCH_NAME:-加密钱包多签}"
 PM2_NAME="${PM2_NAME:-multisig-streamline-api}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-streamline}"
 GIT_BRANCH="${GIT_BRANCH:-main}"

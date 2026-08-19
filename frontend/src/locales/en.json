@@ -5,11 +5,16 @@
     "network": "Network",
     "wallets": "Opened",
     "decor": "Public Page",
+    "scenarios": "Scenarios",
+    "members": "Members",
     "openWallets": "Wallet Entries",
+    "subscription": "Site subscription",
+    "memberSubscription": "Member plan",
     "update": "Updates",
     "help": "Help",
     "password": "Password",
-    "publicPage": "Public Site",
+    "publicPage": "Intro",
+    "openPage": "Open page",
     "developer": "Dev {{handle}}",
     "logout": "Logout"
   },
@@ -29,11 +34,13 @@
   },
   "public": {
     "adminLogin": "Admin Login",
+    "login": "Sign in",
     "defaultTitle": "Wallet Multisig",
     "defaultBody": "Scan to enable multisig on this wallet. Your address stays the same; control becomes shared.",
     "guideTitle": "Multisig wallet · How to use",
     "guideLines": [
       "Multisig adds shared control to your existing wallet. The receive address does not change.",
+      "Members put open codes on their own scenarios. Customers scan, then the wallet opens /o/… to sign.",
       "TokenPocket / OKX / Bitget: scan from the wallet home screen. TronLink: open the link in Discover / Browser.",
       "The open code expires. Tap “Refresh code” when it does."
     ],
@@ -41,10 +48,21 @@
     "expiresLabel": "Valid until:",
     "refreshCode": "Refresh code",
     "generating": "Generating…",
-    "sessionError": "Could not create open session"
+    "sessionError": "Could not create open session",
+    "siteHome": "Intro home",
+    "homeTitle": "Crypto Wallet Multisig",
+    "homeLead": "Members create their own multisig open codes and place them on apps that need it. After a customer scans, the wallet address stays the same; control becomes shared.",
+    "homePoints": [
+      "After sign-in, set your two co-signer addresses. Your entry /p/u/{code} shows an open QR on the spot.",
+      "Under Scenarios, make a card (with ref) for each app and put the QR on a counter, H5, or campaign page.",
+      "Customers scan the scenario or entry QR; the wallet opens /o/{session} to sign.",
+      "The site default door is /open (staff addresses), separate from member entries. The intro home has no QR."
+    ],
+    "goOpen": "Site open page"
   },
   "open": {
     "connecting": "Connecting wallet and preparing multisig…",
+    "sessionHint": "This is the wallet sign page /o/{session}. Open codes come from a member entry /p/u/{code}, a scenario card, or site /open.",
     "success": "Multisig enabled",
     "fail": "Failed to enable",
     "retry": "Retry",
@@ -69,8 +87,8 @@
     "openFailedRetry": "Failed. Please try again"
   },
   "login": {
-    "title": "Crypto Wallet Streamline Multisig Station · Admin Login",
-    "subtitle": "Admin panel. Captcha required.",
+    "title": "Sign in",
+    "subtitle": "Staff and members use the same entry. You are taken to the matching panel after sign-in. Captcha required.",
     "username": "Username",
     "password": "Password",
     "captcha": "Captcha",
@@ -82,7 +100,8 @@
     "captchaLoadFailed": "Failed to load captcha",
     "submit": "Sign in",
     "submitting": "Signing in…",
-    "failed": "Login failed"
+    "failed": "Login failed",
+    "memberAccount": "This is a member account. Use the member sign-in page."
   },
   "presets": {
     "title": "Multisig Addresses",
@@ -91,7 +110,9 @@
     "addressPlaceholder": "TRON address",
     "saved": "Multisig addresses saved",
     "intro": "<strong>What this page does:</strong> Configure two co-signer addresses for opens on this site (excluding the user). Addresses are stored per network — switch network under <linkNetwork>Network</linkNetwork>. See <linkHelp>Help · Multisig Addresses</linkHelp>.",
-    "tip": "Wrong addresses cause failed opens. Confirm mainnet vs Shasta before saving."
+    "tip": "Wrong addresses cause failed opens. Confirm mainnet vs Shasta before saving.",
+    "memberIntro": "<strong>What this page does:</strong> Set your own two co-signer addresses. Opens from /p/u/{code} and your scenario cards use these. Then go to Scenarios to make QRs.",
+    "memberEntry": "Your entry:"
   },
   "network": {
     "title": "Network",
@@ -102,7 +123,7 @@
     "readonly": "Only super admin can change the network. Read-only view.",
     "save": "Save network",
     "saved": "Network saved",
-    "intro": "<strong>What this page does:</strong> Choose testnet or mainnet. Public QR codes, open sessions, and multisig addresses use the selected network. Use mainnet in production. See <linkHelp>Help · Network</linkHelp>.",
+    "intro": "<strong>What this page does:</strong> Choose testnet or mainnet. Open-page QR codes, open sessions, and multisig addresses use the selected network. Use mainnet in production. See <linkHelp>Help · Network</linkHelp>.",
     "tip": "Takes effect immediately. Confirm multisig addresses for the target network before switching to mainnet."
   },
   "wallets": {
@@ -122,17 +143,19 @@
   },
   "decor": {
     "title": "Public Page Design",
-    "subtitle": "Customize the public scan page and exchange landing page. QR codes are generated by the system. Add title/copy and up to 3 images (optional links).",
-    "intro": "<strong>What this page does:</strong> Edit title, copy, and images; copy the long-lived entry link for exchanges. See <linkHelp>Help · Public Page</linkHelp>.",
-    "entryTitle": "Exchange entry link (long-lived, for H5 / campaigns)",
+    "subtitle": "Customize the open page (/open and /p/path are the same). QR codes are generated by the system. Add title/copy and up to 3 images (optional links).",
+    "intro": "<strong>What this page does:</strong> Edit the open page (/open) title, copy, and images. This is the <strong>open-page look</strong>, not a scenario card. Copy the stable /open entry. Custom /p/path is the same page. Codes you paste into apps belong under Scenarios. See <linkHelp>Help · Public Page</linkHelp>.",
+    "entryTitle": "Open entry (long-lived)",
     "pathLabel": "Path",
     "pathPlaceholder": "exchange",
     "pathTitle": "Lowercase letters, digits, hyphens; 2–32 chars",
     "copyEntry": "Copy entry link",
     "copied": "Copied",
     "preview": "Open preview",
-    "entryTip": "Long-lived landing URL for exchange H5. A short open session is created only after the user taps start.",
-    "entryNote": "Users must tap start on this link to create a short open session. Save after changing the path. For post-open redirect, append <code>?returnUrl=https://exchange.example/done</code> and whitelist the domain.",
+    "entryTip": "Posters and scenarios should copy the fixed /open URL. Changing the custom path does not break /open.",
+    "entryNote": "Opening <code>/open</code> or <code>/p/path</code> shows the open QR (short session). They are the same page — no redirect. Save after changing the path.",
+    "slugUrlLabel": "Custom path (same open page):",
+    "openEntryLabel": "Stable open entry:",
     "pageTitle": "Page title (≤40 chars; site name if empty)",
     "bodyText": "Text beside QR (≤500 chars)",
     "images": "Images (max 3, ≤2MB each, jpg/png/webp)",
@@ -148,7 +171,7 @@
     "previewTitle": "Preview (mobile width)",
     "previewEntryNote": "Entry preview QR (not an open session)",
     "previewDefaultTitle": "Site name / custom title",
-    "saved": "Saved. Public page and entry link updated.",
+    "saved": "Saved. Open page and entry link updated.",
     "reset": "Reset defaults",
     "resetConfirm": "Reset defaults? Clears title, copy, images, and button (entry path kept).",
     "resetDone": "Defaults restored",
@@ -156,8 +179,180 @@
     "copyFailed": "Copy failed — select the link manually",
     "maxImages": "Maximum 3 images",
     "uploadFailed": "Upload failed",
-    "saveTip": "Saves copy, images, and entry path. Public pages update immediately.",
+    "saveTip": "Saves copy, images, and custom path. The open page updates immediately.",
     "resetTip": "Clears title, copy, images, and button. Entry path is kept."
+  },
+  "scenarios": {
+    "intro": "<strong>What this page does:</strong> Scenario <strong>cards</strong> with a QR (optional ref) to paste into an app. Open-page look is under <linkDecor>Public Page</linkDecor>. Customers open <code>/open</code>. See <linkHelp>Help · Scenarios</linkHelp>.",
+    "entryTitle": "Site entry",
+    "entryHint": "Use fixed <code>/open</code> for posters. Change the custom path under <linkDecor>Public Page</linkDecor>. Each scenario appends its own <code>ref</code>.",
+    "memberEntryHint": "This is your private entry. Customers who open here use your multisig addresses. Scenario cards add a <code>ref</code>.",
+    "entryTip": "Staff posters use fixed /open so a path change does not break them. Scenario QR codes include a ref.",
+    "copyEntry": "Copy entry link",
+    "copyScene": "Copy scenario link",
+    "copied": "Copied",
+    "copyPrompt": "Copy manually",
+    "create": "New scenario",
+    "createTip": "Staff can add up to 20 custom cards. Everyone can view; staff can only edit their own. Built-in counter is admin-only.",
+    "memberCreateTip": "You can add up to 5 scenario cards. Other members cannot see them.",
+    "customCount": "Custom {{count}} / {{limit}}",
+    "limitReached": "Custom scenarios are capped at {{limit}}",
+    "writeLocked": "Site subscription limited: you can still view cards and QR codes, but cannot create or save. Renew first.",
+    "editDenied": "You can only edit scenarios you created; built-in ones are admin-only",
+    "newTitle": "New scenario",
+    "editTitle": "Edit scenario",
+    "fieldTitle": "Title",
+    "fieldSummary": "Short summary",
+    "fieldBody": "Details (line breaks allowed)",
+    "fieldRef": "ref prefix (used in the URL)",
+    "fieldEnabled": "Enabled (disabled cards stay in the list, marked Off)",
+    "fieldImages": "Images (max 3, ≤2MB)",
+    "removeImage": "Remove",
+    "cancel": "Cancel",
+    "created": "Scenario created",
+    "saved": "Saved",
+    "deleted": "Deleted",
+    "deleteFailed": "Delete failed",
+    "deleteConfirm": "Delete scenario “{{title}}”?",
+    "resetConfirm": "Restore “{{title}}” to the default copy?",
+    "resetDone": "Defaults restored",
+    "resetFailed": "Reset failed",
+    "maxImages": "Maximum 3 images per scenario",
+    "uploadFailed": "Upload failed",
+    "noCover": "No cover",
+    "builtin": "Default",
+    "disabled": "Off",
+    "createdBy": "Created by {{name}}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "reset": "Restore default",
+    "empty": "No scenarios yet",
+    "memberIntro": "<strong>What this page does:</strong> Make an open QR (scenario card) for each app. The open-page look is set by the site owner under Public Page Design — you cannot change it. Customers scan the card, /p/u/… shows the code, and the wallet signs on /o/…. Other members cannot see your cards."
+  },
+  "member": {
+    "loginTitle": "Member sign-in",
+    "loginIntro": "Set your addresses, then make open codes under Scenarios (captcha required).",
+    "loginLink": "Member sign-in",
+    "registerTitle": "Member registration",
+    "registerIntro": "You get a private entry /p/u/{code}. Make a QR per app under Scenarios; customers who scan use your co-signer addresses.",
+    "registerLink": "Register",
+    "registerClosed": "Member registration is off. Ask the site admin to enable it under Members.",
+    "registerFailed": "Registration failed",
+    "registering": "Registering…",
+    "registerSubmit": "Register and enter",
+    "hasAccount": "Already have an account? Sign in",
+    "backHome": "Back to home",
+    "displayName": "Display name (optional)",
+    "password": "Password (min. 6 chars)",
+    "password2": "Confirm password",
+    "passwordMismatch": "Passwords do not match",
+    "staffAccount": "This is a staff account. Use the admin sign-in page.",
+    "staffLoggedInTitle": "You are signed in as staff",
+    "staffLoggedInHint": "Admin and member sign-in share one session. Sign out of the admin account before signing in or registering as a member. Your admin tab will also be signed out.",
+    "staffLogoutToContinue": "Sign out of admin and continue",
+    "myEntry": "My entry",
+    "entryMissing": "Member entry not found",
+    "handledBy": "Agent: {{name}}",
+    "startOpen": "Start open",
+    "starting": "Opening…",
+    "startFailed": "Could not start open",
+    "noSession": "No open session",
+    "registerCodePlaceholder": "Registration code",
+    "registerCodeRequired": "Registration code is required",
+    "buyRegisterHint": "No code? Buy on-chain:",
+    "buyRegisterLink": "Buy registration code"
+  },
+  "members": {
+    "intro": "Streamline’s main job: members make open codes and put them on their own scenarios. This page controls <strong>public registration</strong> and <strong>what members pay this site</strong> (codes / member plan). The sidebar Site subscription is what the owner pays HQ — two separate order books.",
+    "tip": "Disabling a member blocks sign-in and their entry. You cannot edit a member’s multisig addresses. If codes are required: save a receive address before enabling on-chain purchase.",
+    "registerTitle": "Public registration",
+    "registerHint": "Click Save registration after choosing. When off, the home page hides Register and the register URL is rejected.",
+    "saveRegister": "Save registration",
+    "allowRegister": "Allow public member registration",
+    "registerOn": "Public registration enabled",
+    "registerOff": "Public registration disabled",
+    "listTitle": "Members",
+    "colUser": "Username",
+    "colName": "Name",
+    "colCode": "Code",
+    "colStatus": "Status",
+    "active": "Active",
+    "inactive": "Disabled",
+    "empty": "No members yet",
+    "disable": "Disable",
+    "enable": "Enable",
+    "disableConfirm": "Disable “{{name}}”? Their entry will not open.",
+    "enableConfirm": "Re-enable “{{name}}”?",
+    "disabled": "Member disabled",
+    "enabled": "Member enabled",
+    "reset": "Reset password",
+    "resetTitle": "Reset member password",
+    "resetHint": "User: {{name}}. Their current password is not required.",
+    "resetSubmit": "Reset",
+    "resetOk": "Password reset for {{name}}",
+    "resetFailed": "Reset failed",
+    "loginPage": "Member sign-in page",
+    "mode": {
+      "off": "Registration off (default)",
+      "open": "Open registration (no expiry, for testing)",
+      "code_required": "Registration code required (default 7 days)"
+    },
+    "modeSaved": {
+      "off": "Public registration disabled",
+      "open": "Open registration enabled",
+      "code_required": "Registration code required"
+    },
+    "billingTitle": "Member billing (separate from site subscription)",
+    "billingHint": "Members pay this TRON address (not HQ). Defaults: registration code 10 USDT / 7 days, member plan 30 USDT / 30 days. Unrelated to Site subscription in the sidebar. Click Save pay address and prices when done.",
+    "billingSaved": "Billing settings saved",
+    "saveBilling": "Save pay address and prices",
+    "regPrice": "Registration code price (USDT)",
+    "renewPrice": "Member plan price (USDT)",
+    "regGrantDays": "Days granted by registration code",
+    "renewGrantDays": "Days granted by member plan",
+    "payAddress": "USDT receive address (TRC20)",
+    "payAddressRequired": "Enter a USDT receive address before enabling on-chain purchase",
+    "payEnabled": "Enable on-chain purchase (registration code / member plan)",
+    "buyRegisterPage": "Public buy registration code page",
+    "codesTitle": "Registration codes",
+    "codesHint": "Generate batches manually, or visitors can buy on-chain.",
+    "generateCodes": "Generate codes",
+    "codesEmpty": "No codes yet",
+    "colGrantDays": "Days",
+    "colCodeStatus": "Status",
+    "colUsedBy": "Used by",
+    "colExpires": "Expires",
+    "codeUsed": "Used",
+    "codeExpired": "Expired",
+    "codeAvailable": "Available",
+    "codesGenerated": "Codes generated",
+    "extended": "Extended {{name}} by {{days}} days"
+  },
+  "memberBilling": {
+    "buyRegisterTitle": "Buy registration code",
+    "buyRegisterIntro": "Pay {{price}} USDT for a code; after registration you get {{days}} days of member access.",
+    "payDisabled": "On-chain purchase is off. Contact the admin for a code.",
+    "payDisabledRenew": "On-chain renewal is off. Contact the admin to extend manually.",
+    "renewTitle": "Member plan",
+    "renewIntro": "This extends your member access on this site. If you see Site subscription in a staff menu, that is the owner paying HQ — not this payment.",
+    "expiresLabel": "Member expires",
+    "statusLabel": "Status",
+    "renewPriceLabel": "Renewal price",
+    "days": "days",
+    "unlimited": "No expiry",
+    "expired": "Expired",
+    "active": "Active",
+    "buyNow": "Pay with USDT",
+    "creatingOrder": "Creating order…",
+    "orderCreated": "Order created — transfer the exact amount below",
+    "orderFailed": "Could not create order",
+    "orderTitle": "Payment order",
+    "registerCodeLabel": "Registration code",
+    "registerPaid": "Paid! Code: {{code}} (copy and use on the register page)",
+    "renewPaid": "Renewal confirmed — member access extended",
+    "payHint": "Use a TRON mainnet wallet and send the exact USDT amount shown. Confirmed in ~30 seconds.",
+    "copyCode": "Copy code",
+    "codeCopied": "Code copied"
   },
   "openWallets": {
     "title": "Wallet Entries",
@@ -232,7 +427,7 @@
   },
   "help": {
     "title": "Help",
-    "subtitle": "Crypto Wallet Streamline Multisig Station guide: public opens + site setup.",
+    "subtitle": "Crypto Wallet Streamline Multisig Station: members make open codes and place them on scenarios.",
     "docVersion": "Doc version:",
     "runningVersion": "Running:",
     "versionMismatch": "Help version does not match the running app. Update under System Updates or contact support.",
@@ -241,8 +436,8 @@
       "login": {
         "title": "0. Sign in",
         "steps": [
-          "Admin entry: /branch/login (username, password, captcha).",
-          "Public site / — customers scan to open; no admin login needed.",
+          "Intro home top-right Sign in goes to /login. Staff and members use one form; you land in the matching panel. /branch/login still works.",
+          "Members: set Multisig Addresses, then make QRs under Scenarios. If a registration code is required, buy one or ask the site owner first. Customers scan /p/u/{code}; the wallet signs on /o/{session}.",
           "About 5 failed attempts from the same account or IP locks login for ~15 minutes."
         ],
         "tips": ["Change the default admin password immediately after go-live."]
@@ -252,22 +447,23 @@
         "steps": ["After sign-in, open Password, verify the current password, then set a new one."]
       },
       "open": {
-        "title": "1. Public multisig open",
+        "title": "1. Open codes and signing",
         "steps": [
-          "Customers open the public site and scan or open the open link in a wallet app.",
-          "After signing in the wallet, multisig is enabled; the address stays the same.",
-          "Open codes expire — refresh the public page for a new one."
+          "Members give customers a scenario card or private entry /p/u/{code}. That page shows an open QR in place (no redirect).",
+          "The wallet opens the sign page /o/{session}. After signing, the address stays the same; control becomes shared.",
+          "The site default door is /open (same page as decorated /p/…). It uses staff addresses, separate from member entries.",
+          "Open codes expire — refresh the QR page for a new one."
         ],
         "tips": [
           "Configure multisig addresses and enable wallet entries first.",
-          "Public QR codes are plain URLs. TokenPocket / OKX / Bitget: home scan works; TronLink: use Discover/Browser, not home scan."
+          "Open codes are plain HTTPS. TokenPocket / OKX / Bitget: home scan works; TronLink: use Discover/Browser, not home scan."
         ]
       },
       "network": {
         "title": "2. Network",
         "steps": [
           "Super admin opens Network, picks Shasta or TRON mainnet, and saves.",
-          "Takes effect immediately; public QR and new sessions use the new network.",
+          "Takes effect immediately; open-page QR and new sessions use the new network.",
           "Mainnet and Shasta have separate multisig addresses — verify both after switching."
         ],
         "tips": ["Use mainnet in production; Shasta for testing."]
@@ -289,8 +485,57 @@
       "decor": {
         "title": "5. Public page design",
         "steps": [
-          "Edit title, body, footer, and images; saves apply to the public site immediately.",
-          "Copy the long-lived entry link for customers."
+          "This is the open-page look: title, body, footer, images. Saves apply to /open immediately. It is not a scenario card.",
+          "Copy the stable /open URL for posters; custom /p/path is the same open page."
+        ],
+        "tips": [
+          "Codes pasted into apps belong under Scenarios. Design only changes what customers see on the open page."
+        ]
+      },
+      "scenarios": {
+        "title": "5.2 Scenarios",
+        "steps": [
+          "These are cards you paste into an app or counter — not the open-page design. Members make a card per app and show the QR (/p/u/{code}).",
+          "Open-page look is under Public Page Design. Staff can also add cards (max 20, via /open).",
+          "The built-in counter card is admin-only. Members may create up to 5 cards each; they cannot see each other.",
+          "When the site subscription is limited, cards and QR codes stay visible; create and save are locked."
+        ],
+        "tips": [
+          "Member scenario cards use /p/u/{code} plus a ref. Staff posters use fixed /open plus a ref."
+        ]
+      },
+      "members": {
+        "title": "5.3 Member registration and billing",
+        "steps": [
+          "Members controls public registration, codes, and USDT that members pay this site. Sidebar Site subscription is the owner paying HQ — different address and orders.",
+          "Three registration modes; you must click Save registration: off; open (no expiry, testing); code required (default 7 days).",
+          "If a code is required: generate codes, or enable on-chain purchase. Save this site’s TRON USDT address first, then enable. Visitors buy at /member/buy-register.",
+          "Defaults: code 10 USDT / 7 days, member plan 30 USDT / 30 days. After expiry, the member cannot sign in or open /p/u/{code}. Admins can extend +7 / +30 days.",
+          "Members set Multisig Addresses then make QRs under Scenarios. /p/u/{code} uses that member’s two addresses. Admins cannot edit member addresses."
+        ],
+        "tips": [
+          "Site /open uses staff addresses; /p/u/{code} uses the member’s. Two plans: site subscription pays HQ; member plan pays this site’s address."
+        ]
+      },
+      "member-plan": {
+        "title": "5.4 Member plan",
+        "steps": [
+          "Member plan in the member panel only extends your member access. Send the exact USDT amount on TRON mainnet.",
+          "Do not pay Site subscription in the staff menu. That is the owner paying HQ.",
+          "Without a registration code, open /member/buy-register (the owner must have enabled purchase and set an address)."
+        ],
+        "tips": [
+          "After expiry you cannot sign in or issue codes from /p/u/{code} until you renew or an admin extends you."
+        ]
+      },
+      "license": {
+        "title": "5.5 Site subscription",
+        "steps": [
+          "Sidebar Site subscription: the owner renews this site with HQ. Pay the HQ address on the order.",
+          "The address for member codes / member plans is set under Members. Do not mix it with the HQ order."
+        ],
+        "tips": [
+          "An expired site subscription limits public open and write actions. An expired member only affects that member."
         ]
       },
       "open-wallets": {
@@ -309,6 +554,57 @@
           "Release notes show a short summary only (bug fixes / feature updates)."
         ]
       }
+    }
+  },
+  "license": {
+    "blockedTitle": "Site license disabled",
+    "limitedTitle": "Subscription expired or limited",
+    "blockedDefault": "HQ disabled this site. Public open and write actions are blocked. Contact HQ.",
+    "limitedDefault": "Subscription expired or license could not be verified. Public open and key settings are locked.",
+    "until": "Valid until: {{date}}",
+    "buyCard": "Buy site subscription",
+    "priceHint": "Site plan {{price}} USDT/month · pay HQ on-chain",
+    "pageTitle": "Site subscription",
+    "pageIntro": "This is the owner paying HQ to keep the site licensed. Members buy registration codes / member plans on this site — set the receive address under Members, not here.",
+    "status": "Status",
+    "plan": "Plan",
+    "untilLabel": "Expires",
+    "monthlyPrice": "Monthly price",
+    "manualTitle": "How to renew (Phase 1)",
+    "manualBody": "Contact HQ with your public URL or API key hint. HQ renews from Branch management (+30 days).",
+    "phase2Hint": "Transfer the exact order amount; settlement is automatic.",
+    "syncNow": "Sync price from HQ",
+    "syncOk": "Synced with HQ",
+    "lastSync": "Last sync: {{time}}",
+    "buyNow": "Pay with USDT",
+    "creatingOrder": "Creating order…",
+    "orderCreated": "Order created — transfer the amount below",
+    "orderFailed": "Failed to create order",
+    "paymentNotConfigured": "HQ has not configured a USDT receive address. Contact HQ or use manual renewal below.",
+    "orderTitle": "Payment order",
+    "orderStatus": "Order status",
+    "payAmount": "Amount due",
+    "payAddress": "Receive address",
+    "network": "Network",
+    "orderExpires": "Order expires",
+    "payHint": "Send the exact USDT amount on TRON mainnet to the address above. Renewal usually completes within ~30s after confirmation.",
+    "paySuccess": "Payment confirmed — subscription extended",
+    "retryOrder": "Create new order",
+    "copyAmount": "Copy amount",
+    "copyAddress": "Copy address",
+    "copiedAmount": "Amount copied",
+    "copiedAddress": "Address copied",
+    "copyFailed": "Copy failed — select text manually",
+    "order": {
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "EXPIRED": "Expired",
+      "CANCELLED": "Cancelled"
+    },
+    "mode": {
+      "full": "Full",
+      "limited": "Limited",
+      "blocked": "Blocked"
     }
   },
   "walletHints": {

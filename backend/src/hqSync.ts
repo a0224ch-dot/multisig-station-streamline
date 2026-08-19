@@ -1,4 +1,5 @@
 import { buildHqProfilePayload, heartbeatToHq, registerToHq } from "./hqClient.js";
+import { getLicenseStatus } from "./license.js";
 
 let timer: ReturnType<typeof setInterval> | null = null;
 
@@ -12,8 +13,9 @@ async function tick(kind: "register" | "heartbeat") {
       );
     } else {
       const res = await heartbeatToHq(profile);
+      const lic = await getLicenseStatus();
       console.log(
-        `[hq-sync] heartbeat ok branchId=${res.branchId} allowHighSigners=${res.allowHighSigners}`
+        `[hq-sync] heartbeat ok branchId=${res.branchId} allowHighSigners=${res.allowHighSigners} accessMode=${lic.accessMode}`
       );
     }
   } catch (e) {

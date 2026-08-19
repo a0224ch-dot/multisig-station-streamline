@@ -5,11 +5,16 @@
     "network": "网络设置",
     "wallets": "已开通",
     "decor": "公网页装修",
+    "scenarios": "场景",
+    "members": "会员",
     "openWallets": "开通钱包",
+    "subscription": "站点月卡",
+    "memberSubscription": "会员月卡",
     "update": "系统更新",
     "help": "使用说明",
     "password": "修改密码",
-    "publicPage": "公网页",
+    "publicPage": "介绍首页",
+    "openPage": "开通页",
     "developer": "开发员 {{handle}}",
     "logout": "退出"
   },
@@ -29,11 +34,13 @@
   },
   "public": {
     "adminLogin": "管理登录",
-    "defaultTitle": "钱包地址多签",
+    "login": "登录",
+    "defaultTitle": "加密钱包多签",
     "defaultBody": "此码用于钱包地址多签。扫码后将为本钱包开启多签权限，地址不变。",
     "guideTitle": "多签钱包 · 怎么用",
     "guideLines": [
       "多签是给原钱包加多人权限，收款地址不变。",
+      "会员把开通码贴到自己的场景；客户扫码后钱包打开签名页 /o/… 完成授权。",
       "TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用「发现 / 浏览器」打开链接。",
       "开通码有时效；过期点「刷新开通码」。"
     ],
@@ -41,10 +48,21 @@
     "expiresLabel": "有效至：",
     "refreshCode": "刷新开通码",
     "generating": "生成中…",
-    "sessionError": "无法生成开通码"
+    "sessionError": "无法生成开通码",
+    "siteHome": "介绍首页",
+    "homeTitle": "加密钱包多签",
+    "homeLead": "给会员自制多签开通码，贴到自己需要多签的应用场景。客户扫码后钱包地址不变，权限变为共管。",
+    "homePoints": [
+      "会员登录后配好自己的 2 个共管地址，专属入口 /p/u/{码} 当场出开通码。",
+      "在「场景」为每个应用生成带二维码的卡片（链接带 ref），贴到柜台、H5 或活动页。",
+      "客户扫场景码或专属入口，钱包打开 /o/{会话} 完成签名。",
+      "站点默认开通门是 /open（走站长地址），与会员入口互不影响。介绍首页不出码。"
+    ],
+    "goOpen": "站点开通页"
   },
   "open": {
     "connecting": "正在连接钱包并准备多签开通…",
+    "sessionHint": "这是钱包签名页 /o/{会话}。开通码来自会员专属入口 /p/u/{码}、场景卡，或站点 /open。",
     "success": "开通成功",
     "fail": "开通失败",
     "retry": "重试",
@@ -69,8 +87,8 @@
     "openFailedRetry": "开通失败，请重试"
   },
   "login": {
-    "title": "加密钱包精简多签站 · 管理登录",
-    "subtitle": "管理员后台。需图形验证码。",
+    "title": "后台登录",
+    "subtitle": "管理员与会员使用同一入口，登录后进入对应后台。需图形验证码。",
     "username": "账号",
     "password": "密码",
     "captcha": "验证码",
@@ -82,7 +100,8 @@
     "captchaLoadFailed": "验证码加载失败",
     "submit": "登录",
     "submitting": "登录中…",
-    "failed": "登录失败"
+    "failed": "登录失败",
+    "memberAccount": "这是会员账号，请走会员登录入口"
   },
   "presets": {
     "title": "多签地址",
@@ -91,7 +110,9 @@
     "addressPlaceholder": "TRON 地址",
     "saved": "多签地址已保存",
     "intro": "<strong>这页做什么：</strong>配置本站开通用的共管地址（恰好 2 个，不含本人）。地址按当前网络分别保存，切换网络请到 <linkNetwork>网络设置</linkNetwork>。详见 <linkHelp>使用说明 · 多签地址</linkHelp>。",
-    "tip": "地址填错会导致开通失败；保存前请与当前网络（主网/Shasta）核对。"
+    "tip": "地址填错会导致开通失败；保存前请与当前网络（主网/Shasta）核对。",
+    "memberIntro": "<strong>这页做什么：</strong>配置你自己的 2 个共管地址。客户从你的专属入口 /p/u/{码} 和场景卡开通时使用这两址。配好后再到「场景」出码。",
+    "memberEntry": "你的专属入口："
   },
   "network": {
     "title": "网络设置",
@@ -102,7 +123,7 @@
     "readonly": "仅超级管理员可修改网络；当前为只读查看。",
     "save": "保存网络",
     "saved": "网络已保存",
-    "intro": "<strong>这页做什么：</strong>选择当前用测试网还是主网。切换后，公网页二维码、开通会话与「多签地址」读写都走新网络。正式对外请用主网。详见 <linkHelp>使用说明 · 网络设置</linkHelp>。",
+    "intro": "<strong>这页做什么：</strong>选择当前用测试网还是主网。切换后，开通页二维码、开通会话与「多签地址」读写都走新网络。正式对外请用主网。详见 <linkHelp>使用说明 · 网络设置</linkHelp>。",
     "tip": "保存后立即生效。切到主网前请确认该网络下的多签地址已配好。"
   },
   "wallets": {
@@ -122,17 +143,19 @@
   },
   "decor": {
     "title": "公网页装修",
-    "subtitle": "只改公网扫码页与交易所落地页。二维码由系统生成；可写标题/文案，上传最多 3 张图（可带跳转链接）。",
-    "intro": "<strong>这页做什么：</strong>改公网页/落地页的标题、文案和贴图；复制给交易所用的长期入口链接。详见 <linkHelp>使用说明 · 装修</linkHelp>。",
-    "entryTitle": "交易所入口链接（长期有效，给 H5 / 活动页用）",
+    "subtitle": "只改开通页（/open 与 /p/路径 同一页）。二维码由系统生成；可写标题/文案，上传最多 3 张图（可带跳转链接）。",
+    "intro": "<strong>这页做什么：</strong>改开通页（/open）的标题、文案和贴图，这是<strong>开通页外观</strong>，不是场景卡。复制稳定入口 /open。自定义 /p/路径 与 /open 是同一页。贴到应用里的码请到「场景」。详见 <linkHelp>使用说明 · 装修</linkHelp>。",
+    "entryTitle": "开通入口（长期有效）",
     "pathLabel": "路径",
     "pathPlaceholder": "exchange",
     "pathTitle": "小写字母、数字、连字符，2～32 位",
     "copyEntry": "复制入口链接",
     "copied": "已复制",
     "preview": "打开预览",
-    "entryTip": "复制长期落地页地址给交易所 H5。用户打开后再点「开始开通」才会生成短时会话。",
-    "entryNote": "用户打开此链接后点「开始开通」，才会生成短时开通会话。改路径后请点下方保存。若交易所要开通完回跳，可在链接后加 <code>?returnUrl=https://交易所域名/done</code>，并到「对接」页配置白名单。",
+    "entryTip": "海报、场景请复制固定 /open。改自定义路径不会让 /open 失效。",
+    "entryNote": "打开 <code>/open</code> 或 <code>/p/路径</code> 即出开通码（短时会话）。两者是同一页，不跳转。改路径后请点下方保存。",
+    "slugUrlLabel": "自定义路径（同一开通页）：",
+    "openEntryLabel": "稳定开通入口：",
     "pageTitle": "页标题（≤40字，空则用精简版名）",
     "bodyText": "码旁文案（≤500字）",
     "images": "贴图（最多 3 张，单张 ≤2MB，jpg/png/webp）",
@@ -148,7 +171,7 @@
     "previewTitle": "预览（手机宽）",
     "previewEntryNote": "入口预览码（非开通会话）",
     "previewDefaultTitle": "精简版名称 / 自定义标题",
-    "saved": "已保存，公网页与入口链接立即生效",
+    "saved": "已保存，开通页与入口链接立即生效",
     "reset": "恢复默认",
     "resetConfirm": "恢复默认？将清空标题、文案、贴图和按钮（入口路径保留）。",
     "resetDone": "已恢复默认",
@@ -156,8 +179,180 @@
     "copyFailed": "复制失败，请手动选中链接复制",
     "maxImages": "最多 3 张贴图",
     "uploadFailed": "上传失败",
-    "saveTip": "保存文案、贴图和入口路径。保存后公网页与落地页立即生效。",
+    "saveTip": "保存文案、贴图和自定义路径。保存后开通页立即生效。",
     "resetTip": "清空标题、文案、贴图和按钮；入口路径保留不动。"
+  },
+  "scenarios": {
+    "intro": "<strong>这页做什么：</strong>给每个应用出一张带二维码的<strong>场景卡</strong>（可带 ref）。开通页长什么样请到 <linkDecor>公网页装修</linkDecor>。客户进开通页 <code>/open</code>。详见 <linkHelp>使用说明 · 场景</linkHelp>。",
+    "entryTitle": "本站总入口",
+    "entryHint": "海报请用固定 <code>/open</code>。改自定义路径请到 <linkDecor>公网页装修</linkDecor>。各场景在开通入口上加自己的 <code>ref</code>。",
+    "memberEntryHint": "这是你的专属入口。客户从这里开通时使用你的多签地址。场景卡会再加 <code>ref</code>。",
+    "entryTip": "站长海报用固定 /open，改装修路径也不会断。场景卡上的码会带该场景的 ref。",
+    "copyEntry": "复制入口链接",
+    "copyScene": "复制场景链接",
+    "copied": "已复制",
+    "copyPrompt": "请手动复制",
+    "create": "新建场景",
+    "createTip": "站长/员工自定义最多 20 张。全员能看；员工只能改自己建的。内置柜台仅管理员可改。",
+    "memberCreateTip": "你最多 5 张场景，其他会员看不到。",
+    "customCount": "自定义 {{count}} / {{limit}}",
+    "limitReached": "自定义场景已达上限 {{limit}} 张",
+    "writeLocked": "站点月卡受限：仍可查看卡片和二维码，不能新建或保存。请先续费。",
+    "editDenied": "只能修改自己创建的场景；内置场景仅管理员可改",
+    "newTitle": "新建场景",
+    "editTitle": "编辑场景",
+    "fieldTitle": "标题",
+    "fieldSummary": "一句话简介",
+    "fieldBody": "详细说明（可换行）",
+    "fieldRef": "ref 前缀（链接里用）",
+    "fieldEnabled": "启用（关闭后仍在列表里，卡片会标「已关闭」）",
+    "fieldImages": "图片（最多 3 张，≤2MB）",
+    "removeImage": "删除图",
+    "cancel": "取消",
+    "created": "已创建场景",
+    "saved": "已保存",
+    "deleted": "已删除",
+    "deleteFailed": "删除失败",
+    "deleteConfirm": "删除场景「{{title}}」？",
+    "resetConfirm": "将「{{title}}」恢复为系统默认图文？",
+    "resetDone": "已恢复默认",
+    "resetFailed": "恢复失败",
+    "maxImages": "每个场景最多 3 张图",
+    "uploadFailed": "上传失败",
+    "noCover": "暂无封面",
+    "builtin": "默认",
+    "disabled": "已关闭",
+    "createdBy": "创建：{{name}}",
+    "edit": "编辑",
+    "delete": "删除",
+    "reset": "恢复默认",
+    "empty": "暂无场景",
+    "memberIntro": "<strong>这页做什么：</strong>给每个需要多签的应用出一张你自己的开通码（场景卡）。开通页外观由站长在「公网页装修」里改，你改不了。客户扫卡上的码，从专属入口 <code>/p/u/…</code> 出码，钱包打开 <code>/o/…</code> 签名。其他会员看不到。"
+  },
+  "member": {
+    "loginTitle": "会员登录",
+    "loginIntro": "登录后配多签地址，再在「场景」生成自己的开通码（需验证码）",
+    "loginLink": "会员登录",
+    "registerTitle": "会员注册",
+    "registerIntro": "注册后获得专属入口 /p/u/{码}。在「场景」为每个应用生成开通二维码；客户扫码走你配置的多签地址。",
+    "registerLink": "会员注册",
+    "registerClosed": "本站尚未开放会员注册。请联系管理员在后台「会员」页打开。",
+    "registerFailed": "注册失败",
+    "registering": "注册中…",
+    "registerSubmit": "注册并进入后台",
+    "hasAccount": "已有账号？登录",
+    "backHome": "返回首页",
+    "displayName": "显示名（可选）",
+    "password": "密码（至少 6 位）",
+    "password2": "确认密码",
+    "passwordMismatch": "两次密码不一致",
+    "staffAccount": "这是员工账号，请走管理登录入口",
+    "staffLoggedInTitle": "当前是管理账号",
+    "staffLoggedInHint": "管理后台与会员登录共用同一登录态，不能同时开着。请先退出管理账号，再登录或注册会员。原后台标签页也会一并退出。",
+    "staffLogoutToContinue": "退出管理账号，继续",
+    "myEntry": "我的入口",
+    "entryMissing": "会员入口不存在",
+    "handledBy": "经办：{{name}}",
+    "startOpen": "开始开通",
+    "starting": "正在进入…",
+    "startFailed": "无法开始开通",
+    "noSession": "未拿到开通会话",
+    "registerCodePlaceholder": "注册码",
+    "registerCodeRequired": "请填写注册码",
+    "buyRegisterHint": "没有注册码？可链上购买：",
+    "buyRegisterLink": "购买注册码"
+  },
+  "members": {
+    "intro": "精简版主功用：会员自制开通码并贴到自己的场景。本页管<strong>公网注册档</strong>和<strong>会员向本站付费</strong>（注册码 / 会员月卡）。站长向总部买的是侧栏「站点月卡」，两套订单不要混。",
+    "tip": "停用后该会员无法登录，专属入口也无法开通。不能改会员的多签地址。须注册码时：先填收款地址并保存计费，再打开链上购买。",
+    "registerTitle": "公网注册",
+    "registerHint": "选好后点「保存注册设置」才会生效。关闭后首页不显示「会员注册」，直接访问注册页也会提示未开放。",
+    "saveRegister": "保存注册设置",
+    "allowRegister": "允许公网注册会员",
+    "registerOn": "已打开公网注册",
+    "registerOff": "已关闭公网注册",
+    "listTitle": "会员列表",
+    "colUser": "账号",
+    "colName": "显示名",
+    "colCode": "会员码",
+    "colStatus": "状态",
+    "active": "启用",
+    "inactive": "停用",
+    "empty": "暂无会员",
+    "disable": "停用",
+    "enable": "启用",
+    "disableConfirm": "停用「{{name}}」？其专属入口将无法开通。",
+    "enableConfirm": "恢复「{{name}}」？",
+    "disabled": "已停用该会员",
+    "enabled": "已恢复该会员",
+    "reset": "重置密码",
+    "resetTitle": "重置会员密码",
+    "resetHint": "目标：{{name}}。无需对方旧密码。",
+    "resetSubmit": "确认重置",
+    "resetOk": "已重置 {{name}} 的密码",
+    "resetFailed": "重置失败",
+    "loginPage": "会员登录页",
+    "mode": {
+      "off": "关闭注册（默认）",
+      "open": "开放注册（不限期，内测用）",
+      "code_required": "须注册码（默认 7 天权限）"
+    },
+    "modeSaved": {
+      "off": "已关闭公网注册",
+      "open": "已开放注册（不限期）",
+      "code_required": "已改为须注册码注册"
+    },
+    "billingTitle": "会员计费（与站点月卡分开）",
+    "billingHint": "钱打到本站这个地址（会员付站长）。默认注册码 10 USDT / 7 天，会员月卡 30 USDT / 30 天。与侧栏「站点月卡」（站长付总部）无关。改完请点「保存收款与价格」。",
+    "billingSaved": "计费设置已保存",
+    "saveBilling": "保存收款与价格",
+    "regPrice": "注册码价格（USDT）",
+    "renewPrice": "会员月卡价格（USDT）",
+    "regGrantDays": "注册码授予天数",
+    "renewGrantDays": "月卡续期天数",
+    "payAddress": "USDT 收款地址（TRC20）",
+    "payAddressRequired": "开启链上购买前请填写 USDT 收款地址",
+    "payEnabled": "开启链上购买注册码 / 会员月卡",
+    "buyRegisterPage": "公网购注册码页",
+    "codesTitle": "注册码",
+    "codesHint": "手动批量生成；也可由访客链上购买自动发码。",
+    "generateCodes": "生成注册码",
+    "codesEmpty": "暂无注册码",
+    "colGrantDays": "天数",
+    "colCodeStatus": "状态",
+    "colUsedBy": "使用者",
+    "colExpires": "到期",
+    "codeUsed": "已使用",
+    "codeExpired": "已过期",
+    "codeAvailable": "可用",
+    "codesGenerated": "注册码已生成",
+    "extended": "已为 {{name}} 延长 {{days}} 天"
+  },
+  "memberBilling": {
+    "buyRegisterTitle": "购买注册码",
+    "buyRegisterIntro": "支付 {{price}} USDT 获得注册码，注册后享有 {{days}} 天会员权限。",
+    "payDisabled": "本站尚未开启链上购买，请联系管理员获取注册码。",
+    "payDisabledRenew": "本站尚未开启链上续费，请联系管理员手动延期。",
+    "renewTitle": "会员月卡",
+    "renewIntro": "这是你向本站续会员权限。侧栏若出现「站点月卡」，那是站长向总部付的站点授权，不是这一笔。",
+    "expiresLabel": "会员到期",
+    "statusLabel": "状态",
+    "renewPriceLabel": "续费价格",
+    "days": "天",
+    "unlimited": "不限期",
+    "expired": "已过期",
+    "active": "有效",
+    "buyNow": "USDT 下单",
+    "creatingOrder": "创建订单…",
+    "orderCreated": "订单已创建，请按下方金额转账",
+    "orderFailed": "创建订单失败",
+    "orderTitle": "支付订单",
+    "registerCodeLabel": "注册码",
+    "registerPaid": "支付成功！注册码：{{code}}（请复制后去注册页填写）",
+    "renewPaid": "续费成功，会员权限已延长",
+    "payHint": "请使用 TRON 主网钱包，向收款地址转入上方精确 USDT 金额。到账后约 30 秒内自动核销。",
+    "copyCode": "复制注册码",
+    "codeCopied": "已复制注册码"
   },
   "openWallets": {
     "title": "开通钱包入口",
@@ -232,7 +427,7 @@
   },
   "help": {
     "title": "使用说明",
-    "subtitle": "加密钱包精简多签站操作手册：公网页开通 + 本站配置。",
+    "subtitle": "加密钱包精简多签站：会员自建开通码并贴到场景。",
     "docVersion": "本说明对应版本：",
     "runningVersion": "当前运行：",
     "versionMismatch": "说明版本与运行版本不一致。请到「系统更新」升到最新，或联系技术支持。",
@@ -241,8 +436,8 @@
       "login": {
         "title": "〇、登录",
         "steps": [
-          "管理后台入口：/branch/login（需账号、密码与图形验证码）。",
-          "公网页 / 供客户扫码开通，无需登录后台。",
+          "介绍首页右上角「登录」（/login）。管理员与会员同一入口，登录后按账号进入对应后台。旧地址 /branch/login 仍可用。",
+          "会员登录后：先配「多签地址」，再在「场景」出码，贴到自己的应用。须注册码时先购码或向站长要码。客户扫码从 /p/u/{码} 出开通码，钱包打开 /o/{会话} 签名。",
           "同一账号或同一来源 IP 连续失败约 5 次后，会暂时限制登录约 15 分钟。"
         ],
         "tips": ["上线后请立即修改默认管理员密码。"]
@@ -252,22 +447,23 @@
         "steps": ["登录后台后点「修改密码」，验证当前密码后设新密码。"]
       },
       "open": {
-        "title": "一、公网页开通多签",
+        "title": "一、开通码与签名",
         "steps": [
-          "客户打开本站公网页（首页），用钱包 App 扫码或打开开通链接。",
-          "在钱包内完成签名后即开通；地址不变，权限变为多人共管。",
-          "开通码有时效；过期让客户刷新公网页重新取码。"
+          "会员把场景卡或专属入口 /p/u/{码} 给客户。该页当场出开通码，不跳转。",
+          "客户用钱包扫码后打开签名页 /o/{会话}，完成签名；地址不变，权限变为共管。",
+          "站长默认开通门是 /open（与装修路径 /p/… 同一页），走站长地址，与会员入口互不影响。",
+          "开通码有时效；过期刷新出码页重新取码。"
         ],
         "tips": [
-          "请先在「多签地址」配好共管地址，并在「开通钱包」启用常用钱包入口。",
-          "公网页二维码是普通网址。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。"
+          "请先配好多签地址，并在「开通钱包」启用常用钱包入口。",
+          "开通码是普通 HTTPS。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。"
         ]
       },
       "network": {
         "title": "二、网络设置",
         "steps": [
           "超级管理员打开「网络设置」，选择 Shasta 测试网或 TRON 主网并保存。",
-          "切换后立即生效；公网页二维码与新开通会话都走新网络。",
+          "切换后立即生效；开通页二维码与新开通会话都走新网络。",
           "主网与 Shasta 各有一套「多签地址」，切换后请到「多签地址」核对对应网络下的 2 个地址。"
         ],
         "tips": ["正式对外请用主网；测试请用 Shasta。"]
@@ -289,8 +485,57 @@
       "decor": {
         "title": "五、公网页装修",
         "steps": [
-          "改标题、正文、底部文案与图片，保存后公网页立即生效。",
-          "可复制长期入口链接给客户使用。"
+          "这是开通页外观：改标题、正文、底部文案与图片，保存后 /open 立即生效。不是场景卡。",
+          "海报请复制固定 /open；自定义 /p/路径 与 /open 是同一开通页。"
+        ],
+        "tips": [
+          "贴到应用里的码请到「场景」。装修只决定客户打开开通页时看到的文案和贴图。"
+        ]
+      },
+      "scenarios": {
+        "title": "五·二、场景",
+        "steps": [
+          "这是贴到应用/门店的场景卡，不是开通页装修。会员为每个需要多签的应用建卡，出示卡片二维码（走 /p/u/{码}）。",
+          "开通页长什么样请到「公网页装修」。站长/员工也可建卡（最多 20 张，走 /open）。",
+          "内置柜台仅管理员可改。会员每人最多 5 张，互不可见。",
+          "站点月卡受限时仍可看卡片和二维码，不能新建或保存。"
+        ],
+        "tips": [
+          "会员场景卡走专属入口 /p/u/{码} 加 ref。站长海报走固定 /open 加 ref。"
+        ]
+      },
+      "members": {
+        "title": "五·三、会员注册与计费",
+        "steps": [
+          "「会员」页同时管：公网能否注册、注册码、以及会员向本站付 USDT。侧栏「站点月卡」是站长向总部付站点授权，收款地址和订单都不是这一套。",
+          "公网注册三档，选完必须点「保存注册设置」：关闭；开放（不限期，内测）；须注册码（默认 7 天）。",
+          "须注册码时：可批量生成码，或开启链上购买。先填本站 TRON USDT 收款地址，勾选开启，再点「保存收款与价格」。访客页 /member/buy-register 购码。",
+          "默认价：注册码 10 USDT / 7 天，会员月卡 30 USDT / 30 天。到期后会员无法登录、专属入口无法出码。列表里可手动 +7 / +30 天。",
+          "会员登录后配「多签地址」再在「场景」出码。专属入口 /p/u/{短码} 走该会员自己的 2 个地址。管理员不能改会员地址。"
+        ],
+        "tips": [
+          "站点 /open 走站长地址；会员 /p/u/{码} 走会员地址。两套月卡：站点月卡付给总部，会员月卡付给本站收款地址。"
+        ]
+      },
+      "member-plan": {
+        "title": "五·四、会员月卡",
+        "steps": [
+          "会员后台「会员月卡」只延长自己的会员权限。用 TRON 主网 USDT 按页上精确金额转账。",
+          "不要去站长菜单里的「站点月卡」付款。那是站长向总部买站点授权，与会员续费无关。",
+          "没有注册码时，可打开 /member/buy-register 链上购码（须站长已开启购买并填好收款地址）。"
+        ],
+        "tips": [
+          "到期后无法登录、无法从 /p/u/{码} 出码，续费或请站长手动延期后恢复。"
+        ]
+      },
+      "license": {
+        "title": "五·五、站点月卡",
+        "steps": [
+          "侧栏「站点月卡」：站长向总部续本站授权，钱付给总部订单上的地址。",
+          "会员买注册码 / 会员月卡的收款地址在「会员」页设置，不要填到本页，也不要和总部订单搞混。"
+        ],
+        "tips": [
+          "站点月卡过期会使开通与后台写操作受限；会员过期只影响该会员。"
         ]
       },
       "open-wallets": {
@@ -309,6 +554,56 @@
           "页面上的「更新内容」只提示「修复已知 BUG / 更新功能」，不展开细项。"
         ]
       }
+    }
+  },
+  "license": {
+    "blockedTitle": "站点授权已停用",
+    "limitedTitle": "月卡已过期或受限",
+    "blockedDefault": "总部已停用本站点授权，公网开通与写操作已关闭。请联系总部处理。",
+    "limitedDefault": "订阅已过期或未验证授权。公网开通与重要配置已锁定，请续费。",
+    "until": "订阅到期：{{date}}",
+    "buyCard": "购买站点月卡",
+    "priceHint": "站点月卡 {{price}} USDT/月 · 可链上向总部续费",
+    "pageTitle": "站点月卡",
+    "pageIntro": "这是站长向总部付的站点授权，用来维持本站开通能力。会员向本站买注册码 / 会员月卡，请到「会员」页设收款地址，不要在本页收款。",
+    "status": "当前状态",
+    "plan": "计划",
+    "untilLabel": "到期时间",
+    "monthlyPrice": "月卡价格",
+    "manualTitle": "如何续费（第一期）",
+    "manualBody": "请联系总部管理员，提供本站公网地址或 API 密钥后四位，由总部在「分公司管理」中点击「+30天」手动续费。",
+    "phase2Hint": "请按订单所示精确金额转账，系统将自动核销。",
+    "lastSync": "最近同步：{{time}}",
+    "syncNow": "同步总部价格",
+    "syncOk": "已从总部同步最新价格",
+    "buyNow": "USDT 购买月卡",
+    "orderCreated": "订单已创建，请按下方金额转账",
+    "orderFailed": "创建订单失败",
+    "paymentNotConfigured": "总部尚未配置 USDT 收款地址，请联系总部或使用下方手动续费说明。",
+    "orderTitle": "支付订单",
+    "orderStatus": "订单状态",
+    "payAmount": "应付金额",
+    "payAddress": "收款地址",
+    "network": "网络",
+    "orderExpires": "订单过期",
+    "payHint": "请使用 TRON 主网钱包，向收款地址转入上方精确 USDT 金额。到账后约 30 秒内自动续费，本页会自动刷新。",
+    "paySuccess": "支付已确认，订阅已延长",
+    "retryOrder": "重新下单",
+    "copyAmount": "复制金额",
+    "copyAddress": "复制地址",
+    "copiedAmount": "已复制金额",
+    "copiedAddress": "已复制地址",
+    "copyFailed": "复制失败，请手动选择复制",
+    "order": {
+      "PENDING": "待支付",
+      "PAID": "已支付",
+      "EXPIRED": "已过期",
+      "CANCELLED": "已取消"
+    },
+    "mode": {
+      "full": "正常",
+      "limited": "受限",
+      "blocked": "停用"
     }
   },
   "walletHints": {

@@ -21,6 +21,7 @@ import {
   setLandingSlug,
 } from "../landing.js";
 import { z } from "zod";
+import { assertFullAccess } from "../license.js";
 
 const MAX_BYTES = 2 * 1024 * 1024;
 
@@ -42,6 +43,7 @@ export async function registerPageDecorRoutes(app: FastifyInstance) {
   app.put("/api/admin/landing", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
+    if (!(await assertFullAccess(reply))) return;
     const body = z.object({ slug: z.string().min(1).max(64) }).parse(req.body);
     if (!isValidLandingSlug(body.slug.trim().toLowerCase())) {
       return reply
@@ -60,9 +62,10 @@ export async function registerPageDecorRoutes(app: FastifyInstance) {
     }
   });
 
-  app.put("/api/admin/page-decor", { preHandler: [app.authenticate] }, async (req) => {
+  app.put("/api/admin/page-decor", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
+    if (!(await assertFullAccess(reply))) return;
     const saved = await savePageDecor(req.body);
     await prisma.auditLog.create({
       data: { userId: u.sub, action: "PAGE_DECOR_UPDATE", detail: j({ images: saved.images.length }) },
@@ -70,9 +73,10 @@ export async function registerPageDecorRoutes(app: FastifyInstance) {
     return saved;
   });
 
-  app.post("/api/admin/page-decor/reset", { preHandler: [app.authenticate] }, async (req) => {
+  app.post("/api/admin/page-decor/reset", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
+    if (!(await assertFullAccess(reply))) return;
     const saved = await savePageDecor(emptyPageDecor());
     await prisma.auditLog.create({
       data: { userId: u.sub, action: "PAGE_DECOR_RESET", detail: j({}) },
@@ -83,6 +87,7 @@ export async function registerPageDecorRoutes(app: FastifyInstance) {
   app.post("/api/admin/page-decor/upload", { preHandler: [app.authenticate] }, async (req, reply) => {
     const u = getUser(req);
     requireRoles(u, [Role.SUPER_ADMIN, Role.EMPLOYEE]);
+    if (!(await assertFullAccess(reply))) return;
 
     const file = await req.file();
     if (!file) return reply.code(400).send({ error: "请选择图片文件" });

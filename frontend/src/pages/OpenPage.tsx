@@ -267,6 +267,9 @@ export default function OpenPage() {
         <LanguageSwitcher />
       </div>
       <div className="card open-card">
+        <p className="muted" style={{ textAlign: "center", fontSize: "0.85rem", marginTop: 0 }}>
+          {t("open.sessionHint")}
+        </p>
         {phase === "working" && (
           <div className="muted" style={{ textAlign: "center" }}>
             {t("open.connecting")}
