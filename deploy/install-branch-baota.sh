@@ -177,7 +177,7 @@ npm run seed || true
 
 echo "启动 PM2: $PM2_NAME"
 pm2 delete "$PM2_NAME" 2>/dev/null || true
-pm2 start "npx tsx src/index.ts" --name "$PM2_NAME" --cwd "$INSTALL_ROOT/backend"
+pm2 start npx --name "$PM2_NAME" --cwd "$INSTALL_ROOT/backend" -- tsx src/index.ts
 pm2 save
 
 sleep 2

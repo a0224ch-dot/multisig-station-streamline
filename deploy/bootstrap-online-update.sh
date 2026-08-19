@@ -90,7 +90,7 @@ fi
 
 echo ">>> 重启 API（delete + start 以重载 .env）…"
 pm2 delete "$PM2_APP" 2>/dev/null || true
-pm2 start "npx tsx src/index.ts" --name "$PM2_APP" --cwd "$ROOT/backend"
+pm2 start npx --name "$PM2_APP" --cwd "$ROOT/backend" -- tsx src/index.ts
 pm2 save
 
 PORT="$(grep -E '^PORT=' "$ENV_FILE" | tail -n 1 | cut -d= -f2- | tr -d '"[:space:]')"

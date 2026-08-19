@@ -263,9 +263,10 @@ async function restartPm2(): Promise<void> {
     } catch {
       appendLog(`pm2 delete ${name} 跳过（可能不存在）`);
     }
+    // Linux 上 execFile 不走 shell，必须把 npx / tsx 拆成独立参数（与现网手动启动一致）
     await runCmd(
       "pm2",
-      ["start", "npx tsx src/index.ts", "--name", name, "--cwd", backendDir],
+      ["start", "npx", "--name", name, "--cwd", backendDir, "--", "tsx", "src/index.ts"],
       backendDir,
       60_000,
     );
