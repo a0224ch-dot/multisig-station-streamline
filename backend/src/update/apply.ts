@@ -300,20 +300,20 @@ async function startPm2(): Promise<void> {
 }
 
 const OLD_RELEASES_LATEST =
-  "https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json";
-const NEW_RELEASES_LATEST =
   "https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json";
+const NEW_RELEASES_LATEST =
+  "https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json";
 
-/** 旧仓 OTA 跳转后，把 .env 里的清单地址改到新发布仓（不改其它配置） */
+/** 若 .env 仍指向 a0224ch-dot 发布仓，升级后迁回 e12games（不改其它配置） */
 function migrateUpdateReleasesUrl(): void {
   const envFile = path.join(installRoot(), "backend", ".env");
   if (!fs.existsSync(envFile)) return;
   const raw = fs.readFileSync(envFile, "utf8");
-  if (!raw.includes("e12games/multisig-station-streamline-releases")) return;
+  if (!raw.includes("a0224ch-dot/multisig-station-streamline-releases")) return;
   const next = raw.split(OLD_RELEASES_LATEST).join(NEW_RELEASES_LATEST);
   if (next === raw) return;
   fs.writeFileSync(envFile, next, "utf8");
-  appendLog("已将 UPDATE_RELEASES_URL 迁至新发布仓");
+  appendLog("已将 UPDATE_RELEASES_URL 迁至 e12games 发布仓");
 }
 
 function overlayFromPackage(pkgRoot: string): void {

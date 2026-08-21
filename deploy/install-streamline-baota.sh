@@ -21,7 +21,7 @@ PM2_UPDATER_NAME="${PM2_UPDATER_NAME:-multisig-streamline-updater}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-streamline}"
 GIT_BRANCH="${GIT_BRANCH:-main}"
 GIT_URL="${GIT_URL:-https://github.com/a0224ch-dot/multisig-station-streamline.git}"
-UPDATE_RELEASES_URL="${UPDATE_RELEASES_URL:-https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json}"
+UPDATE_RELEASES_URL="${UPDATE_RELEASES_URL:-https://raw.githubusercontent.com/e12games/multisig-station-streamline-releases/main/latest.json}"
 
 if [[ "$PM2_NAME" == "$PM2_UPDATER_NAME" ]]; then
   echo "错误: PM2_NAME 不能与更新进程名相同（$PM2_NAME）。请另设 PM2_NAME 或 PM2_UPDATER_NAME" >&2

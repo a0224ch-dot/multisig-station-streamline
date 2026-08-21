@@ -2,6 +2,13 @@
 
 ---
 
+## 20260821-3
+
+### Changed
+- 在线更新发布仓改回 `e12games/multisig-station-streamline-releases`；若 `.env` 仍指向 a0224ch-dot，升级后自动迁回 e12games
+
+---
+
 ## 20260821-2
 
 ### Added

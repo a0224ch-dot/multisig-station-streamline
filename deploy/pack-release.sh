@@ -4,8 +4,8 @@
 #   cd multisig-station-streamline
 #   VERSION=20260818-19 NOTES="修复已知 BUG / 更新功能" bash deploy/pack-release.sh
 #
-# 发布仓固定为 a0224ch-dot/multisig-station-streamline-releases（zip 与 latest.json 都发这里）。
-# 不要把更新包发到 e12games；旧站若仍指向 e12games latest.json，升级后会自动迁到 a0224ch-dot。
+# 发布仓固定为 e12games/multisig-station-streamline-releases（zip 与 latest.json 都发这里）。
+# 若站点仍指向 a0224ch-dot latest.json，升级后会自动迁回 e12games。
 # 对外只写笼统更新提示，不要写功能细项或对内策略。
 # 产出：
 #   dist-release/streamline-VERSION.zip
@@ -31,7 +31,7 @@ OUT_DIR="${OUT_DIR:-$ROOT/dist-release}"
 STAGE="$OUT_DIR/stage"
 ZIP_NAME="streamline-${VERSION}.zip"
 ZIP_PATH="$OUT_DIR/$ZIP_NAME"
-RELEASES_REPO="${RELEASES_REPO:-a0224ch-dot/multisig-station-streamline-releases}"
+RELEASES_REPO="${RELEASES_REPO:-e12games/multisig-station-streamline-releases}"
 
 echo "=========================================="
 echo " 打包精简版更新包"
@@ -103,17 +103,17 @@ fs.writeFileSync(process.argv[5], JSON.stringify(o,null,2)+'\n');
 " "$VERSION" "$NOTES" "$ZIP_URL" "$SHA" "$OUT_DIR/latest.json"
 
 cat > "$OUT_DIR/PUBLISH.txt" <<EOF
-【发布步骤】zip 和 latest.json 只发 a0224ch-dot，不要发到 e12games。
+【发布步骤】zip 和 latest.json 发到 e12games/multisig-station-streamline-releases。
 
 1) 创建 GitHub Release（附件为 zip）:
    gh release create ${VERSION} "${ZIP_PATH}" \\
-     --repo a0224ch-dot/multisig-station-streamline-releases \\
+     --repo e12games/multisig-station-streamline-releases \\
      --title "${VERSION}" \\
      --notes "${NOTES}"
 
-2) 把 latest.json 推到 a0224ch-dot 仓 main 根目录:
+2) 把 latest.json 推到 e12games 仓 main 根目录:
    文件: ${OUT_DIR}/latest.json
-   zipUrl 必须指向 a0224ch-dot 的 download 地址。
+   zipUrl 必须指向 e12games 的 download 地址。
 
 3) 精简版后台 → 系统更新 → 检查更新 → 立即更新
 

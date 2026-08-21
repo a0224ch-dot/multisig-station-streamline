@@ -103,4 +103,4 @@ cd frontend && npm i && npm run dev
 ## 相关仓库 / Related Repos
 
 - 源码仓 / Source：https://github.com/a0224ch-dot/multisig-station-streamline
-- 更新发布仓 / OTA releases：https://github.com/a0224ch-dot/multisig-station-streamline-releases
+- 更新发布仓 / OTA releases：https://github.com/e12games/multisig-station-streamline-releases
