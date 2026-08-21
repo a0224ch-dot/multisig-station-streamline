@@ -53,6 +53,10 @@ cd /www/wwwroot && git clone -b main https://github.com/a0224ch-dot/multisig-sta
 
 安装完成后默认后台账号 / Default admin：`admin` / `Branch@123456`（请立刻改密 / change password immediately）
 
+交付验收 / Acceptance：[`deploy/验收清单.md`](./deploy/验收清单.md)  
+自动检查 / Auto check：`SITE_DOMAIN='你的域名' bash deploy/accept-streamline.sh`  
+OTA 回归 / OTA regression：[`deploy/OTA回归清单.md`](./deploy/OTA回归清单.md)
+
 ---
 
 ## 在线更新 / OTA Update

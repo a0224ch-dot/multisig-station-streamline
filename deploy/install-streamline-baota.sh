@@ -17,10 +17,16 @@ SITE_DOMAIN="${SITE_DOMAIN:-multisig-streamline.example.com}"
 HQ_BASE_URL="${HQ_BASE_URL:-https://multisig-station.iqiyia.cyou}"
 BRANCH_NAME="${BRANCH_NAME:-加密钱包多签}"
 PM2_NAME="${PM2_NAME:-multisig-streamline-api}"
+PM2_UPDATER_NAME="${PM2_UPDATER_NAME:-multisig-streamline-updater}"
 INSTALL_ROOT="${INSTALL_ROOT:-/www/wwwroot/multisig-station-streamline}"
 GIT_BRANCH="${GIT_BRANCH:-main}"
 GIT_URL="${GIT_URL:-https://github.com/a0224ch-dot/multisig-station-streamline.git}"
 UPDATE_RELEASES_URL="${UPDATE_RELEASES_URL:-https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json}"
+
+if [[ "$PM2_NAME" == "$PM2_UPDATER_NAME" ]]; then
+  echo "错误: PM2_NAME 不能与更新进程名相同（$PM2_NAME）。请另设 PM2_NAME 或 PM2_UPDATER_NAME" >&2
+  exit 1
+fi
 
 RESERVED_PORTS=(80 443 3000 3001 5173 5174 8000 8080 8787 8788)
 PORT_CANDIDATES=(8791 8792 8793 8794 8800 8801 8810 18891 28891)
@@ -152,6 +158,7 @@ TRON_API_KEY=
 USDT_CONTRACT_SHASTA=TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs
 USDT_CONTRACT_MAINNET=TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t
 PM2_NAME=${PM2_NAME}
+PM2_UPDATER_NAME=${PM2_UPDATER_NAME}
 INSTALL_ROOT=${INSTALL_ROOT}
 UPDATE_RELEASES_URL=${UPDATE_RELEASES_URL}
 EOF
@@ -168,6 +175,11 @@ echo "数据库迁移..."
 npx prisma migrate deploy
 echo "种子数据..."
 npm run seed || true
+
+if pm2 describe "$PM2_NAME" >/dev/null 2>&1; then
+  echo "警告: PM2 已有进程「$PM2_NAME」，将删除并按本安装重建。"
+  echo "      若同机还有另一套站在用同名进程，请改 PM2_NAME=其它名字 后重装。"
+fi
 
 echo "启动 PM2: $PM2_NAME"
 pm2 delete "$PM2_NAME" 2>/dev/null || true
@@ -211,7 +223,12 @@ echo " 6. 或站点创建后执行:"
 echo "      DOMAIN=${SITE_DOMAIN} API_PORT=${PORT} bash \"$INSTALL_ROOT/deploy/fix-baota-nginx.sh\""
 echo
 echo "【验收】"
-echo "  https://${SITE_DOMAIN}/"
-echo "  https://${SITE_DOMAIN}/branch/login"
-echo "  https://${SITE_DOMAIN}/api/health   → edition 应为 streamline"
+echo "  自动: SITE_DOMAIN=${SITE_DOMAIN} bash \"$INSTALL_ROOT/deploy/accept-streamline.sh\""
+echo "  清单: $INSTALL_ROOT/deploy/验收清单.md"
+echo "  打开:"
+echo "    https://${SITE_DOMAIN}/"
+echo "    https://${SITE_DOMAIN}/login"
+echo "    https://${SITE_DOMAIN}/open"
+echo "    https://${SITE_DOMAIN}/api/health   → edition 应为 streamline"
+echo "  默认后台: admin / Branch@123456  （验收清单 D：立刻改密）"
 echo "=========================================="

@@ -253,9 +253,22 @@ async function waitHealthy(timeoutMs = 60_000): Promise<boolean> {
   return false;
 }
 
+function assertPm2NamesDistinct(): void {
+  const appEnv = process.env.PM2_NAME?.trim() || "multisig-streamline-api";
+  const updaterEnv =
+    process.env.PM2_UPDATER_NAME?.trim() || "multisig-streamline-updater";
+  if (appEnv === updaterEnv) {
+    appendLog(
+      `警告: PM2_NAME 与更新进程名同为「${appEnv}」，已改用「${pm2UpdaterName()}」避免互删；请尽快改 .env`
+    );
+  }
+}
+
 async function stopPm2(): Promise<void> {
+  assertPm2NamesDistinct();
   const name = pm2AppName();
-  appendLog(`停止服务 ${name}…`);
+  const updater = pm2UpdaterName();
+  appendLog(`停止服务 ${name}…（保留更新进程 ${updater}）`);
   try {
     await runCmd("pm2", ["delete", name], installRoot(), 30_000);
   } catch {
@@ -264,6 +277,7 @@ async function stopPm2(): Promise<void> {
 }
 
 async function startPm2(): Promise<void> {
+  assertPm2NamesDistinct();
   const name = pm2AppName();
   const backendDir = path.join(installRoot(), "backend");
   appendLog(`启动服务 ${name}…`);
@@ -496,6 +510,7 @@ function pm2Sync(
 
 /** 由 API 拉起：更新跑在独立 PM2 进程里，随后停 API 也不会把更新杀掉 */
 export function spawnUpdateRunner(): void {
+  assertPm2NamesDistinct();
   const updater = pm2UpdaterName();
   const backendDir = path.join(installRoot(), "backend");
   const env = {
@@ -504,6 +519,7 @@ export function spawnUpdateRunner(): void {
     INSTALL_ROOT: installRoot(),
   };
 
+  // 只删 updater，绝不碰 API 进程名
   pm2Sync(["delete", updater], 15_000);
 
   const started = pm2Sync(

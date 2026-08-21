@@ -13,8 +13,14 @@ echo
 echo "=== PM2 ==="
 pm2 list 2>/dev/null || echo "无 pm2"
 echo
-echo "=== health ==="
-for p in 8787 8788 8790 8791; do
-  code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 1 "http://127.0.0.1:${p}/api/health" 2>/dev/null || echo 000)
-  echo "127.0.0.1:$p/api/health -> $code"
+echo "=== health（看 edition，勿用端口猜站点）==="
+for p in 8787 8788 8790 8791 8792; do
+  body=$(curl -s --connect-timeout 1 "http://127.0.0.1:${p}/api/health" 2>/dev/null || true)
+  if [[ -n "$body" ]]; then
+    echo "127.0.0.1:$p -> $body"
+  else
+    echo "127.0.0.1:$p -> (无响应)"
+  fi
 done
+echo
+echo "完整验收: SITE_DOMAIN=你的域名 bash deploy/accept-streamline.sh"

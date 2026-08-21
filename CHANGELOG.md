@@ -2,6 +2,19 @@
 
 ---
 
+## 20260821-1
+
+### Added
+- 交付验收清单 `deploy/验收清单.md`：一键安装 → 反代 → health → 改密 → 首配地址 → 第一次出码
+- 自动验收脚本 `deploy/accept-streamline.sh`（本机/公网 health、PM2、产物、进程名冲突）
+- OTA 线上回归清单 `deploy/OTA回归清单.md`（正常更新、断网、半截失败、PM2 名冲突）
+
+### Fixed
+- OTA：`PM2_NAME` 与 updater 同名时自动错开，并拒绝互删
+- 安装脚本验收入口改为 `/login`，并写入 `PM2_UPDATER_NAME`
+
+---
+
 ## 20260819-29
 
 ### Fixed

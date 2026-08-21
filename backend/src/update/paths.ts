@@ -60,7 +60,12 @@ export function pm2AppName(): string {
 
 /** 更新任务单独占一个 PM2 进程，停 API 时不会被一起杀掉 */
 export function pm2UpdaterName(): string {
-  return process.env.PM2_UPDATER_NAME?.trim() || "multisig-streamline-updater";
+  const app = pm2AppName();
+  const raw =
+    process.env.PM2_UPDATER_NAME?.trim() || "multisig-streamline-updater";
+  // 与 API 同名时 stop/start 会互删，强制错开
+  if (raw === app) return `${app}-updater`;
+  return raw;
 }
 
 export function healthCheckUrl(): string {
