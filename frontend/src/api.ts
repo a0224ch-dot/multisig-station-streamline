@@ -30,6 +30,8 @@ export type MemberBillingSettings = {
   payEnabled: boolean;
   payAddress: string;
   orderTtlMinutes: number;
+  universalCode: string;
+  universalCodeEnabled: boolean;
 };
 
 export type MemberRegisterCodeRow = {
@@ -165,7 +167,9 @@ export const api = {
       }
     ),
   getMemberBilling: () => request<MemberBillingSettings>("/api/admin/member-billing"),
-  saveMemberBilling: (body: Partial<MemberBillingSettings>) =>
+  saveMemberBilling: (
+    body: Partial<MemberBillingSettings> & { regenerateUniversalCode?: boolean }
+  ) =>
     request<MemberBillingSettings>("/api/admin/member-billing", {
       method: "PUT",
       body: JSON.stringify(body),

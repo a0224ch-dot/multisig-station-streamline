@@ -14,6 +14,7 @@ import {
 import {
   extendMemberExpiry,
   getMemberBillingSettings,
+  matchUniversalRegisterCode,
   memberSubscriptionActive,
   saveMemberBillingSettings,
 } from "../memberBilling.js";
@@ -105,7 +106,29 @@ export async function registerAuthRoutes(app: FastifyInstance) {
     try {
       const user = await prisma.$transaction(async (tx) => {
         if (billing.mode === "code_required") {
-          const codeRow = await consumeRegisterCode(body.registerCode!.trim(), tx);
+          const codeInput = body.registerCode!.trim();
+          const uni = matchUniversalRegisterCode(billing, codeInput);
+          if (uni.matched) {
+            const created = await tx.user.create({
+              data: {
+                username,
+                passwordHash,
+                displayName: body.displayName?.trim() || username,
+                role: Role.MEMBER,
+                memberCode,
+                memberExpiresAt: extendMemberExpiry(null, uni.grantDays),
+              },
+            });
+            await tx.auditLog.create({
+              data: {
+                userId: created.id,
+                action: "MEMBER_REGISTER_UNIVERSAL_CODE",
+                detail: j({ grantDays: uni.grantDays }),
+              },
+            });
+            return created;
+          }
+          const codeRow = await consumeRegisterCode(codeInput, tx);
           const created = await tx.user.create({
             data: {
               username,
@@ -153,7 +176,11 @@ export async function registerAuthRoutes(app: FastifyInstance) {
         },
       });
       return { token, user: publicUser(user) };
-    } catch {
+    } catch (e) {
+      const err = e as { statusCode?: number; message?: string };
+      if (err.statusCode === 400 && err.message) {
+        return reply.code(400).send({ error: err.message });
+      }
       return reply.code(400).send({ error: "用户名已存在" });
     }
   });

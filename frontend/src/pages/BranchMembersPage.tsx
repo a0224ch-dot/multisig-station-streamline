@@ -49,7 +49,11 @@ export default function BranchMembersPage({ user }: { user: User }) {
     setRows(list);
     setMode(reg.mode);
     setModeDraft(reg.mode);
-    setBilling(bill);
+    setBilling({
+      ...bill,
+      universalCode: bill.universalCode ?? "",
+      universalCodeEnabled: Boolean(bill.universalCodeEnabled),
+    });
     setCodes(codeRows);
   }
 
@@ -88,13 +92,68 @@ export default function BranchMembersPage({ user }: { user: User }) {
     setError("");
     setMsg("");
     try {
-      const saved = await api.saveMemberBilling(billing);
+      const saved = await api.saveMemberBilling({
+        regPriceUsdt: billing.regPriceUsdt,
+        renewPriceUsdt: billing.renewPriceUsdt,
+        regGrantDays: billing.regGrantDays,
+        renewGrantDays: billing.renewGrantDays,
+        payEnabled: billing.payEnabled,
+        payAddress: billing.payAddress,
+        orderTtlMinutes: billing.orderTtlMinutes,
+      });
       setBilling(saved);
       setMsg(t("members.billingSaved"));
     } catch (err) {
       setError(err instanceof Error ? err.message : t("common.saveFailed"));
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function saveUniversal(e: FormEvent) {
+    e.preventDefault();
+    if (!canEdit || !billing) return;
+    setBusy(true);
+    setError("");
+    setMsg("");
+    try {
+      const saved = await api.saveMemberBilling({
+        universalCodeEnabled: billing.universalCodeEnabled,
+        universalCode: billing.universalCode,
+      });
+      setBilling(saved);
+      setMsg(t("members.universalSaved"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("common.saveFailed"));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function regenerateUniversal() {
+    if (!canEdit || !billing) return;
+    if (!window.confirm(t("members.regenerateUniversalConfirm"))) return;
+    setBusy(true);
+    setError("");
+    setMsg("");
+    try {
+      const saved = await api.saveMemberBilling({ regenerateUniversalCode: true });
+      setBilling(saved);
+      setMsg(t("members.universalRegenerated"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("common.saveFailed"));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyUniversal() {
+    if (!billing?.universalCode) return;
+    try {
+      await navigator.clipboard.writeText(billing.universalCode);
+      setMsg(t("members.universalCopied"));
+    } catch {
+      setError(t("members.universalCopyFailed"));
     }
   }
 
@@ -217,6 +276,75 @@ export default function BranchMembersPage({ user }: { user: User }) {
           </button>
         )}
       </form>
+
+      {billing && (
+        <form
+          className="card"
+          style={{ marginBottom: "1rem" }}
+          onSubmit={(e) => void saveUniversal(e)}
+        >
+          <h2 style={{ marginTop: 0 }}>{t("members.universalTitle")}</h2>
+          <p className="muted">{t("members.universalHint")}</p>
+          {mode !== "code_required" && (
+            <p className="error" style={{ marginBottom: "0.75rem" }}>
+              {t("members.universalNeedCodeRequired")}
+            </p>
+          )}
+          <label className="muted" style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+            <input
+              type="checkbox"
+              checked={billing.universalCodeEnabled}
+              disabled={!canEdit || busy}
+              onChange={(e) =>
+                setBilling({ ...billing, universalCodeEnabled: e.target.checked })
+              }
+            />
+            {t("members.universalEnabled")}
+          </label>
+          <label style={{ display: "block", marginTop: "0.75rem", maxWidth: 420 }}>
+            <span className="muted">{t("members.universalCode")}</span>
+            <input
+              className="input"
+              value={billing.universalCode}
+              disabled={!canEdit || busy}
+              onChange={(e) =>
+                setBilling({
+                  ...billing,
+                  universalCode: e.target.value.toUpperCase().replace(/\s+/g, ""),
+                })
+              }
+              placeholder={t("members.universalCodePlaceholder")}
+              maxLength={24}
+              autoComplete="off"
+            />
+          </label>
+          {canEdit && (
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.75rem" }}>
+              <button className="btn" type="submit" disabled={busy}>
+                {busy ? t("common.saving") : t("members.saveUniversal")}
+              </button>
+              <button
+                className="btn ghost"
+                type="button"
+                disabled={busy}
+                onClick={() => void regenerateUniversal()}
+              >
+                {t("members.regenerateUniversal")}
+              </button>
+              {billing.universalCode && (
+                <button
+                  className="btn ghost"
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void copyUniversal()}
+                >
+                  {t("members.copyUniversal")}
+                </button>
+              )}
+            </div>
+          )}
+        </form>
+      )}
 
       {billing && (
         <form className="card" style={{ marginBottom: "1rem" }} onSubmit={(e) => void saveBilling(e)}>

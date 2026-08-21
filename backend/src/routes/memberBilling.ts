@@ -45,6 +45,9 @@ export async function registerMemberBillingRoutes(app: FastifyInstance) {
         payEnabled: z.boolean().optional(),
         payAddress: z.string().max(64).optional(),
         orderTtlMinutes: z.number().int().min(5).max(240).optional(),
+        universalCodeEnabled: z.boolean().optional(),
+        universalCode: z.string().max(32).optional(),
+        regenerateUniversalCode: z.boolean().optional(),
       })
       .parse(req.body);
 
@@ -58,15 +61,29 @@ export async function registerMemberBillingRoutes(app: FastifyInstance) {
       return reply.code(400).send({ error: "USDT 收款地址无效" });
     }
 
-    const saved = await saveMemberBillingSettings({ ...body, payAddress, payEnabled });
-    await prisma.auditLog.create({
-      data: {
-        userId: u.sub,
-        action: "MEMBER_BILLING_SAVE",
-        detail: j(saved),
-      },
-    });
-    return saved;
+    try {
+      const saved = await saveMemberBillingSettings({ ...body, payAddress, payEnabled });
+      await prisma.auditLog.create({
+        data: {
+          userId: u.sub,
+          action: "MEMBER_BILLING_SAVE",
+          detail: j({
+            ...saved,
+            // 审计不落明文通用码全文时可改为只记开关与是否轮换；此处超管操作保留以便追责
+            universalCode: saved.universalCode ? "***" : "",
+            universalCodeSet: Boolean(saved.universalCode),
+            universalCodeEnabled: saved.universalCodeEnabled,
+          }),
+        },
+      });
+      return saved;
+    } catch (e) {
+      const err = e as { statusCode?: number; message?: string };
+      if (err.statusCode === 400 && err.message) {
+        return reply.code(400).send({ error: err.message });
+      }
+      throw e;
+    }
   });
 
   app.get("/api/admin/member-codes", { preHandler: [app.authenticate] }, async (req) => {
