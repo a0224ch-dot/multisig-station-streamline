@@ -1,5 +1,5 @@
 /** 使用说明版本，须与根目录 VERSION 一致 */
-export const HELP_DOC_VERSION = "20260823-2";
+export const HELP_DOC_VERSION = "20260823-3";
 
 export type HelpSectionMeta = {
   id: string;

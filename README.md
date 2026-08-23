@@ -99,6 +99,7 @@ cd frontend && npm i && npm run dev
 
 ## 详细搭建教程 / Full Setup Guides
 
+- 项目结构说明 / Project structure：[`PROJECT_STRUCTURE.md`](./PROJECT_STRUCTURE.md)
 - 中文完整版（主）：[`搭建教程.zh-CN.md`](./搭建教程.zh-CN.md)
 - English guide (secondary)：[`Setup-Guide.en.md`](./Setup-Guide.en.md)
 - 快速入口（导航页）：[`搭建教程.md`](./搭建教程.md)

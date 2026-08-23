@@ -69,6 +69,7 @@ cp -a "$ROOT/deploy/." "$STAGE/deploy/"
 mkdir -p "$STAGE/docs"
 [[ -f "$ROOT/CHANGELOG.md" ]] && cp "$ROOT/CHANGELOG.md" "$STAGE/CHANGELOG.md"
 [[ -f "$ROOT/README.md" ]] && cp "$ROOT/README.md" "$STAGE/README.md"
+[[ -f "$ROOT/PROJECT_STRUCTURE.md" ]] && cp "$ROOT/PROJECT_STRUCTURE.md" "$STAGE/PROJECT_STRUCTURE.md"
 [[ -d "$ROOT/docs" ]] && cp -a "$ROOT/docs/." "$STAGE/docs/"
 
 echo ">>> 打 zip…"

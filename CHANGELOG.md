@@ -2,6 +2,16 @@
 
 ---
 
+## 20260823-3
+
+### Added
+- 根目录 `PROJECT_STRUCTURE.md`：中英并列项目结构说明（公开版，不含内部多签策略）
+
+### Changed
+- `README.md` 增加结构说明链接；OTA 包内含 `PROJECT_STRUCTURE.md`
+
+---
+
 ## 20260823-2
 
 ### Changed
