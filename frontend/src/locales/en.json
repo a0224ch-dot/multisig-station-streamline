@@ -453,7 +453,7 @@
     "subtitle": "Crypto Wallet Streamline Multisig Station: members make open codes and place them on scenarios.",
     "docVersion": "Doc version:",
     "runningVersion": "Running:",
-    "versionMismatch": "Help version does not match the running app. Update under System Updates or contact support.",
+    "versionMismatch": "Help version does not match the running app; some new features may be missing below. If you already updated and still see this, contact support to sync the docs.",
     "quickLinks": "Quick links:",
     "sections": {
       "login": {
@@ -518,13 +518,14 @@
       "scenarios": {
         "title": "5.2 Scenarios",
         "steps": [
-          "These are cards you paste into an app or counter — not the open-page design. Members make a card per app and show the QR (/p/u/{code}).",
-          "Open-page look is under Public Page Design. Staff can also add cards (max 20, via /open).",
-          "The built-in counter card is admin-only. Members may create up to 5 cards each; they cannot see each other.",
-          "When the HQ renewal is limited, cards and QR codes stay visible; create and save are locked."
+          "Cards pasted into apps or counters — not open-page design. Members use /p/u/{code}; staff cards use /open (max 20).",
+          "Members see a built-in Partner counter card: copy the QR with no extra code. Staff do not see that card; they see the Store counter built-in instead.",
+          "To embed a button in your own page: examples/streamline-partner-scene/ in the source repo is a free MIT template — set entryUrl to your /p/u/{member code} only; v1 has no returnUrl.",
+          "Members may create up to 5 custom cards each (not visible to each other). When HQ renewal is limited, cards stay visible; create/save is locked."
         ],
         "tips": [
-          "Member scenario cards use /p/u/{code} plus a ref. Staff posters use fixed /open plus a ref."
+          "Member cards: /p/u/{code}?ref=…; staff posters: /open?ref=…. Open-page look is under Public Page Design.",
+          "Partner onboarding: see deploy/友商通用注册码说明.md in the repo (one-page handout)."
         ]
       },
       "members": {
@@ -573,9 +574,11 @@
         "title": "7. System updates",
         "steps": [
           "Updates → Check for updates → Update now.",
-          "The updater runs as its own process: it stops the API, replaces files, migrates the database, then starts the API. .env and the database are kept.",
+          "Packages come from GitHub repo a0224ch-dot/multisig-station-streamline-releases (latest.json). Fresh installs default to this URL.",
+          "If UPDATE_RELEASES_URL in .env still points at the old e12games releases repo, upgrading to 20260823-1+ rewrites it to a0224ch-dot.",
+          "The updater runs as its own process: stops the API, replaces files, migrates the DB, then starts the API. .env and the database are kept.",
           "The page may be briefly unavailable and will retry status automatically. Do not click Update now repeatedly.",
-          "Release notes show a short summary only (bug fixes / feature updates)."
+          "Release notes show a short summary only. Acceptance checklist: deploy/验收清单.md in the repo."
         ]
       }
     }

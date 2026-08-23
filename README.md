@@ -61,14 +61,19 @@ OTA 回归 / OTA regression：[`deploy/OTA回归清单.md`](./deploy/OTA回归�
 
 ## 在线更新 / OTA Update
 
-后台 → **系统更新** → 检查更新 → 立即更新。配置和数据库不会被覆盖。更新时 API 会短暂停止再拉起。  
+后台 → **系统更新** → 检查更新 → 立即更新。配置和数据库不会被覆盖。更新时 API 会短暂停止再拉起。
+
+发布仓 / Releases repo：https://github.com/a0224ch-dot/multisig-station-streamline-releases  
+`latest.json`：`https://raw.githubusercontent.com/a0224ch-dot/multisig-station-streamline-releases/main/latest.json`
+
 Admin → **System Update** → Check → Update Now. Config (.env) and database are preserved. The API stops briefly, then starts again.
 
 ---
 
 ## 核心功能 / Features
 
-- 会员配自己的 2 个地址，专属入口 `/p/u/{码}` 生成开通码；在「场景」生成二维码贴到自己的应用
+- 会员配自己的 2 个地址，专属入口 `/p/u/{码}` 生成开通码；在「场景」生成二维码贴到自己的应用（含内置「友商柜台」）
+- 友商通道：须注册码模式下可开「通用注册码」；详见 [`deploy/友商通用注册码说明.md`](./deploy/友商通用注册码说明.md)
 - 客户扫码后在 `/o/{会话}` 完成钱包签名
 - 站点默认开通页 `/open`（与 `/p/路径` 同一页，走站长地址）
 - 后台含：多签地址、网络设置、已开通、公网页装修、场景、会员管理、开通钱包、向总部续费、系统更新、使用说明

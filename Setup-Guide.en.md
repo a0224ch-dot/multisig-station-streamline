@@ -98,7 +98,10 @@ Then in admin panel:
 2. Select network (mainnet / shasta)
 3. Configure 2 multisig addresses
 4. Enable wallet entries
-5. (Optional) Customize public page
+5. (Optional) Customize public page  
+6. **Members** -> pick registration mode; for partners enable **universal registration code** (requires code-required mode)  
+7. **Scenarios** -> members use built-in Partner counter or custom cards; staff use Store counter or custom cards via `/open`  
+8. Partner handout: [`deploy/友商通用注册码说明.md`](./deploy/友商通用注册码说明.md)
 
 ---
 
@@ -107,3 +110,8 @@ Then in admin panel:
 Admin panel -> `System Update` -> `Check` -> `Update now`.
 
 Update keeps your `.env` and database.
+
+**Releases repo (OTA source):** https://github.com/a0224ch-dot/multisig-station-streamline-releases  
+Fresh installs set `UPDATE_RELEASES_URL` automatically. If you still point at the old e12games repo, upgrading to **20260823-1+** migrates the URL to a0224ch-dot.
+
+Before go-live or handover, run R0–R3 in [`deploy/OTA回归清单.md`](./deploy/OTA回归清单.md).
