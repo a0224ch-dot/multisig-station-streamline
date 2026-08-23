@@ -41,9 +41,21 @@ type BuiltinSeed = {
   templateHint: string;
   sortOrder: number;
   coverFile: string;
+  /** 会员（友商）登录后在「场景」中可见 */
+  memberVisible?: boolean;
+  /** 站长后台不展示（仅友商侧内置卡） */
+  hideFromAdmin?: boolean;
 };
 
-/** 精简版只内置柜台；不种 H5 / DApp / 开源示例 */
+function memberVisibleBuiltinKeys(): string[] {
+  return BUILTIN_SCENARIOS.filter((s) => s.memberVisible).map((s) => s.builtinKey);
+}
+
+function adminHiddenBuiltinKeys(): string[] {
+  return BUILTIN_SCENARIOS.filter((s) => s.hideFromAdmin).map((s) => s.builtinKey);
+}
+
+/** 精简版内置场景：站长柜台 + 友商柜台 */
 export const BUILTIN_SCENARIOS: BuiltinSeed[] = [
   {
     builtinKey: "counter-open",
@@ -55,6 +67,19 @@ export const BUILTIN_SCENARIOS: BuiltinSeed[] = [
     templateHint: "",
     sortOrder: 10,
     coverFile: "counter-open.svg",
+  },
+  {
+    builtinKey: "partner-counter",
+    title: "友商柜台",
+    summary: "友商现场贴码：客户扫会员专属入口二维码，用钱包完成多签开通。",
+    bodyText:
+      "预置给会员（友商）的柜台场景。\n\n操作：\n1. 先在「多签地址」配好你的 2 个共管地址。\n2. 复制本卡二维码或链接，贴到柜台 / 活动页。\n3. 客户扫码后在钱包内签名；地址不变，权限变共管。\n\n要嵌入自己的 H5 / 网页：仓库 examples/streamline-partner-scene/ 免费 MIT 模板，只改 entryUrl 为你的 /p/u/{会员码}。",
+    refPrefix: "partner",
+    templateHint: "examples/streamline-partner-scene",
+    sortOrder: 5,
+    coverFile: "partner-counter.svg",
+    memberVisible: true,
+    hideFromAdmin: true,
   },
 ];
 
@@ -196,13 +221,34 @@ export async function listScenarioCards(opts?: {
       }
     : landing;
 
+  const memberKeys = memberVisibleBuiltinKeys();
+  const hiddenAdminKeys = adminHiddenBuiltinKeys();
+
+  const enabledOnly = opts?.includeDisabled ? [] : [{ enabled: true as const }];
+
   const [rows, customCount] = await Promise.all([
     prisma.scenario.findMany({
       where: {
-        ...(opts?.includeDisabled ? {} : { enabled: true }),
-        ...(isMember && viewer
-          ? { createdById: viewer.sub, builtinKey: null }
-          : { NOT: { createdBy: { role: Role.MEMBER } } }),
+        AND: [
+          ...enabledOnly,
+          isMember && viewer
+            ? {
+                OR: [
+                  { createdById: viewer.sub, builtinKey: null },
+                  ...(memberKeys.length
+                    ? [{ builtinKey: { in: memberKeys } }]
+                    : []),
+                ],
+              }
+            : {
+                AND: [
+                  { NOT: { createdBy: { role: Role.MEMBER } } },
+                  ...(hiddenAdminKeys.length
+                    ? [{ NOT: { builtinKey: { in: hiddenAdminKeys } } }]
+                    : []),
+                ],
+              },
+        ],
       },
       orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
       include: {

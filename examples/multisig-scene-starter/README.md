@@ -1,7 +1,9 @@
-# Multisig Scene Starter（多签场景最小模板）
+# Multisig Scene Starter（多签场景最小模板 · 站长）
 
 免费、可拷贝、可单独发到 GitHub / Gitee。  
-用途：演示任意网页如何跳转到**精简版开通页** `/open`。
+用途：演示任意网页如何跳转到**精简版站长开通页** `/open`。
+
+> **友商（会员）**请用 [`../streamline-partner-scene/`](../streamline-partner-scene/) 或后台「场景」里的 **友商柜台** 卡，入口为 `/p/u/{会员码}`。见 [`../README.md`](../README.md)。
 
 ## 你只需要改一处
 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>友商场景 · 多签开通</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>友商应用场景 · 示例页</h1>
+      <p class="lead">
+        <strong>免费 MIT</strong> 静态模板：只负责跳转到你的
+        <strong>会员专属入口</strong> <code>/p/u/{会员短码}</code>。
+        出码、钱包签名由精简多签站处理；<strong>第一版不含回跳</strong>。
+      </p>
+
+      <section class="card">
+        <h2>去开通多签</h2>
+        <p class="muted" id="entry-preview">正在读取配置…</p>
+        <button type="button" class="btn" id="btn-open">去开通多签</button>
+        <p class="hint">
+          请编辑 <code>config.js</code> 中的 <code>entryUrl</code>（勿填站长
+          <code>/open</code>）。
+        </p>
+      </section>
+
+      <section class="card muted">
+        <h2>对接约定</h2>
+        <ul>
+          <li>入口必须是 <code>https://站点/p/u/{你的会员码}</code>。</li>
+          <li>只改 <code>entryUrl</code> 与可选 <code>refPrefix</code>，不要写死钱包深链。</li>
+          <li>也可直接用多签站后台「场景」里的预置卡 <strong>友商柜台</strong> 二维码，无需本模板。</li>
+        </ul>
+      </section>
+    </main>
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
