@@ -55,7 +55,9 @@ cd /www/wwwroot && git clone -b main https://github.com/a0224ch-dot/multisig-sta
 
 交付验收 / Acceptance：[`deploy/验收清单.md`](./deploy/验收清单.md)  
 自动检查 / Auto check：`SITE_DOMAIN='你的域名' bash deploy/accept-streamline.sh`  
-OTA 回归 / OTA regression：[`deploy/OTA回归清单.md`](./deploy/OTA回归清单.md)
+OTA 回归 / OTA regression：[`deploy/OTA回归清单.md`](./deploy/OTA回归清单.md)  
+升级前检查 / Before upgrade：[`deploy/升级前检查清单.md`](./deploy/升级前检查清单.md)  
+踩坑与决策 / Pitfalls：[`docs/踩坑与决策.md`](./docs/踩坑与决策.md)
 
 ---
 

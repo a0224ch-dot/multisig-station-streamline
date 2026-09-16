@@ -7,6 +7,7 @@
 # 发布仓固定为 a0224ch-dot/multisig-station-streamline-releases（zip 与 latest.json 都发这里）。
 # 若站点仍指向 e12games latest.json，升级后会自动迁到 a0224ch-dot。
 # 对外只写笼统更新提示，不要写功能细项或对内策略。
+# 打包前先勾 deploy/升级前检查清单.md，并检索 docs/踩坑与决策.md。
 # 产出：
 #   dist-release/streamline-VERSION.zip
 #   dist-release/latest.json

@@ -32,6 +32,7 @@ multisig-station-streamline/
 ├── 搭建教程.zh-CN.md       # 搭建完整版（中文）
 ├── Setup-Guide.en.md       # Setup guide (English)
 ├── CHANGELOG.md            # 版本变更
+├── docs/踩坑与决策.md      # 可检索踩坑（不含内部档位触发条件）
 └── VERSION                 # 当前版本号（与 OTA、help 对齐）
 ```
 
@@ -152,6 +153,7 @@ frontend/src/
 | `accept-partner-scene.mjs` | 友商柜台场景接口验收 |
 | `fix-baota-nginx.sh` | 修复宝塔 nginx 反代 / SPA |
 | `验收清单.md` | 交付勾选清单 |
+| `升级前检查清单.md` | 打包、上传、站点更新前必勾 |
 | `OTA回归清单.md` | 更新回归 R0–R3 |
 | `友商通用注册码说明.md` | 友商一页纸（可 PDF 外发） |
 | `latest.example.json` | 发布仓 latest.json 示例 |
@@ -243,6 +245,7 @@ Members reuse several staff pages (scenarios, presets) under `MemberShell`.
 | `accept-streamline.sh` | Automated acceptance checks |
 | `accept-partner-scene.mjs` | Partner counter scenario API checks |
 | `fix-baota-nginx.sh` | Fix Baota nginx proxy / SPA |
+| `升级前检查清单.md` | Pre-upgrade checklist (pack, publish, site update) |
 | `验收清单.md` / `OTA回归清单.md` | Delivery & OTA regression checklists |
 | `友商通用注册码说明.md` | One-page partner onboarding (Chinese) |
 
