@@ -397,6 +397,7 @@ export const api = {
       txId?: string | null;
       returnUrl?: string | null;
       partnerRef?: string | null;
+      expiresAt?: string;
       openWallets?: OpenWalletOption[];
     }>(`/api/open/${token}`),
   prepareOpen: (token: string, walletAddress: string) =>

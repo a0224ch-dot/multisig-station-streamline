@@ -146,6 +146,7 @@ export async function registerOpenRoutes(app: FastifyInstance) {
       txId: session.txId,
       returnUrl: session.returnUrl,
       partnerRef: session.partnerRef,
+      expiresAt: session.expiresAt,
       openWallets: await listEnabledOpenWallets(),
     };
   });

@@ -91,7 +91,31 @@
     "signUnsupported": "This wallet cannot sign transactions",
     "signFailed": "Signing failed: {{detail}}",
     "walletErrorCode": "Wallet error code {{code}}",
-    "openFailedRetry": "Failed. Please try again"
+    "openFailedRetry": "Failed. Please try again",
+    "expiresAt": "Open code valid until {{time}}",
+    "sessionExpired": "This open code has expired (about 15 minutes). Go back and refresh the QR, then try again. An unsigned transaction also expires after about 60 minutes.",
+    "alreadyMultisig": "This address is already set up. No need to open it again.",
+    "sessionMissing": "Open code not found. Generate a new one.",
+    "notPrepared": "Signing is not ready yet. Reconnect the wallet and retry.",
+    "networkMainnet": "TRON mainnet",
+    "networkShasta": "Shasta testnet",
+    "guideLead": "The address itself does not change. On-chain permissions are now shared. Use Tronscan to confirm, then read how to use the address.",
+    "addressLabel": "Address",
+    "txLabel": "TxID",
+    "viewAddress": "View address on Tronscan",
+    "viewTx": "View open transaction",
+    "openExplorer": "Open Tronscan",
+    "verifyTitle": "1. How to confirm it succeeded",
+    "verify1": "Open “View address on Tronscan” above ({{network}}).",
+    "verify2": "On the address page, open <strong>Permissions</strong>.",
+    "verify3": "You should see more than one signer, and a threshold greater than 1. If you still see only your own key and a threshold of 1, it has not taken effect — wait a few seconds and refresh, or open the transaction to see if it is confirmed.",
+    "verify4": "You can also open the transaction: status confirmed, type Account Permission Update, means it is on-chain.",
+    "useTitle": "2. How to use the address after multisig",
+    "use1": "<strong>Receiving is unchanged:</strong> send TRX / USDT (TRC20) to the same address. The receiving address does not change.",
+    "use2": "<strong>Sending needs co-signers:</strong> transfers and approvals must reach the signature threshold. Your wallet alone usually cannot send.",
+    "use3": "<strong>Start in your wallet:</strong> create the transfer in this wallet, then ask the co-signers to finish the remaining signatures before broadcast.",
+    "use4": "<strong>Fees:</strong> keep a little TRX in the address for energy and bandwidth. Opening and later transfers both spend TRX.",
+    "use5": "<strong>Keep the seed phrase:</strong> multisig does not replace it. Losing the seed can still block you from signing. Back it up offline."
   },
   "login": {
     "title": "Sign in",
@@ -479,7 +503,9 @@
         ],
         "tips": [
           "Configure multisig addresses and enable wallet entries first.",
-          "Open codes are plain HTTPS. TokenPocket / OKX / Bitget: home scan works; TronLink: use Discover/Browser, not home scan."
+          "Open codes are plain HTTPS. TokenPocket / OKX / Bitget: home scan works; TronLink: use Discover/Browser, not home scan.",
+          "After success, the sign page links to Tronscan. Under Permissions, confirm more than one signer and a threshold greater than 1. You can also open the transaction to see if it is confirmed.",
+          "The sign page shows the reason when something fails. Common cases: cancelled in the wallet; not enough TRX (about 100 TRX to change permissions); open code expired (about 15 minutes — refresh the QR); unsigned transaction expired (about 60 minutes — generate a new code)."
         ]
       },
       "network": {

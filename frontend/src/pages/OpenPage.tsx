@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { api, type OpenWalletOption } from "../api";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 import { attachDeepLinks } from "../walletDeepLinks";
@@ -17,6 +17,18 @@ type TronProvider = {
 
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+function explorerBase(network: string) {
+  return network === "shasta" ? "https://shasta.tronscan.org" : "https://tronscan.org";
+}
+
+function accountExplorerUrl(network: string, address: string) {
+  return `${explorerBase(network)}/#/address/${encodeURIComponent(address)}`;
+}
+
+function txExplorerUrl(network: string, txId: string) {
+  return `${explorerBase(network)}/#/transaction/${encodeURIComponent(txId)}`;
 }
 
 export default function OpenPage() {
@@ -77,6 +89,22 @@ export default function OpenPage() {
 
   const [phase, setPhase] = useState<"choose" | "working" | "ok" | "fail">("working");
   const [detail, setDetail] = useState("");
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
+
+  function networkLabel(net: string) {
+    if (net === "shasta") return t("open.networkShasta");
+    if (net === "mainnet") return t("open.networkMainnet");
+    return net || t("open.networkMainnet");
+  }
+
+  function humanizeOpenError(msg: string): string {
+    if (msg === "expired") return t("open.sessionExpired");
+    if (msg === "already_multisig") return t("open.alreadyMultisig");
+    if (msg === "not_found") return t("open.sessionMissing");
+    if (msg === "not_prepared") return t("open.notPrepared");
+    if (msg === "broadcast_failed" || msg === "fail") return t("open.openFailedRetry");
+    return msg;
+  }
   const [wallets, setWallets] = useState<OpenWalletOption[]>([]);
   const [network, setNetwork] = useState("");
   const [copied, setCopied] = useState(false);
@@ -131,6 +159,7 @@ export default function OpenPage() {
         const session = await api.getOpen(token);
         if (cancelled) return;
         setNetwork(session.network);
+        if (session.expiresAt) setExpiresAt(session.expiresAt);
         setWallets(session.openWallets || []);
         setReturnUrl(session.returnUrl || null);
         setPartnerRef(session.partnerRef || null);
@@ -184,7 +213,7 @@ export default function OpenPage() {
           return;
         }
         setPhase("fail");
-        setDetail(msg);
+        setDetail(humanizeOpenError(msg));
       }
     }
 
@@ -257,7 +286,7 @@ export default function OpenPage() {
         return;
       }
       setPhase("fail");
-      setDetail(msg);
+      setDetail(humanizeOpenError(msg));
     }
   }
 
@@ -266,10 +295,18 @@ export default function OpenPage() {
       <div style={{ position: "absolute", top: "1rem", right: "1rem" }}>
         <LanguageSwitcher />
       </div>
-      <div className="card open-card">
-        <p className="muted" style={{ textAlign: "center", fontSize: "0.85rem", marginTop: 0 }}>
-          {t("open.sessionHint")}
-        </p>
+      <div className={`card open-card${phase === "ok" ? " open-card-wide" : ""}`}>
+        {phase !== "ok" && (
+          <p className="muted" style={{ textAlign: "center", fontSize: "0.85rem", marginTop: 0 }}>
+            {t("open.sessionHint")}
+            {expiresAt ? (
+              <>
+                <br />
+                {t("open.expiresAt", { time: new Date(expiresAt).toLocaleString() })}
+              </>
+            ) : null}
+          </p>
+        )}
         {phase === "working" && (
           <div className="muted" style={{ textAlign: "center" }}>
             {t("open.connecting")}
@@ -277,17 +314,82 @@ export default function OpenPage() {
         )}
 
         {phase === "ok" && (
-          <div style={{ textAlign: "center" }}>
-            <div style={{ color: "var(--ok)", fontWeight: 700, marginBottom: "0.5rem" }}>
-              {t("open.success")}
-            </div>
-            {detail && (
-              <div className="muted" style={{ wordBreak: "break-all", fontSize: "0.85rem" }}>
-                TxID: {detail}
+          <div className="open-success">
+            <div className="open-success-title">{t("open.success")}</div>
+            <p className="muted open-success-lead">{t("open.guideLead")}</p>
+
+            {walletAddress ? (
+              <div className="muted open-success-meta">
+                {t("open.addressLabel")}
+                <br />
+                <span className="open-mono">{walletAddress}</span>
               </div>
-            )}
+            ) : null}
+            {detail ? (
+              <div className="muted open-success-meta">
+                {t("open.txLabel")}
+                <br />
+                <span className="open-mono">{detail}</span>
+              </div>
+            ) : null}
+
+            <div className="open-guide-actions">
+              {walletAddress ? (
+                <a
+                  className="btn"
+                  href={accountExplorerUrl(network, walletAddress)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("open.viewAddress")}
+                </a>
+              ) : null}
+              {detail ? (
+                <a
+                  className="btn ghost"
+                  href={txExplorerUrl(network, detail)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("open.viewTx")}
+                </a>
+              ) : (
+                <a
+                  className="btn ghost"
+                  href={explorerBase(network)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("open.openExplorer")}
+                </a>
+              )}
+            </div>
+
+            <section className="open-guide">
+              <h3>{t("open.verifyTitle")}</h3>
+              <ol>
+                <li>{t("open.verify1", { network: networkLabel(network) })}</li>
+                <li>
+                  <Trans i18nKey="open.verify2" components={{ strong: <strong /> }} />
+                </li>
+                <li>{t("open.verify3")}</li>
+                <li>{t("open.verify4")}</li>
+              </ol>
+            </section>
+
+            <section className="open-guide">
+              <h3>{t("open.useTitle")}</h3>
+              <ol>
+                {(["use1", "use2", "use3", "use4", "use5"] as const).map((key) => (
+                  <li key={key}>
+                    <Trans i18nKey={`open.${key}`} components={{ strong: <strong /> }} />
+                  </li>
+                ))}
+              </ol>
+            </section>
+
             {returnUrl && (
-              <p className="muted" style={{ marginTop: "0.75rem", fontSize: "0.9rem" }}>
+              <p className="muted" style={{ marginTop: "0.75rem", fontSize: "0.9rem", textAlign: "center" }}>
                 {t("open.returnSoon")}
                 <br />
                 <button

@@ -116,6 +116,75 @@ button, input, select, textarea { font: inherit; }
 .open-card {
   width: min(440px, 100%);
 }
+.open-card-wide {
+  width: min(520px, 100%);
+}
+.open-success {
+  text-align: left;
+}
+.open-success-title {
+  color: var(--ok);
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  text-align: center;
+  font-size: 1.15rem;
+}
+.open-success-lead {
+  margin: 0 0 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  text-align: center;
+}
+.open-success-meta {
+  margin: 0 0 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.open-mono {
+  display: inline-block;
+  margin-top: 0.15rem;
+  word-break: break-all;
+  font-family: ui-monospace, Consolas, monospace;
+  color: var(--text);
+}
+.open-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0.9rem 0 1rem;
+}
+.open-guide-actions .btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.open-guide {
+  margin: 0 0 0.9rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--panel) 80%, #000);
+}
+.open-guide h3 {
+  margin: 0 0 0.45rem;
+  font-size: 0.95rem;
+}
+.open-guide ol {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+.open-guide li + li {
+  margin-top: 0.35rem;
+}
+.open-guide strong {
+  color: var(--text);
+  font-weight: 600;
+}
 .wallet-grid {
   display: grid;
   gap: 0.6rem;

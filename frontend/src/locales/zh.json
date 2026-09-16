@@ -91,7 +91,31 @@
     "signUnsupported": "当前钱包不支持签名",
     "signFailed": "钱包签名未完成：{{detail}}",
     "walletErrorCode": "钱包返回错误码 {{code}}",
-    "openFailedRetry": "开通失败，请重试"
+    "openFailedRetry": "开通失败，请重试",
+    "expiresAt": "开通码有效至 {{time}}",
+    "sessionExpired": "开通码已过期（约 15 分钟）。请回到出码页刷新二维码后重试。未签名交易另有约 60 分钟，超时同样需要重新取码。",
+    "alreadyMultisig": "该地址已经开通过，无需重复开通。",
+    "sessionMissing": "开通码不存在，请重新取码。",
+    "notPrepared": "还没准备好签名，请重试连接钱包。",
+    "networkMainnet": "TRON 主网",
+    "networkShasta": "Shasta 测试网",
+    "guideLead": "地址本身不变，链上权限已改为多人共管。请按下面步骤在 Tronscan（TRON 浏览器）核对，并了解如何使用。",
+    "addressLabel": "地址",
+    "txLabel": "TxID",
+    "viewAddress": "在 Tronscan 查看地址",
+    "viewTx": "查看开通交易",
+    "openExplorer": "打开 Tronscan",
+    "verifyTitle": "一、如何确认多签已成功",
+    "verify1": "打开上方「在 Tronscan 查看地址」（{{network}}）。",
+    "verify2": "进入该地址详情后，找到 <strong>权限 / Permissions</strong>（或「账户权限」）。",
+    "verify3": "应能看到多个签名地址，且门槛大于 1。若仍只有本人 1 个密钥、门槛为 1，说明尚未生效，请等几十秒后刷新，或用「查看开通交易」确认是否已上链。",
+    "verify4": "也可点「查看开通交易」：状态为成功 / confirmed，且类型为账户权限更新（Account Permission Update），即表示开通交易已上链。",
+    "useTitle": "二、多签后的地址怎么用",
+    "use1": "<strong>收款不变：</strong>仍向原来的同一地址转入 TRX / USDT（TRC20）等资产，收款地址不会变。",
+    "use2": "<strong>转出需共管：</strong>转账、授权等操作需达到门槛签名。仅本人钱包签名通常无法单独转出。",
+    "use3": "<strong>在钱包里发起：</strong>用本钱包发起转账后，按业务约定联系共管方完成其余签名，再广播上链。",
+    "use4": "<strong>手续费：</strong>地址内需保留少量 TRX 支付能量/带宽；开通与后续交易都会消耗 TRX。",
+    "use5": "<strong>助记词仍要保管：</strong>多签不是抛弃助记词。助记词丢失仍可能导致无法参与签名，请离线妥善备份。"
   },
   "login": {
     "title": "后台登录",
@@ -479,7 +503,9 @@
         ],
         "tips": [
           "请先配好多签地址，并在「开通钱包」启用常用钱包入口。",
-          "开通码是普通 HTTPS。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。"
+          "开通码是普通 HTTPS。TokenPocket / OKX / Bitget 可用钱包首页扫码；TronLink 请用发现/浏览器粘贴，不要用首页扫一扫。",
+          "开通成功后，签名页会引导打开 Tronscan：在地址的「权限 / Permissions」确认已是多个签名地址且门槛大于 1；也可点开通交易确认是否已上链。",
+          "开通页出错会直接显示原因。常见：钱包里点了取消；钱包 TRX 不足（改权限约需 100 TRX 手续费）；开通码过期（约 15 分钟，刷新二维码）；未签名交易约 60 分钟过期，超时重新取码。"
         ]
       },
       "network": {
