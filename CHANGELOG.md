@@ -1,6 +1,6 @@
 # 变更日志（精简版 multisig-station-streamline）
 
-按版本倒序。升级前先扫最近几条，再查 [docs/踩坑与决策.md](docs/踩坑与决策.md)，并勾 [deploy/升级前检查清单.md](deploy/升级前检查清单.md)。
+按版本倒序。升级前先扫最近几条，再查 [deploy/踩坑与决策.md](deploy/踩坑与决策.md)，并勾 [deploy/升级前检查清单.md](deploy/升级前检查清单.md)。
 
 ---
 
@@ -16,7 +16,7 @@
 - 签名页把 `expired` 等错误码改成可读说明，不再只显示原文
 
 ### Docs
-- 新增可检索 [docs/踩坑与决策.md](docs/踩坑与决策.md) 与 [deploy/升级前检查清单.md](deploy/升级前检查清单.md)
+- 新增可检索 [deploy/踩坑与决策.md](deploy/踩坑与决策.md) 与 [deploy/升级前检查清单.md](deploy/升级前检查清单.md)
 - 本版记下：开通码旧默认 300 秒、成功页核对、Windows 缺 `esbuild.exe`、发布仓 404、脏工作区打进 zip、更新不覆盖 `.env`
 
 ### Notes
@@ -337,7 +337,7 @@
 ## 维护约定
 
 1. 发用户可见版必须改本文件。
-2. 修过生产坑或定过约定 → 写入 [docs/踩坑与决策.md](docs/踩坑与决策.md)，并补文首关键词表（或在本版注明「无新坑」）。
+2. 修过生产坑或定过约定 → 写入 [deploy/踩坑与决策.md](deploy/踩坑与决策.md)，并补文首关键词表（或在本版注明「无新坑」）。
 3. 打包、上传、站点更新前勾 [deploy/升级前检查清单.md](deploy/升级前检查清单.md)。
 4. 改了客户可见说明时，同步 `helpContent.ts` 与中英 locales，且 `HELP_DOC_VERSION` = `VERSION`。
 5. 对外 Release notes 只写「修复已知 BUG / 更新功能」。内部档位触发条件不写进精简版文档。
